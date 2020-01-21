@@ -12,9 +12,8 @@
 		}
 	</style>
 </stylecontainer>
-Wasn los?
 <input type="file" id="files" name="files[]" multiple/>
-<div id="drop_zone">Drop files here</div>
+<div id="drop_zone">Drop an image file here</div>
 <output id="list"></output>
 <div id="stage"></div>
 </body>
@@ -36,7 +35,7 @@ Wasn los?
             // document.getElementById('list').insertBefore(span, null);
             // console.log(`${image.width}, ${image.height}`);
             // document.body.style.backgroundImage=`URL(${image.src})`;
-        }).catch(err => console.log(err));
+        }).catch(err => alert(err));
     }
 
     function handleDragOver(evt) {
