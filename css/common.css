@@ -20,5 +20,12 @@ body, html,* {
 
 #stage {
     position:relative;
+    background-repeat: no-repeat;
+}
 
+.tile {
+    border: 1px solid #888;
+    border-bottom-color: #666;
+    border-right-color: #666;
+    border-radius: 6px;
 }

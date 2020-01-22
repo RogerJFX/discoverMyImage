@@ -1,54 +1,53 @@
-<html>
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<title>Discover me</title>
     <link rel="stylesheet" href="css/common.css">
+	<script src="js/Tile.js"></script>
+	<script src="js/ImageHandler.js"></script>
+	<script>
+		window.addEventListener('load', () => {
+			const ih = window.$disc.imageHandler;
+			function handleFileSelect(evt) {
+				ih.getFile(evt).then(image => {
+					ih.modifyImage(image, [ih.convert2BW, ih.simpleDarken])
+						.then(bgImg => {
+							const stage = document.getElementById('stage');
+							stage.style.backgroundImage = `URL(${bgImg.src})`;
+							stage.style.height = `${bgImg.height}px`;
+							stage.style.width = `${bgImg.width}px`;
+						});
+					return image;
+				}).then(image => {
+					const tiles = window.$disc.tile.buildTiles(image, 4, 4);
+					const stage = document.getElementById('stage');
+					stage.innerHTML = '';
+					tiles.forEach(tile => {
+						stage.appendChild(tile.toNode());
+					})
+				}).catch(err => alert(err));
+			}
 
+			function handleDragOver(evt) {
+				evt.stopPropagation();
+				evt.preventDefault();
+				evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+			}
+
+			const dropZone = document.getElementById('drop_zone');
+			dropZone.addEventListener('dragover', handleDragOver, false);
+			dropZone.addEventListener('drop', handleFileSelect, false);
+
+			document.getElementById('files').addEventListener('change', handleFileSelect, false);
+		}, false);
+	</script>
 </head>
 <body>
-<stylecontainer>
-	<style>
-		body{
-			background-color: red;
-		}
-	</style>
-</stylecontainer>
-<input type="file" id="files" name="files[]" multiple/>
-<div id="drop_zone">Drop an image file here</div>
-<output id="list"></output>
-<div id="stage"></div>
+	<stylecontainer></stylecontainer>
+
+	<input type="file" id="files" name="files[]" multiple/>
+	<div id="drop_zone">Drop an image file here</div>
+
+	<div id="stage"></div>
 </body>
-<script type="module">
-    import {ImageHandler} from './js/ImageHandler.js';
-	import {Tile} from './js/Tile.js';
-
-    function handleFileSelect(evt) {
-        ImageHandler.getFile(evt).then(image => {
-        	const tiles = Tile.buildTiles(image, 4, 4);
-        	const stage = document.getElementById('stage');
-        	stage.innerHTML = '';
-        	tiles.forEach(tile => {
-        		stage.appendChild(tile.toNode());
-			})
-            // const span = document.createElement('span');
-            // span.innerHTML = ['<img class="thumb" src="', image.src,
-            //     '" title="image" />'].join('');
-            // document.getElementById('list').insertBefore(span, null);
-            // console.log(`${image.width}, ${image.height}`);
-            // document.body.style.backgroundImage=`URL(${image.src})`;
-        }).catch(err => alert(err));
-    }
-
-    function handleDragOver(evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-        evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-    }
-
-    // Setup the dnd listeners.
-    const dropZone = document.getElementById('drop_zone');
-    dropZone.addEventListener('dragover', handleDragOver, false);
-    dropZone.addEventListener('drop', handleFileSelect, false);
-
-    document.getElementById('files').addEventListener('change', handleFileSelect, false);
-</script>
 </html>

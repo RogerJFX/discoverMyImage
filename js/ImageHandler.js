@@ -1,64 +1,93 @@
-export class ImageHandler {
+window.$disc = window.$disc || {};
 
-    static MAX_HEIGHT = 800;
-    static MAX_WIDTH = 1000;
+(function ImageHandler(self) {
 
-    static resize(image) {
+    const MAX_HEIGHT = 800;
+    const MAX_WIDTH = 1000;
+
+    self.resizeImage = (image) => {
         function doResize(width, height) {
-            const canvas = ImageHandler.createCanvas(width, height);
+            const canvas = createCanvas(width, height);
             const ctx = canvas.getContext('2d');
             ctx.drawImage(image, 0, 0, width, height);
             const result = new Image();
             result.src = canvas.toDataURL("image/jpg");
             return result;
         }
-
-        if (image.width <= this.MAX_WIDTH && image.height <= this.MAX_HEIGHT) {
-            return image;
-        }
-        let factor = 0;
-        if (image.width >= this.MAX_WIDTH) {
-            factor = image.width / this.MAX_WIDTH;
-        }
-        if (image.height >= this.MAX_HEIGHT) {
-            const nFactor = image.height / this.MAX_HEIGHT;
-            if (nFactor > factor) {
-                factor = nFactor;
+        return new Promise(resolve => {
+            if (image.width <= MAX_WIDTH && image.height <= MAX_HEIGHT) {
+                resolve(image);
+                return;
             }
-        }
-        return doResize(image.width / factor, image.height / factor);
-    }
+            let factor = 0;
+            if (image.width >= MAX_WIDTH) {
+                factor = image.width / MAX_WIDTH;
+            }
+            if (image.height >= MAX_HEIGHT) {
+                const nFactor = image.height / MAX_HEIGHT;
+                if (nFactor > factor) {
+                    factor = nFactor;
+                }
+            }
+            const result = doResize(image.width / factor, image.height / factor);
+            result.onload = () => resolve(result);
+        });
 
-    static createCanvas(w, h) {
+    };
+
+    function createCanvas(w, h) {
         const result = document.createElement("CANVAS");
         result.setAttribute("width", w + "");
         result.setAttribute("height", h + "");
         return result;
     }
 
-    static darkenImage(image) {
-        function doDarken(imageData) {
-            for (let i = 0; i < imageData.width * imageData.height * 4; i += 4) {
-                imageData.data[i + 3] = Math.round(imageData.data[i + 3] * .5);
-            }
+    self.increaseTransparency = (imageData, f) => {
+        const factor = f || .5;
+        for (let i = 0; i < imageData.width * imageData.height * 4; i += 4) {
+            imageData.data[i + 3] = Math.round(imageData.data[i + 3] * factor);
         }
+    };
 
+    self.simpleDarken = (imageData, f) => {
+        const factor = f || .3;
+        for (let i = 0; i < imageData.width * imageData.height * 4; i += 4) {
+            imageData.data[i] = Math.round(imageData.data[i] * factor);
+            imageData.data[i + 1] = Math.round(imageData.data[i + 1] * factor);
+            imageData.data[i + 2] = Math.round(imageData.data[i + 2] * factor);
+        }
+    };
+
+    self.convert2BW = (imageData) => {
+        for (let i = 0; i < imageData.width * imageData.height * 4; i += 4) {
+            const all = imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2];
+            const rgb = Math.round(all / 3);
+            imageData.data[i] = rgb;
+            imageData.data[i + 1] = rgb;
+            imageData.data[i + 2] = rgb;
+        }
+    };
+
+
+    self.modifyImage = (image, modificationFns) => {
         const width = image.width;
         const height = image.height;
-        const canvas = ImageHandler.createCanvas(width, height);
+        const canvas = createCanvas(width, height);
         const ctx = canvas.getContext('2d');
         ctx.drawImage(image, 0, 0, width, height);
         const imgData = ctx.getImageData(0, 0, width, height);
-        doDarken(imgData);
-        const canvas2 = this.createCanvas(width, height);
+        modificationFns.forEach(modificationFn => modificationFn(imgData));
+        const canvas2 = createCanvas(width, height);
         const ctx2 = canvas2.getContext('2d');
         ctx2.putImageData(imgData, 0, 0);
         const result = new Image();
         result.src = canvas2.toDataURL("image/jpg");
-        return result;
-    }
+        return new Promise(resolve => {
+            result.onload = () => resolve(result);
+        });
+    };
 
-    static getFile(evt) {
+    self.getFile = (evt) => {
         evt.stopPropagation();
         evt.preventDefault();
 
@@ -72,11 +101,9 @@ export class ImageHandler {
                     const result = new Image();
                     result.src = evt.target.result + '';
                     result.onload = () => {
-                        const arsch = ImageHandler.resize(result);
-                        // return arsch;
-                        arsch.onload = () => {
-                            resolve(ImageHandler.darkenImage(arsch));
-                        }
+                        self.resizeImage(result).then(image => {
+                            resolve(image);
+                        }).catch(err => console.log(err));
                     };
                 }, true);
                 reader.readAsDataURL(first);
@@ -86,4 +113,4 @@ export class ImageHandler {
         });
     }
 
-}
+})(window.$disc.imageHandler = window.$disc.imageHandler || {});
