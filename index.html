@@ -1,15 +1,26 @@
+<!doctype html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>Discover me</title>
     <link rel="stylesheet" href="css/common.css">
-	<script src="js/Tile.js"></script>
-	<script src="js/ImageHandler.js"></script>
+	<script src="js/constants.js"></script>
+	<script src="js/tileManager.js"></script>
+	<script src="js/imageHandler.js"></script>
+	<script src="js/animator.js"></script>
 	<script>
+		let originalImage;
+		function winAction() {
+			const stage = document.getElementById('stage');
+			stage.innerHTML = '';
+			stage.style.backgroundImage=`URL(${originalImage.src})`;
+		}
 		window.addEventListener('load', () => {
 			const ih = window.$disc.imageHandler;
 			function handleFileSelect(evt) {
+				showFileSelect(false);
 				ih.getFile(evt).then(image => {
+					originalImage = image;
 					ih.modifyImage(image, [ih.convert2BW, ih.simpleDarken])
 						.then(bgImg => {
 							const stage = document.getElementById('stage');
@@ -19,7 +30,7 @@
 						});
 					return image;
 				}).then(image => {
-					const tiles = window.$disc.tile.buildTiles(image, 4, 4);
+					const tiles = window.$disc.tileManager.buildTiles(image, 4, 4, winAction);
 					const stage = document.getElementById('stage');
 					stage.innerHTML = '';
 					tiles.forEach(tile => {
@@ -40,13 +51,42 @@
 
 			document.getElementById('files').addEventListener('change', handleFileSelect, false);
 		}, false);
+		function showFileSelect(show) {
+			document.getElementById('selectModal').style.display = show ? 'block' : 'none';
+			document.getElementById('modalLayer').style.display = show ? 'block' : 'none';
+		}
 	</script>
+
 </head>
 <body>
 	<stylecontainer></stylecontainer>
+	<div class="modalLayer" id="modalLayer">
+		<div class="menuModal"></div>
+		<div class="selectModal" id="selectModal">
+			<div style="float:right">
+				<div class="nav-icon cancel-icon" onclick="showFileSelect(false);">
+					<div></div>
+				</div>
+			</div>
+			<div style="clear: both"></div>
+			<div id="drop_zone" class="selectOption">Drop an image file here</div>
+			<label class="custom-file-upload selectOption">
+				<input type="file" id="files"/>
+				Or click here to select a file
+			</label>
+		</div>
+	</div>
 
-	<input type="file" id="files" name="files[]" multiple/>
-	<div id="drop_zone">Drop an image file here</div>
+	<div class="header">
+		<div class="nav-icon" style="float:left;"onclick="showFileSelect(true);">
+			<div></div>
+		</div>
+		<div style="display:block; height:60px;text-align:right;font-size:26px;color:white;padding:12px;">Discover My Image</div>
+	</div>
+
+
+
+
 
 	<div id="stage"></div>
 </body>

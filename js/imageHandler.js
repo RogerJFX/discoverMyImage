@@ -2,10 +2,9 @@ window.$disc = window.$disc || {};
 
 (function ImageHandler(self) {
 
-    const MAX_HEIGHT = 800;
-    const MAX_WIDTH = 1000;
-
     self.resizeImage = (image) => {
+        const MAX_HEIGHT = window.$disc.constants.MAX_IMAGE_HEIGHT;
+        const MAX_WIDTH = window.$disc.constants.MAX_IMAGE_WIDTH;
         function doResize(width, height) {
             const canvas = createCanvas(width, height);
             const ctx = canvas.getContext('2d');
@@ -50,7 +49,7 @@ window.$disc = window.$disc || {};
     };
 
     self.simpleDarken = (imageData, f) => {
-        const factor = f || .3;
+        const factor = f || .23;
         for (let i = 0; i < imageData.width * imageData.height * 4; i += 4) {
             imageData.data[i] = Math.round(imageData.data[i] * factor);
             imageData.data[i + 1] = Math.round(imageData.data[i + 1] * factor);

@@ -1,15 +1,18 @@
 body, html,* {
-    background: black;
+    background: #368;
+    font-family: verdana, arial, sans, sans-serif;
+    box-sizing: border-box;
 }
 #drop_zone {
-    border: 2px dashed #bbb;
+    border: 2px dashed #fff;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
     padding: 25px;
     text-align: center;
-    font: 20pt bold verdana;
-    color: #bbb;
+    font: 20pt bold;
+    font-family: verdana, arial, sans, sans-serif;
+    color: #fff;
 }
 
 .thumb {
@@ -21,11 +24,89 @@ body, html,* {
 #stage {
     position:relative;
     background-repeat: no-repeat;
+    margin: 12px auto;
+    border-radius: 5px;
 }
 
 .tile {
+    position:absolute;
     border: 1px solid #888;
     border-bottom-color: #666;
     border-right-color: #666;
     border-radius: 6px;
+}
+
+.modalLayer {
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    padding:120px 80px;
+    display:none;
+    background: rgba(23,23,23,0.7);
+    z-index:10000;
+}
+.selectModal {
+    position:relative;
+    margin: 0 auto;
+    width: 60%;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 12px 24px;
+    z-index: 120;
+    display:none;
+}
+
+.selectModal .selectOption {
+    margin: 20px auto;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #fff;
+    display: inline-block;
+    padding: 16px 12px;
+    cursor: pointer;
+
+    color: white;
+    border-radius: 5px;
+}
+
+.nav-icon {
+    position:relative;
+    display:inline-block;
+    margin: 6px;
+    width: 40px;
+    cursor: pointer;
+}
+
+.rightAligned {
+    margin-left:auto; margin-right:0;
+}
+
+.nav-icon:after,
+.nav-icon:before,
+.nav-icon div {
+    background-color: #fff;
+    border-radius: 3px;
+    content: '';
+    display: block;
+    height: 5px;
+    margin: 7px 0;
+    /*transition: all .2s ease-in-out;*/
+}
+
+.cancel-icon:before {
+    transform: translateY(12px) rotate(135deg);
+}
+.cancel-icon:after{
+    transform: translateY(-12px) rotate(-135deg);
+}
+.cancel-icon div {
+    margin: 6px 2px;
+    transform: scale(0);
 }
