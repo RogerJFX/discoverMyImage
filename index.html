@@ -13,28 +13,52 @@
 			stage.innerHTML = '';
 			stage.style.backgroundImage=`URL(${originalImage.src})`;
 		}
-		window.addEventListener('load', () => {
+		function upload() {
+			if(originalImage) {
+				window.$disc.xhrHandler.uploadImage(window.$disc.xhrHandler.createBean(originalImage.src, 'roger@crazything.de'));
+			}
+		}
+
+		function processFile(promise) {
 			const ih = window.$disc.imageHandler;
-			function handleFileSelect(evt) {
-				showFileSelect(false);
-				ih.getFile(evt).then(image => {
-					originalImage = image;
-					ih.modifyImage(image, [ih.convert2BW, ih.simpleDarken])
+			promise.then(image => {
+				originalImage = image;
+				ih.modifyImage(image, [ih.convert2BW, ih.simpleDarken])
 						.then(bgImg => {
 							const stage = document.getElementById('stage');
 							stage.style.backgroundImage = `URL(${bgImg.src})`;
 							stage.style.height = `${bgImg.height}px`;
 							stage.style.width = `${bgImg.width}px`;
 						});
-					return image;
-				}).then(image => {
-					const tiles = window.$disc.tileManager.buildTiles(image, 4, 4, winAction);
-					const stage = document.getElementById('stage');
-					stage.innerHTML = '';
-					tiles.forEach(tile => {
-						stage.appendChild(tile.toNode());
+				return image;
+			}).then(image => {
+				const tiles = window.$disc.tileManager.buildTiles(image, 4, 4, winAction);
+				const stage = document.getElementById('stage');
+				stage.innerHTML = '';
+				tiles.forEach(tile => {
+					stage.appendChild(tile.toNode());
+				})
+			}).catch(err => alert(err));
+		}
+		window.addEventListener('load', () => {
+
+			const uuidCapture = location.href.match(/uuid=(.*?)(&|$)/i);
+			const uuid = uuidCapture ? uuidCapture[1] : null;
+			if(uuid) {
+				processFile(window.$disc.xhrHandler.getImage(uuid).then(bean => {
+					return new Promise(resolve => {
+						const img = new Image();
+						img.src = bean.imgSrc;
+						img.onload = () => {
+							resolve(img);
+						};
 					})
-				}).catch(err => alert(err));
+				}));
+			}
+
+			function handleFileSelect(evt) {
+				showFileSelect(false);
+				processFile(window.$disc.imageHandler.getFile(evt));
 			}
 
 			function handleDragOver(evt) {
@@ -58,6 +82,7 @@
 </head>
 <body>
 	<stylecontainer></stylecontainer>
+	<div onclick="upload()">UPLOAD</div>
 	<div class="modalLayer" id="modalLayer">
 		<div class="menuModal"></div>
 		<div class="selectModal" id="selectModal">

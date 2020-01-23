@@ -10,7 +10,7 @@ window.$disc = window.$disc || {};
             const ctx = canvas.getContext('2d');
             ctx.drawImage(image, 0, 0, width, height);
             const result = new Image();
-            result.src = canvas.toDataURL("image/jpg");
+            result.src = canvas.toDataURL("image/jpeg");
             return result;
         }
         return new Promise(resolve => {
@@ -67,7 +67,6 @@ window.$disc = window.$disc || {};
         }
     };
 
-
     self.modifyImage = (image, modificationFns) => {
         const width = image.width;
         const height = image.height;
@@ -80,7 +79,7 @@ window.$disc = window.$disc || {};
         const ctx2 = canvas2.getContext('2d');
         ctx2.putImageData(imgData, 0, 0);
         const result = new Image();
-        result.src = canvas2.toDataURL("image/jpg");
+        result.src = canvas2.toDataURL("image/jpeg");
         return new Promise(resolve => {
             result.onload = () => resolve(result);
         });
