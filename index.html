@@ -57,7 +57,7 @@
 			}
 
 			function handleFileSelect(evt) {
-				showFileSelect(false);
+				window.$disc.menuHandler.handleMenuClick([], ['selectModal', 'modalLayer']);
 				processFile(window.$disc.imageHandler.getFile(evt));
 			}
 
@@ -73,10 +73,8 @@
 
 			document.getElementById('files').addEventListener('change', handleFileSelect, false);
 		}, false);
-		function showFileSelect(show) {
-			document.getElementById('selectModal').style.display = show ? 'block' : 'none';
-			document.getElementById('modalLayer').style.display = show ? 'block' : 'none';
-		}
+
+		const $mH = window.$disc.menuHandler;
 	</script>
 
 </head>
@@ -87,7 +85,7 @@
 		<div class="menuModal"></div>
 		<div class="selectModal" id="selectModal">
 			<div style="float:right">
-				<div class="nav-icon cancel-icon" onclick="showFileSelect(false);">
+				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['selectModal','modalLayer']);">
 					<div></div>
 				</div>
 			</div>
@@ -101,10 +99,10 @@
 	</div>
 
 	<div class="header">
-		<div class="nav-icon" style="float:left;"onclick="showFileSelect(true);">
+		<div class="nav-icon" style="float:left;" onclick="$mH.handleMenuClick(['selectModal','modalLayer'], []);">
 			<div></div>
 		</div>
-		<div style="display:block; height:60px;text-align:right;font-size:32px;color:white;padding:2px 22px;"><img alt="logo" src="img/assets/logo.png" height="70" /></div>
+		<div style="text-align:right;font-size:32px;color:white;padding:2px 22px;"><img alt="logo" src="img/assets/logo.png" height="70" /></div>
 	</div>
 
 

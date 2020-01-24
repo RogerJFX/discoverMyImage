@@ -1,6 +1,13 @@
 window.$disc = window.$disc || {};
 (function Constants(self) {
 
+    // discover-my-image.com
+    //
+    // discovermy.photos
+
+    self.EXAMPLE_LIST_URL = './examples.json';
+    self.EXAMPLES_FOLDER_URL = './img/examples/';
+
     self.MAX_IMAGE_WIDTH = 1000;
     self.MAX_IMAGE_HEIGHT = 800;
 

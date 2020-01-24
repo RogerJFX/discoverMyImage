@@ -39,7 +39,34 @@ window.$disc = window.$disc || {};
             };
             xhr.send();
         });
+    };
 
+    // Hm...
+    self.simpleLoadImage = (url) => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = url;
+            img.onload = () => {
+                $disc.imageHandler.resizeImage(img).then(image => {
+                    resolve(image);
+                }).catch(err => console.log(err));
+            }
+        })
+    };
+
+    self.loadJsonProperties = (url) => {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.onload = function(e) {
+                if (this.status === 200) {
+                    resolve(JSON.parse(this.responseText));
+                } else {
+                    reject(this.status);
+                }
+            };
+            xhr.send();
+        });
     };
 
 })(window.$disc.xhrHandler = window.$disc.xhrHandler || {});

@@ -1,0 +1,86 @@
+[
+  {
+    "id": "switchLangButton",
+    "lang": {
+      "en": "Switch language",
+      "de": "Sprache ändern"
+    }
+  },
+  {
+    "id": "langDe",
+    "lang": {
+      "en": "German",
+      "de": "Deutsch"
+    }
+  },
+  {
+    "id": "langEn",
+    "lang": {
+      "en": "English",
+      "de": "Englisch"
+    }
+  },
+  {
+    "id": "exampleImageSelect",
+    "lang": {
+      "en": "Select example image",
+      "de": "Beipiel laden"
+    }
+  },
+  {
+    "id": "ownImageSelect",
+    "lang": {
+      "en": "Load your own image",
+      "de": "Eigenes Bild laden"
+    }
+  },
+  {
+    "id": "uploadMenuButton",
+    "lang": {
+      "en": "Send current image",
+      "de": "Bild verschicken"
+    }
+  },
+  {
+    "id": "dropImageZone",
+    "lang": {
+      "en": "Drop an image file here",
+      "de": "Hier ein Bild reinziehen"
+    }
+  },
+  {
+    "id": "selectImgFile",
+    "lang": {
+      "en": "Or click here to select a file",
+      "de": "Oder hier zur Auswahl klicken"
+    }
+  },
+  {
+    "id": "uploadButton",
+    "lang": {
+      "en": "Submit",
+      "de": "Senden"
+    }
+  },
+  {
+    "id": "sendMyName",
+    "lang": {
+      "en": "Your name",
+      "de": "Dein Name"
+    }
+  },
+  {
+    "id": "sendHisName",
+    "lang": {
+      "en": "Receiver's name",
+      "de": "Name des Empfängers"
+    }
+  },
+  {
+    "id": "sendToEmail",
+    "lang": {
+      "en": "Receiver's email address",
+      "de": "Email des Empfängers"
+    }
+  }
+]

@@ -11,45 +11,20 @@
 	<script src="js/animator.js"></script>
 	<script src="js/xhrHandler.js"></script>
 	<script src="js/menuHandler.js"></script>
+	<script src="js/stageActions.js"></script>
+	<script src="js/language.js"></script>
 	<script>
-		let originalImage;
-		function winAction() {
-			const stage = document.getElementById('stage');
-			stage.innerHTML = '';
-			stage.style.backgroundImage=`URL(${originalImage.src})`;
-		}
-		function upload() {
-			window.$disc.xhrHandler.uploadImage(window.$disc.xhrHandler.createBean(originalImage.src, 'roger@crazything.de'));
-		}
-
-		function processFile(promise) {
-			const ih = window.$disc.imageHandler;
-			promise.then(image => {
-				originalImage = image;
-				console.log(image.src.length);
-				ih.modifyImage(image, [ih.convert2BW, ih.simpleDarken])
-						.then(bgImg => {
-							const stage = document.getElementById('stage');
-							stage.style.backgroundImage = `URL(${bgImg.src})`;
-							stage.style.height = `${bgImg.height}px`;
-							stage.style.width = `${bgImg.width}px`;
-						});
-				return image;
-			}).then(image => {
-				const tiles = window.$disc.tileManager.buildTiles(image, 4, 4, winAction);
-				const stage = document.getElementById('stage');
-				stage.innerHTML = '';
-				tiles.forEach(tile => {
-					stage.appendChild(tile.toNode());
-				})
-			}); //.catch(err => console.error(err));
-		}
 		window.addEventListener('load', () => {
 
 			const uuidCapture = location.href.match(/uuid=(.*?)(&|$)/i);
 			const uuid = uuidCapture ? uuidCapture[1] : null;
+			const langCapture = location.href.match(/lang=(.*?)(&|$)/i);
+			const lang = langCapture ? langCapture[1] : 'en';
+
+			$disc.stageActions.init(document.getElementById('stage'));
+
 			if(uuid) {
-				processFile(window.$disc.xhrHandler.getImage(uuid).then(bean => {
+				$disc.stageActions.processFile(window.$disc.xhrHandler.getImage(uuid).then(bean => {
 					return new Promise(resolve => {
 						const img = new Image();
 						img.src = bean.imgSrc;
@@ -61,8 +36,8 @@
 			}
 
 			function handleFileSelect(evt) {
-				showFileSelect(false);
-				processFile(window.$disc.imageHandler.getFile(evt));
+				window.$disc.menuHandler.handleMenuClick([], ['selectModal', 'modalLayer']);
+				$disc.stageActions.processFile(window.$disc.imageHandler.getFile(evt));
 			}
 
 			function handleDragOver(evt) {
@@ -71,50 +46,80 @@
 				evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
 			}
 
-			const dropZone = document.getElementById('drop_zone');
+			const dropZone = document.getElementById('dropImageZone');
 			dropZone.addEventListener('dragover', handleDragOver, false);
 			dropZone.addEventListener('drop', handleFileSelect, false);
 
 			document.getElementById('files').addEventListener('change', handleFileSelect, false);
+			$disc.lang.switchLanguage(lang);
 		}, false);
-		function showFileSelect(show) {
-			document.getElementById('selectModal').style.display = show ? 'block' : 'none';
-			document.getElementById('modalLayer').style.display = show ? 'block' : 'none';
-		}
+
+		const $mH = window.$disc.menuHandler;
+
 	</script>
-
-
 </head>
 <body>
 	<stylecontainer></stylecontainer>
-	<div onclick="upload()">UPLOAD</div>
 	<div class="modalLayer" id="modalLayer">
-		<div class="menuModal"></div>
-		<div class="selectModal" id="selectModal">
+		<div class="innerModal" id="mainMenu">
 			<div style="float:right">
-				<div class="nav-icon cancel-icon" onclick="showFileSelect(false);">
+				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['mainMenu','modalLayer']);">
 					<div></div>
 				</div>
-			</div>
-			<div style="clear: both"></div>
-			<div id="drop_zone" class="selectOption">Drop an image file here</div>
+			</div><div style="clear: both"></div>
+			<button id="switchLangButton" onclick="$mH.handleMenuClick(['languageModal'], ['mainMenu']);"></button>
+			<button id="exampleImageSelect" onclick="$mH.handleMenuClick(['exampleModal'], ['mainMenu']);$mH.listExampleImages('exampleModal',() => {$mH.handleMenuClick([], ['exampleModal','modalLayer']);});"></button>
+			<button id="ownImageSelect" onclick="$mH.handleMenuClick(['selectModal'], ['mainMenu']);"></button>
+			<button id="uploadMenuButton" onclick="$mH.handleMenuClick(['uploadModal'], ['mainMenu']);"></button>
+		</div>
+		<div class="innerModal" id="languageModal">
+			<div style="float:right">
+				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['languageModal']);">
+					<div></div>
+				</div>
+			</div><div style="clear: both"></div>
+			<button id="langDe" onclick="$disc.lang.switchLanguage('de');$mH.handleMenuClick(['mainMenu'], ['languageModal']);"></button>
+			<button id="langEn" onclick="$disc.lang.switchLanguage('en');$mH.handleMenuClick(['mainMenu'], ['languageModal']);"></button>
+		</div>
+		<div class="innerModal" id="exampleModal">
+			<div style="float:right">
+				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['exampleModal']);">
+					<div></div>
+				</div>
+			</div><div style="clear: both"></div>
+		</div>
+		<div class="innerModal" id="selectModal">
+			<div style="float:right">
+				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['selectModal']);">
+					<div></div>
+				</div>
+			</div><div style="clear: both"></div>
+			<div id="dropImageZone" class="selectOption"></div>
 			<label class="custom-file-upload selectOption">
 				<input type="file" id="files"/>
-				Or click here to select a file
+				<span id="selectImgFile"></span>
 			</label>
+		</div>
+		<div class="innerModal" id="uploadModal">
+			<div style="float:right">
+				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['uploadModal']);">
+					<div></div>
+				</div>
+			</div><div style="clear: both"></div>
+			<input placeholder="Your name" id="sendMyName" maxlength="128"/>
+			<input placeholder="Receiver's name" id="sendHisName" maxlength="128"/>
+			<input placeholder="Receiver's email address" id="sendToEmail" maxlength="128"/>
+			<div>&#160;</div>
+			<button id="uploadButton" onclick="$disc.stageActions.upload();"></button>
 		</div>
 	</div>
 
 	<div class="header">
-		<div class="nav-icon" style="float:left;"onclick="showFileSelect(true);">
+		<div class="nav-icon" style="float:left;" onclick="$mH.handleMenuClick(['mainMenu','modalLayer'], []);">
 			<div></div>
 		</div>
-		<div style="display:block; height:60px;text-align:right;font-size:26px;color:white;padding:12px;">Discover My Image</div>
+		<div style="text-align:right;padding:2px 22px;"><img alt="logo" src="img/assets/logo.png" height="70" /></div>
 	</div>
-
-
-
-
 
 	<div id="stage"></div>
 </body>
