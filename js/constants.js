@@ -6,6 +6,7 @@ window.$disc = window.$disc || {};
     // discovermy.photos
 
     self.EXAMPLE_LIST_URL = './examples.json';
+    self.LANGUAGE_URL = './language.json';
     self.EXAMPLES_FOLDER_URL = './img/examples/';
 
     self.MAX_IMAGE_WIDTH = 1000;

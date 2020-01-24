@@ -5,6 +5,10 @@ window.$disc = window.$disc || {};
     let currLang = 'latin';
     const supported = ['en', 'de'];
 
+    self.getCurrLang = () => {
+        return currLang;
+    };
+
     self.switchLanguage = (lang) => {
         lang = supported.includes(lang) ? lang : supported[0];
         if(lang === currLang) {
@@ -15,7 +19,8 @@ window.$disc = window.$disc || {};
             callObservers(props, lang);
             return;
         }
-        $disc.xhrHandler.loadJsonProperties('./language.json').then(obj => {
+        // lazy, but not really.
+        $disc.xhrHandler.loadJsonProperties($disc.constants.LANGUAGE_URL).then(obj => {
             props = obj;
             callObservers(obj, lang);
         })

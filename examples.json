@@ -1,47 +1,74 @@
 [
   {
     "filename": "andrea.jpg",
-    "description": "A really beautiful young lady.",
+    "description": {
+      "de": "Eine wirklich schicke junge Lady.",
+      "en": "A really beautiful young lady."
+    },
     "index": 0
   },
   {
     "filename": "becks.jpg",
-    "description": "More beer.",
+    "description": {
+      "de": "Bier! Mehr Bier!",
+      "en": "cd pub && more beer"
+    },
     "index": 1
   },
   {
     "filename": "dom_fritzlar.jpg",
-    "description": "An old church in Germany.",
+    "description": {
+      "de": "Dom zu Fritzlar.",
+      "en": "Cathedral of Fritzlar, Germany."
+    },
     "index": 2
   },
   {
     "filename": "fritzlar1.jpg",
-    "description": "Old town in Germany.",
+    "description": {
+      "de": "Straße in Fritzlar, die erste.",
+      "en": "Some street in Fritzlar, Germany."
+    },
     "index": 3
   },
   {
     "filename": "fritzlar2.jpg",
-    "description": "Old town in Germany. Second shot.",
+    "description": {
+      "de": "Straße in Fritzlar, die zweite.",
+      "en": "Some other street in Fritzlar, Germany."
+    },
     "index": 4
   },
   {
     "filename": "guitars.jpg",
-    "description": "Some well done guitars.",
+    "description": {
+      "de": "Some well done guitars.",
+      "en": "Some well done guitars."
+    },
     "index": 5
   },
   {
     "filename": "karin.jpg",
-    "description": "Just for the beauty.",
+    "description": {
+      "de": "Ältere Dame bei Verjüngung.",
+      "en": "Just for the beauty."
+    },
     "index": 6
   },
   {
     "filename": "roger.jpg",
-    "description": "Rocking Roger.",
+    "description": {
+      "de": "Rocking Roger.",
+      "en": "Rocking Roger."
+    },
     "index": 7
   },
   {
     "filename": "studio.jpg",
-    "description": "Somebody had a good time.",
+    "description": {
+      "de": "Guter Whisky und gute Laune.",
+      "en": "Somebody had a good time."
+    },
     "index": 8
   }
 ]

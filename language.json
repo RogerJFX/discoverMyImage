@@ -24,7 +24,7 @@
     "id": "exampleImageSelect",
     "lang": {
       "en": "Select example image",
-      "de": "Beipiel laden"
+      "de": "Beispiel laden"
     }
   },
   {
@@ -37,8 +37,8 @@
   {
     "id": "uploadMenuButton",
     "lang": {
-      "en": "Send current image",
-      "de": "Bild verschicken"
+      "en": "Send current task",
+      "de": "Diese Aufgabe verschicken"
     }
   },
   {
