@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="user-scalable=no">
-	<title>Discover me</title>
+	<title>Discover My Image</title>
     <link rel="stylesheet" href="css/common.css">
 	<script src="js/constants.js"></script>
 	<script src="js/tileManager.js"></script>
@@ -50,7 +50,7 @@
 			dropZone.addEventListener('dragover', handleDragOver, false);
 			dropZone.addEventListener('drop', handleFileSelect, false);
 
-			document.getElementById('files').addEventListener('change', handleFileSelect, false);
+			document.getElementById('files').addEventListener('input', handleFileSelect, false); // or change
 			$disc.lang.switchLanguage(lang);
 		}, false);
 
@@ -59,7 +59,7 @@
 	</script>
 </head>
 <body>
-	<stylecontainer></stylecontainer>
+	<dynStylecontainer></dynStylecontainer>
 	<div class="modalLayer" id="modalLayer">
 		<div class="innerModal" id="mainMenu">
 			<div style="float:right">
@@ -70,7 +70,7 @@
 			<button id="switchLangButton" onclick="$mH.handleMenuClick(['languageModal'], ['mainMenu']);"></button>
 			<button id="exampleImageSelect" onclick="$mH.handleMenuClick(['exampleModal'], ['mainMenu']);$mH.listExampleImages('exampleModal',() => {$mH.handleMenuClick([], ['exampleModal','modalLayer']);});"></button>
 			<button id="ownImageSelect" onclick="$mH.handleMenuClick(['selectModal'], ['mainMenu']);"></button>
-			<button id="uploadMenuButton" onclick="$mH.handleMenuClick(['uploadModal'], ['mainMenu']);"></button>
+			<button id="uploadMenuButton" onclick="if($mH.checkImageLoaded()){$mH.handleMenuClick(['uploadModal'], ['mainMenu']);}"></button>
 		</div>
 		<div class="innerModal" id="languageModal">
 			<div style="float:right">
@@ -96,7 +96,7 @@
 			</div><div style="clear: both"></div>
 			<div id="dropImageZone" class="selectOption"></div>
 			<label class="custom-file-upload selectOption">
-				<input type="file" id="files"/>
+				<input type="file" id="files" accept="image/png, image/jpeg, image/gif, image/bmp"/>
 				<span id="selectImgFile"></span>
 			</label>
 		</div>
@@ -110,7 +110,17 @@
 			<input placeholder="Receiver's name" id="sendHisName" maxlength="128"/>
 			<input placeholder="Receiver's email address" id="sendToEmail" maxlength="128"/>
 			<div>&#160;</div>
-			<button id="uploadButton" onclick="$disc.stageActions.upload();"></button>
+			<button id="uploadButton" onclick="$mH.upload({myName: 'sendMyName', hisName: 'sendHisName', mailTo: 'sendToEmail'});"></button>
+		</div>
+	</div>
+	<div class="modalLayer alertModalLayer" id="alertModalLayer">
+		<div class="innerModal commonAlertModal" id="commonAlertModal">
+			<div style="float:right">
+				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['commonAlertModal', 'alertModalLayer']);">
+					<div></div>
+				</div>
+			</div><div style="clear: both"></div>
+			<div id="commonMessage"></div>
 		</div>
 	</div>
 

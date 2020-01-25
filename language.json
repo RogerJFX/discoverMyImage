@@ -82,5 +82,19 @@
       "en": "Receiver's email address",
       "de": "Email des Empfängers"
     }
+  },
+  {
+    "id": "noImageLoaded",
+    "lang": {
+      "en": "You haven't got an image loaded yet. <br/>&#160;<br/>Please load an image first to proceed.",
+      "de": "Es ist noch kein Bild geladen, das verschickt werden könnte.<br/>&#160;<br/>Bitte lade zuerst ein Bild."
+    }
+  },
+  {
+    "id": "wrongImageFormat",
+    "lang": {
+      "en": "This doesn't appear to be an image file.<br/>&#160;<br/>Valid formats are e.g. jpg or png.",
+      "de": "Diese Datei scheint kein Bild zu sein.<br/>&#160;<br/>Gültige Formate sind z.B. jpg, png."
+    }
   }
 ]

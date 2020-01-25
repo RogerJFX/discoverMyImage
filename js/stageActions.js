@@ -21,11 +21,15 @@ window.$disc = window.$disc || {};
             tiles.forEach(tile => {
                 stage.appendChild(tile.toNode());
             })
-        }); //.catch(err => console.error(err));
+        }).catch(() => {
+            $disc.lang.getTranslation('wrongImageFormat').then(t => {
+                $disc.menuHandler.alert(t);
+            }).catch(err => $disc.menuHandler.alert(`No translation for "${err}"`));
+        });
     };
 
-    self.upload = () => {
-        window.$disc.xhrHandler.uploadImage(window.$disc.xhrHandler.createBean(originalImage.src, 'roger@crazything.de'));
+    self.getCurrentImage = () => {
+      return originalImage;
     };
 
     self.init = (_stage) => {

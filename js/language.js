@@ -26,6 +26,28 @@ window.$disc = window.$disc || {};
         })
     };
 
+    self.getTranslation = (id) => {
+        const lang = props ? currLang : supported[0];
+        return new Promise((resolve, reject) => {
+            function findTranslation() {
+                const entry = props.find(p => p.id === id);
+                if(entry) {
+                    resolve(entry.lang[lang]);
+                } else {
+                    reject('No translation found');
+                }
+            }
+            if(props) {
+                findTranslation();
+            } else {
+                $disc.xhrHandler.loadJsonProperties($disc.constants.LANGUAGE_URL).then(obj => {
+                    props = obj;
+                    findTranslation();
+                })
+            }
+        });
+    };
+
     function callObservers(props, lang) {
         props.forEach(prop => {
             const candidate = document.getElementById(prop.id);

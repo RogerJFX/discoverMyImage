@@ -112,7 +112,7 @@ window.$disc = window.$disc || {};
     }
 
     function setTileStyle(image) {
-        const styleContainer = document.body.getElementsByTagName('stylecontainer')[0];
+        const styleContainer = document.body.getElementsByTagName('dynStylecontainer')[0];
         const styleElement = document.createElement('STYLE');
         styleElement.innerHTML += `\n.tile {
             background-image: URL(${image.src});

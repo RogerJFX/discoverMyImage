@@ -1,19 +1,19 @@
 window.$disc = window.$disc || {};
 (function XhrHandler(self) {
 
-    const STORE_URL = '../discCgi/store.php';
-    const GET_URL = '../discCgi/get.php';
-
-    function EnterpriseBean(imgSrc, email) {
+    function EnterpriseBean(imgSrc, myName, herName, email) {
         this.imgSrc = imgSrc;
         this.email = email;
+        this.myName = myName;
+        this.herName = herName;
     }
 
-    self.createBean = (imgSrc, email) => {
-        return new EnterpriseBean(imgSrc, email);
+    self.createBean = (imgSrc, myName, herName, email) => {
+        return new EnterpriseBean(imgSrc, myName, herName, email);
     };
 
     self.uploadImage = (bean) => {
+        const STORE_URL = $disc.constants.IMAGE_STORE_URL;
         const xhr = new XMLHttpRequest();
         xhr.open('POST', STORE_URL, true);
         xhr.setRequestHeader('Content-Type', 'application/json')
@@ -27,6 +27,7 @@ window.$disc = window.$disc || {};
     };
 
     self.getImage = (uuid) => {
+        const GET_URL = $disc.constants.IMAGE_GET_URL;
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.open('GET', `${GET_URL}?uuid=${uuid}`, true);
