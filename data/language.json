@@ -42,6 +42,20 @@
     }
   },
   {
+    "id": "storeGameButton",
+    "lang": {
+      "en": "Store current task",
+      "de": "Diese Aufgabe speichern"
+    }
+  },
+  {
+    "id": "changeSettingsButton",
+    "lang": {
+      "en": "Change settings",
+      "de": "Einstellungen ändern"
+    }
+  },
+  {
     "id": "dropImageZone",
     "lang": {
       "en": "Drop an image file here",

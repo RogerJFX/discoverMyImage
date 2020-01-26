@@ -43,6 +43,10 @@ window.$disc = window.$disc || {};
             if(omitted) {
                 htmlElement.style.display = 'none';
             }
+            const identDiv = document.createElement('DIV');
+            identDiv.addClass('tile-ident');
+            identDiv.innerHTML = `${String.fromCharCode(65 + oX)}${oY + 1}`; //String.fromCharCode(65);
+            htmlElement.appendChild(identDiv);
             htmlElement.onclick = tryMove;
             return htmlElement;
         };
@@ -62,6 +66,10 @@ window.$disc = window.$disc || {};
         this.getCoords = () => {
             return [xPos, yPos];
         };
+
+        this.getDimensions = () => {
+            return [tileWidth, tileHeight];
+        }
     }
 
     function checkReady() {

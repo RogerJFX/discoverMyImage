@@ -6,7 +6,7 @@ window.$disc = window.$disc || {};
     const supported = ['en', 'de'];
 
     self.getCurrLang = () => {
-        return currLang;
+        return supported.includes(currLang) ? currLang : supported[0];
     };
 
     self.switchLanguage = (lang) => {

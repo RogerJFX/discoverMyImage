@@ -1,15 +1,16 @@
 window.$disc = window.$disc || {};
 (function XhrHandler(self) {
 
-    function EnterpriseBean(imgSrc, myName, herName, email) {
+    function EnterpriseBean(imgSrc, myName, herName, email, lang) {
         this.imgSrc = imgSrc;
         this.email = email;
         this.myName = myName;
         this.herName = herName;
+        this.lang = lang;
     }
 
     self.createBean = (imgSrc, myName, herName, email) => {
-        return new EnterpriseBean(imgSrc, myName, herName, email);
+        return new EnterpriseBean(imgSrc, myName, herName, email, $disc.lang.getCurrLang());
     };
 
     self.uploadImage = (bean) => {

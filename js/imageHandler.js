@@ -49,7 +49,7 @@ window.$disc = window.$disc || {};
     };
 
     self.simpleDarken = (imageData, f) => {
-        const factor = f || .23;
+        const factor = f || .33;
         for (let i = 0; i < imageData.width * imageData.height * 4; i += 4) {
             imageData.data[i] = Math.round(imageData.data[i] * factor);
             imageData.data[i + 1] = Math.round(imageData.data[i + 1] * factor);
@@ -57,10 +57,20 @@ window.$disc = window.$disc || {};
         }
     };
 
-    self.convert2BW = (imageData) => {
+    self.convert2BWAverage = (imageData) => {
         for (let i = 0; i < imageData.width * imageData.height * 4; i += 4) {
             const all = imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2];
             const rgb = Math.round(all / 3);
+            imageData.data[i] = rgb;
+            imageData.data[i + 1] = rgb;
+            imageData.data[i + 2] = rgb;
+        }
+    };
+
+    self.convert2BW /*Lightness*/ = (imageData) => {
+        for (let i = 0; i < imageData.width * imageData.height * 4; i += 4) {
+            const rgb = (Math.min(imageData.data[i], imageData.data[i + 1], imageData.data[i + 2]) +
+                Math.max(imageData.data[i], imageData.data[i + 1], imageData.data[i + 2])) / 2;
             imageData.data[i] = rgb;
             imageData.data[i + 1] = rgb;
             imageData.data[i + 2] = rgb;

@@ -92,7 +92,7 @@ window.$disc = window.$disc || {};
                 button.innerHTML = item.description[lang];
                 button.onclick = () => {
                     $disc.stageActions.processFile($disc.xhrHandler
-                        .simpleLoadImage($disc.constants.EXAMPLES_FOLDER_URL + item.filename));
+                        .simpleLoadImage($disc.constants.EXAMPLES_FOLDER_URL + item.filename), $disc.settingsHandler.getTileSettings());
                     onClickFn();
                 };
                 node.appendChild(button);

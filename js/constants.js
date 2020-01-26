@@ -26,8 +26,8 @@ window.$disc = window.$disc || {};
     self.IMAGE_STORE_URL = '../discCgi/store.php';
     self.IMAGE_GET_URL = '../discCgi/get.php';
 
-    self.EXAMPLE_LIST_URL = './examples.json';
-    self.LANGUAGE_URL = './language.json';
+    self.EXAMPLE_LIST_URL = './data/examples.json';
+    self.LANGUAGE_URL = './data/language.json';
     self.EXAMPLES_FOLDER_URL = './img/examples/';
 
     self.MAX_IMAGE_WIDTH = 1000;

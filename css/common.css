@@ -20,20 +20,59 @@ body, html,* {
     margin: 10px 5px 0 0;
 }
 
-#stage {
+#outerStage {
     position:relative;
-    background-repeat: no-repeat;
     margin: 38px auto;
+}
+
+#stage {
+    position:absolute;
+    left: 24px;
+    background-repeat: no-repeat;
     border-radius: 16px;
 }
+
+.board-letter {
+    position: absolute;
+    color: white;
+    text-align: center;
+    height:24px;
+    bottom: 0;
+    padding:4px;
+}
+
+.board-num {
+    position: absolute;
+    color: white;
+    width:24px;
+    left: 0;
+    padding:4px;
+    display:flex;
+    align-items:center;
+}
+
 
 .tile {
     position:absolute;
     border: 2px solid #888;
     border-bottom-color: #666;
     border-right-color: #666;
-
     border-radius: 16px;
+}
+
+.tile-ident {
+    position:absolute;
+    display: inline-block;
+    background: radial-gradient(#333333, #cccccc);
+    color:white;
+    bottom: 4px;
+    right: 4px;
+    font-size:10pt;
+    width: 22px;
+    height: 22px;
+    padding: 3px 0;
+    text-align: center;
+    border-radius: 11px;
 }
 
 .modalLayer {

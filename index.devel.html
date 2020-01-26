@@ -6,6 +6,7 @@
 	<title>Discover My Image</title>
     <link rel="stylesheet" href="css/common.css">
 	<script src="js/constants.js"></script>
+	<script src="js/storage.js"></script>
 	<script src="js/tileManager.js"></script>
 	<script src="js/imageHandler.js"></script>
 	<script src="js/animator.js"></script>
@@ -13,6 +14,7 @@
 	<script src="js/menuHandler.js"></script>
 	<script src="js/stageActions.js"></script>
 	<script src="js/language.js"></script>
+	<script src="js/settingsHandler.js"></script>
 	<script>
 		window.addEventListener('load', () => {
 
@@ -21,7 +23,7 @@
 			const langCapture = location.href.match(/lang=(.*?)(&|$)/i);
 			const lang = langCapture ? langCapture[1] : 'en';
 
-			$disc.stageActions.init(document.getElementById('stage'));
+			$disc.stageActions.init(document.getElementById('stage'), document.getElementById('outerStage'));
 
 			if(uuid) {
 				$disc.stageActions.processFile(window.$disc.xhrHandler.getImage(uuid).then(bean => {
@@ -32,12 +34,12 @@
 							resolve(img);
 						};
 					})
-				}));
+				}), $disc.settingsHandler.getTileSettings());
 			}
 
 			function handleFileSelect(evt) {
 				window.$disc.menuHandler.handleMenuClick([], ['selectModal', 'modalLayer']);
-				$disc.stageActions.processFile(window.$disc.imageHandler.getFile(evt));
+				$disc.stageActions.processFile(window.$disc.imageHandler.getFile(evt), $disc.settingsHandler.getTileSettings());
 			}
 
 			function handleDragOver(evt) {
@@ -71,6 +73,8 @@
 			<button id="exampleImageSelect" onclick="$mH.handleMenuClick(['exampleModal'], ['mainMenu']);$mH.listExampleImages('exampleModal',() => {$mH.handleMenuClick([], ['exampleModal','modalLayer']);});"></button>
 			<button id="ownImageSelect" onclick="$mH.handleMenuClick(['selectModal'], ['mainMenu']);"></button>
 			<button id="uploadMenuButton" onclick="if($mH.checkImageLoaded()){$mH.handleMenuClick(['uploadModal'], ['mainMenu']);}"></button>
+			<button id="storeGameButton" onclick="if($mH.checkImageLoaded()){$mH.handleMenuClick(['uploadModal'], ['mainMenu']);}"></button>
+			<button id="changeSettingsButton" onclick="if($mH.checkImageLoaded()){$mH.handleMenuClick(['uploadModal'], ['mainMenu']);}"></button>
 		</div>
 		<div class="innerModal" id="languageModal">
 			<div style="float:right">
@@ -112,6 +116,7 @@
 			<div>&#160;</div>
 			<button id="uploadButton" onclick="$mH.upload({myName: 'sendMyName', hisName: 'sendHisName', mailTo: 'sendToEmail'});"></button>
 		</div>
+
 	</div>
 	<div class="modalLayer alertModalLayer" id="alertModalLayer">
 		<div class="innerModal commonAlertModal" id="commonAlertModal">
@@ -130,7 +135,9 @@
 		</div>
 		<div style="text-align:right;padding:2px 22px;"><img alt="logo" src="img/assets/logo.png" height="70" /></div>
 	</div>
+	<div id="outerStage">
+		<div id="stage"></div>
+	</div>
 
-	<div id="stage"></div>
 </body>
 </html>
