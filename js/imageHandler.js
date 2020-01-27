@@ -41,19 +41,12 @@ window.$disc = window.$disc || {};
         return result;
     }
 
-    self.increaseTransparency = (imageData, f) => {
-        const factor = f || .5;
-        for (let i = 0; i < imageData.width * imageData.height * 4; i += 4) {
-            imageData.data[i + 3] = Math.round(imageData.data[i + 3] * factor);
-        }
-    };
-
-    self.simpleDarken = (imageData, f) => {
+    self.simpleDarken = ({data, height, width}, f) => {
         const factor = f || .33;
-        for (let i = 0; i < imageData.width * imageData.height * 4; i += 4) {
-            imageData.data[i] = Math.round(imageData.data[i] * factor);
-            imageData.data[i + 1] = Math.round(imageData.data[i + 1] * factor);
-            imageData.data[i + 2] = Math.round(imageData.data[i + 2] * factor);
+        for (let i = 0; i < width * height * 4; i += 4) {
+            data[i] = Math.round(data[i] * factor);
+            data[i + 1] = Math.round(data[i + 1] * factor);
+            data[i + 2] = Math.round(data[i + 2] * factor);
         }
     };
 
@@ -95,6 +88,15 @@ window.$disc = window.$disc || {};
         });
     };
 
+    self.downloadToDisk = (base64) => {
+        const link = document.createElement('A');
+        const fileName = 'img' + new Date().getTime() + '.jpg';
+        link.setAttribute("href", base64);
+        link.setAttribute("download", fileName);
+        link.click();
+        return fileName;
+    };
+
     self.getFile = (evt) => {
         evt.stopPropagation();
         evt.preventDefault();
@@ -110,6 +112,7 @@ window.$disc = window.$disc || {};
                     result.src = evt.target.result + '';
                     result.onload = () => {
                         self.resizeImage(result).then(image => {
+                            $disc.storage.setLastLoadedImage(image.src);
                             resolve(image);
                         }).catch(err => console.log(err));
                     };
@@ -122,4 +125,3 @@ window.$disc = window.$disc || {};
     }
 
 })(window.$disc.imageHandler = window.$disc.imageHandler || {});
-

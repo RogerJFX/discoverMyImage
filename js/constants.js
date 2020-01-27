@@ -19,9 +19,6 @@ window.$disc = window.$disc || {};
     Element.prototype.hasClass = Element.prototype.hasClass || function (clazz) {
         return this.getAttribute('class') && this.getAttribute('class').split(' ').find(item => item === clazz) === clazz;
     };
-    // discover-my-image.com
-    //
-    // discovermy.photos
 
     self.IMAGE_STORE_URL = '../discCgi/store.php';
     self.IMAGE_GET_URL = '../discCgi/get.php';
@@ -30,8 +27,8 @@ window.$disc = window.$disc || {};
     self.LANGUAGE_URL = './data/language.json';
     self.EXAMPLES_FOLDER_URL = './img/examples/';
 
-    self.MAX_IMAGE_WIDTH = 1000;
-    self.MAX_IMAGE_HEIGHT = 800;
+    self.MAX_IMAGE_WIDTH = 840;
+    self.MAX_IMAGE_HEIGHT = 720;
 
     self.DOUBLE_CLICK_TIMEOUT = 500;
     self.AUTO_PLAY_TIMEOUT = 250;

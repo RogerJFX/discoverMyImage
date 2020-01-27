@@ -17,11 +17,12 @@ window.$disc = window.$disc || {};
             return image;
         }).then(_ => {
             self.buildTiles(settings);
-        }).catch(() => {
-            $disc.lang.getTranslation('wrongImageFormat').then(t => {
-                $disc.menuHandler.alert(t);
-            }).catch(err => $disc.menuHandler.alert(`No translation for "${err}"`));
         });
+        // .catch(() => {
+        //     $disc.lang.getTranslation('wrongImageFormat').then(t => {
+        //         $disc.menuHandler.alert(t);
+        //     }).catch(err => $disc.menuHandler.alert(`No translation for "${err}"`));
+        // });
     };
 
     self.buildTiles = (settings) => {

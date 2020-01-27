@@ -14,7 +14,7 @@
 			const langCapture = location.href.match(/lang=(.*?)(&|$)/i);
 			const lang = langCapture ? langCapture[1] : 'en';
 
-			$disc.stageActions.init(document.getElementById('stage'));
+			$disc.stageActions.init(document.getElementById('stage'), document.getElementById('outerStage'));
 
 			if(uuid) {
 				$disc.stageActions.processFile(window.$disc.xhrHandler.getImage(uuid).then(bean => {
@@ -126,7 +126,9 @@
 	</div>
 	<div style="text-align:right;padding:2px 22px;"><img alt="logo" src="img/assets/logo.png" height="70" /></div>
 </div>
+<div id="outerStage">
+	<div id="stage"></div>
+</div>
 
-<div id="stage"></div>
 </body>
 </html>

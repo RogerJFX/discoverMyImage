@@ -30,10 +30,20 @@
 					return new Promise(resolve => {
 						const img = new Image();
 						img.src = bean.imgSrc;
+						$disc.storage.setLastLoadedImage(bean.imgSrc);
 						img.onload = () => {
 							resolve(img);
 						};
 					})
+				}), $disc.settingsHandler.getTileSettings());
+			} else {
+				const lastLoadedImage = $disc.storage.getLastLoadedImage();
+				$disc.stageActions.processFile(new Promise(resolve => {
+					const img = new Image();
+					img.src = lastLoadedImage;
+					img.onload = () => {
+						resolve(img);
+					};
 				}), $disc.settingsHandler.getTileSettings());
 			}
 

@@ -149,7 +149,7 @@ window.$disc = window.$disc || {};
 
         for (let i = 0; i < indices; i++) {
             arr.push(shuffle());
-            // arr.push(i); // Testing
+            //arr.push(i); // Testing
         }
 
         tileWidth = Math.floor(image.width / numW);
@@ -165,7 +165,8 @@ window.$disc = window.$disc || {};
                 arr[i] % numW,
                 Math.floor(arr[i] / numW) % numH));
         }
-        result[Math.floor(Math.random() * indices)].setOmitted(); // double random
+        result[indices - 1].setOmitted(); // right bottom
+        //result[Math.floor(Math.random() * indices)].setOmitted(); // double random
         tiles = result;
         fillBoard();
         return result;
