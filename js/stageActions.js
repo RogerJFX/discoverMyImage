@@ -4,30 +4,34 @@ window.$disc = window.$disc || {};
     let stage, outerStage;
     let originalImage;
 
-    self.processFile = (promise, settings) => {
+    self.processFile = (promise, settings, tileStates) => {
         const ih = window.$disc.imageHandler;
         promise.then(image => {
             originalImage = image;
             ih.modifyImage(image, [ih.convert2BW, ih.simpleDarken])
                 .then(bgImg => {
                     stage.style.backgroundImage = `URL(${bgImg.src})`;
-                    // stage.style.height = `${bgImg.height}px`;
-                    // stage.style.width = `${bgImg.width}px`;
                 });
             return image;
+        }).catch(_ => {
+            return Promise.reject('wrongImageFormat');
         }).then(_ => {
-            self.buildTiles(settings);
+            self.buildTiles(settings, tileStates ? () => window.$disc.tileManager
+                .fromStoredArray(originalImage, settings[0], settings[1], tileStates, winAction) : null);
+        }).catch(err => {
+            $disc.lang.getTranslation(err).then(t => {
+                $disc.menuHandler.alert(t);
+            }).catch(err => $disc.menuHandler.alert(`No translation for "${err}"`));
         });
-        // .catch(() => {
-        //     $disc.lang.getTranslation('wrongImageFormat').then(t => {
-        //         $disc.menuHandler.alert(t);
-        //     }).catch(err => $disc.menuHandler.alert(`No translation for "${err}"`));
-        // });
     };
 
-    self.buildTiles = (settings) => {
+    self.buildTiles = (settings, initFn) => {
+        initFn = initFn || function () {
+            return window.$disc.tileManager.buildTiles(originalImage, settings[0], settings[1], winAction);
+        };
         if(originalImage) {
-            const tiles = window.$disc.tileManager.buildTiles(originalImage, settings[0], settings[1], winAction);
+            outerStage.innerHTML = '';
+            const tiles = initFn();
             stage.innerHTML = '';
             const tD = tiles[0].getDimensions();
             const stageWidth = tD[0] * settings[0];
@@ -40,10 +44,12 @@ window.$disc = window.$disc || {};
                 stage.appendChild(tile.toNode());
             });
             createLegend(settings, tD);
+            outerStage.appendChild(stage);
         }
     };
 
     function createLegend(settings, tD) {
+
         for (let i = settings[0] - 1; i >= 0; i--) {
             const node = document.createElement('DIV');
             node.addClass('board-letter');
@@ -66,6 +72,10 @@ window.$disc = window.$disc || {};
 
     self.getCurrentImage = () => {
       return originalImage;
+    };
+
+    self.hasCurrentImage = () => {
+        return !!originalImage;
     };
 
     self.init = (_stage, _outerStage) => {

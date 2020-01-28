@@ -11,19 +11,16 @@ window.$disc = window.$disc || {};
 
     self.switchLanguage = (lang) => {
         lang = supported.includes(lang) ? lang : supported[0];
-        if(lang === currLang) {
+        if (props && lang === currLang) {
             return;
         }
         currLang = lang;
-        if(props) {
+        $disc.storage.setLanguage(lang);
+        if (props) {
             callObservers(props, lang);
-            return;
+        } else {
+            fetchLangProps((obj) => callObservers(obj, lang));
         }
-        // lazy, but not really.
-        $disc.xhrHandler.loadJsonProperties($disc.constants.LANGUAGE_URL).then(obj => {
-            props = obj;
-            callObservers(obj, lang);
-        })
     };
 
     self.getTranslation = (id) => {
@@ -31,28 +28,32 @@ window.$disc = window.$disc || {};
         return new Promise((resolve, reject) => {
             function findTranslation() {
                 const entry = props.find(p => p.id === id);
-                if(entry) {
+                if (entry) {
                     resolve(entry.lang[lang]);
                 } else {
                     reject('No translation found');
                 }
             }
-            if(props) {
+            if (props) {
                 findTranslation();
             } else {
-                $disc.xhrHandler.loadJsonProperties($disc.constants.LANGUAGE_URL).then(obj => {
-                    props = obj;
-                    findTranslation();
-                })
+                fetchLangProps(() => findTranslation());
             }
         });
     };
 
+    function fetchLangProps(cb) {
+        $disc.xhrHandler.loadJsonProperties($disc.constants.LANGUAGE_URL).then(obj => {
+            props = obj;
+            cb(obj);
+        });
+    }
+
     function callObservers(props, lang) {
         props.forEach(prop => {
             const candidate = document.getElementById(prop.id);
-            if(candidate) {
-                if(candidate.getAttribute('placeholder')) {
+            if (candidate) {
+                if (candidate.getAttribute('placeholder')) {
                     candidate.setAttribute('placeholder', prop.lang[lang]);
                 } else {
                     candidate.innerHTML = prop.lang[lang];

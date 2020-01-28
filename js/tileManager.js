@@ -5,7 +5,7 @@ window.$disc = window.$disc || {};
     let tileWidth;
     let tileHeight;
     let tiles;
-    let numW, numH;
+    // let numW, numH;
     let board = [];
     let locked = false;
     let winningAction;
@@ -67,6 +67,16 @@ window.$disc = window.$disc || {};
             return [xPos, yPos];
         };
 
+        this.serialize = () => {
+            return {
+                xPos: xPos,
+                yPos: yPos,
+                oX: oX,
+                oY: oY,
+                omitted: omitted
+            }
+        };
+
         this.getDimensions = () => {
             return [tileWidth, tileHeight];
         }
@@ -80,7 +90,7 @@ window.$disc = window.$disc || {};
         }
     }
 
-    function prefillBoard() {
+    function prefillBoard(numH, numW) {
         board = [];
         for (let i = 0; i < numH; i++) {
             board.push([]);
@@ -131,11 +141,39 @@ window.$disc = window.$disc || {};
         styleContainer.appendChild(styleElement);
     }
 
-    self.buildTiles = (image, _numW, _numH, winAction) => {
+    function commonIssues(image, numW, numH, winAction) {
         winningAction = winAction;
-        numW = _numW;
-        numH = _numH;
-        prefillBoard();
+        prefillBoard(numH, numW);
+        tileWidth = Math.floor(image.width / numW);
+        tileHeight = Math.floor(image.height / numH);
+        setTileStyle(image);
+    }
+
+    self.getCurrentTilesState = () => {
+        return tiles.map(tile => tile.serialize());
+    };
+
+    self.fromStoredArray = (image, numW, numH, stored, winAction) => {
+        commonIssues(image, numW, numH, winAction);
+
+        const result = [];
+        for (let i = 0; i < stored.length; i++) {
+            result.push(new Tile(
+                stored[i].oX,
+                stored[i].oY,
+                stored[i].xPos,
+                stored[i].yPos));
+            if(stored[i].omitted) {
+                result[i].setOmitted();
+            }
+        }
+        tiles = result;
+        fillBoard();
+        return result;
+    };
+
+    self.buildTiles = (image, numW, numH, winAction) => {
+        commonIssues(image, numW, numH, winAction);
         const indices = numW * numH;
         const arr = [];
 
@@ -151,11 +189,6 @@ window.$disc = window.$disc || {};
             arr.push(shuffle());
             //arr.push(i); // Testing
         }
-
-        tileWidth = Math.floor(image.width / numW);
-        tileHeight = Math.floor(image.height / numH);
-
-        setTileStyle(image);
 
         const result = [];
         for (let i = 0; i < indices; i++) {

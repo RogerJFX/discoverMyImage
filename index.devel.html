@@ -21,7 +21,9 @@
 			const uuidCapture = location.href.match(/uuid=(.*?)(&|$)/i);
 			const uuid = uuidCapture ? uuidCapture[1] : null;
 			const langCapture = location.href.match(/lang=(.*?)(&|$)/i);
-			const lang = langCapture ? langCapture[1] : 'en';
+
+			const myLanguage = $disc.storage.getLanguage();
+			const lang = myLanguage ? myLanguage : langCapture ? langCapture[1] : 'en';
 
 			$disc.stageActions.init(document.getElementById('stage'), document.getElementById('outerStage'));
 
@@ -38,13 +40,15 @@
 				}), $disc.settingsHandler.getTileSettings());
 			} else {
 				const lastLoadedImage = $disc.storage.getLastLoadedImage();
-				$disc.stageActions.processFile(new Promise(resolve => {
-					const img = new Image();
-					img.src = lastLoadedImage;
-					img.onload = () => {
-						resolve(img);
-					};
-				}), $disc.settingsHandler.getTileSettings());
+				if(lastLoadedImage) {
+					$disc.stageActions.processFile(new Promise(resolve => {
+						const img = new Image();
+						img.src = lastLoadedImage;
+						img.onload = () => {
+							resolve(img);
+						};
+					}), $disc.settingsHandler.getTileSettings());
+				}
 			}
 
 			function handleFileSelect(evt) {
@@ -68,6 +72,14 @@
 
 		const $mH = window.$disc.menuHandler;
 
+		function toggleShowButtons() {
+			$mH.toggleShowButton('storeGameButton', $mH.hasCurrentImage);
+			$mH.toggleShowButton('uploadMenuButton', $mH.hasCurrentImage);
+			$mH.toggleShowButton('changeSettingsButton', $mH.hasCurrentImage);
+			$mH.toggleShowButton('loadGameButton', $mH.hasCurrentTask);
+
+		}
+
 	</script>
 </head>
 <body>
@@ -83,8 +95,9 @@
 			<button id="exampleImageSelect" onclick="$mH.handleMenuClick(['exampleModal'], ['mainMenu']);$mH.listExampleImages('exampleModal',() => {$mH.handleMenuClick([], ['exampleModal','modalLayer']);});"></button>
 			<button id="ownImageSelect" onclick="$mH.handleMenuClick(['selectModal'], ['mainMenu']);"></button>
 			<button id="uploadMenuButton" onclick="if($mH.checkImageLoaded()){$mH.handleMenuClick(['uploadModal'], ['mainMenu']);}"></button>
-			<button id="storeGameButton" onclick="if($mH.checkImageLoaded()){$mH.handleMenuClick(['uploadModal'], ['mainMenu']);}"></button>
-			<button id="changeSettingsButton" onclick="if($mH.checkImageLoaded()){$mH.handleMenuClick(['uploadModal'], ['mainMenu']);}"></button>
+			<button id="storeGameButton" onclick="if($mH.saveCurrentTask()){$mH.handleMenuClick([], ['mainMenu', 'modalLayer']);}"></button>
+			<button id="loadGameButton" onclick="$mH.loadCurrentTask();$mH.handleMenuClick([], ['mainMenu', 'modalLayer']);"></button>
+			<button id="changeSettingsButton" onclick="$mH.handleMenuClick(['settingsModal'], ['mainMenu']);"></button>
 		</div>
 		<div class="innerModal" id="languageModal">
 			<div style="float:right">
@@ -114,6 +127,16 @@
 				<span id="selectImgFile"></span>
 			</label>
 		</div>
+		<div class="innerModal" id="settingsModal">
+			<div style="float:right">
+				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['settingsModal']);">
+					<div></div>
+				</div>
+			</div><div style="clear: both"></div>
+			<button id="settingThree" onclick="$mH.setSettings(3);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer']);">3 x 3</button>
+			<button id="settingFour" onclick="$mH.setSettings(4);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer']);">4 x 4</button>
+			<button id="settingFive" onclick="$mH.setSettings(5);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer']);">5 x 5</button>
+		</div>
 		<div class="innerModal" id="uploadModal">
 			<div style="float:right">
 				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['uploadModal']);">
@@ -140,7 +163,7 @@
 	</div>
 
 	<div class="header">
-		<div class="nav-icon" style="float:left;" onclick="$mH.handleMenuClick(['mainMenu','modalLayer'], []);">
+		<div class="nav-icon" style="float:left;" onclick="toggleShowButtons();$mH.handleMenuClick(['mainMenu','modalLayer'], []);">
 			<div></div>
 		</div>
 		<div style="text-align:right;padding:2px 22px;"><img alt="logo" src="img/assets/logo.png" height="70" /></div>

@@ -4,8 +4,8 @@ window.$disc = window.$disc || {};
     let exampleImageList;
 
     const formValidationRx = {
-        myName: /^[A-Za-zÀ-ž\u0370-\u03FF\u0400-\u04FF]{2,32}$/,
-        hisName: /^[A-Za-zÀ-ž\u0370-\u03FF\u0400-\u04FF]{2,32}$/,
+        myName: /^[A-Za-zÀ-ž\u0370-\u03FF\u0400-\u04FF -]{2,32}$/,
+        hisName: /^[A-Za-zÀ-ž\u0370-\u03FF\u0400-\u04FF -]{2,32}$/,
         mailTo: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,4})+$/
     };
 
@@ -39,6 +39,33 @@ window.$disc = window.$disc || {};
         return ok;
     }
 
+    self.setSettings = (wh) => {
+        $disc.settingsHandler.setSettings(wh);
+        $disc.stageActions.buildTiles([wh, wh]);
+    };
+
+    self.saveCurrentTask = () => {
+        const image = $disc.stageActions.getCurrentImage();
+        if(image) {
+            const tileStates = $disc.tileManager.getCurrentTilesState();
+            const settings = $disc.settingsHandler.getTileSettings();
+            $disc.storage.saveCurrentTask(image, tileStates, settings);
+            return true;
+        }
+        return false;
+    };
+
+    self.loadCurrentTask = () => {
+        const task = $disc.storage.getCurrentTask();
+        if(task) {
+            $disc.stageActions.processFile(new Promise(resolve => {
+                const image = new Image();
+                image.src = task.image;
+                image.onload = () => resolve(image);
+            }), task.settings, task.tileStates);
+        }
+    };
+
     self.checkImageLoaded = () => {
         if(!$disc.stageActions.getCurrentImage()) {
             $disc.lang.getTranslation('noImageLoaded')
@@ -47,6 +74,14 @@ window.$disc = window.$disc || {};
             return false;
         }
         return true;
+    };
+
+    self.hasCurrentTask = () => $disc.storage.hasCurrentTaskStored();
+
+    self.hasCurrentImage = () => $disc.stageActions.hasCurrentImage();
+
+    self.toggleShowButton = (nodeId, checkFn) => {
+        document.getElementById(nodeId).style.display = checkFn() ? 'block': 'none';
     };
 
     self.alert = (message) => {
@@ -68,13 +103,15 @@ window.$disc = window.$disc || {};
         const imageToSend = $disc.stageActions.getCurrentImage();
         if(imageToSend) {
             window.$disc.xhrHandler.uploadImage(window.$disc.xhrHandler.createBean(imageToSend.src, myNameNode.value, hisNameNode.value, mailNode.value));
+            hisNameNode.value = '';
+            mailNode.value = '';
         }
     };
 
     self.listExampleImages = (nodeId, onClickFn) => {
         const lang = $disc.lang.getCurrLang();
         const node = document.getElementById(nodeId);
-        const presentButtons = node.getElementsByTagName('BUTTON');
+        // const presentButtons = node.getElementsByTagName('BUTTON');
         if(exampleImageList) {
             exampleImageList.forEach(item => {
                 const node = document.getElementById(`exampleImageButton${item.index}`);

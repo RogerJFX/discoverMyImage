@@ -49,6 +49,13 @@
     }
   },
   {
+    "id": "loadGameButton",
+    "lang": {
+      "en": "Load current task",
+      "de": "Letzte Aufgabe laden"
+    }
+  },
+  {
     "id": "changeSettingsButton",
     "lang": {
       "en": "Change settings",

@@ -1,20 +1,23 @@
 window.$disc = window.$disc || {};
 (function SettingsHandler(self) {
 
-    const supported = [3, 4, 5];
+    //const supported = [3, 4, 5];
 
-    let currSettings = [3, 3];
+    let currSettings = [4, 4];
 
     self.getSettings = () => {
-        return currSettings;
+        const storedSetting = $disc.storage.getSettings();
+        return storedSetting ? [storedSetting.wh, storedSetting.wh] : currSettings;
     };
 
     self.getTileSettings = () => {
-        return currSettings
+        const storedSetting = $disc.storage.getSettings();
+        return storedSetting ? [storedSetting.wh, storedSetting.wh] : currSettings;
     };
 
-    self.setSettings = (settings) => {
-        currSettings = settings;
+    self.setSettings = (wh) => {
+        $disc.storage.setSettings(wh);
+        currSettings = [wh, wh];
     };
 
 })(window.$disc.settingsHandler = window.$disc.settingsHandler || {});

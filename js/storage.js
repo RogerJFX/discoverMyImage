@@ -5,6 +5,9 @@ window.$disc = window.$disc || {};
 
     const KEY_LAST_LOADED = '__last_loaded__';
     const KEY_SETTINGS = '__settings__';
+    const KEY_LANG = '__lang__';
+    const KEY_CURRENT_TASK = '__task__';
+    const KEY_CURRENT_IMAGE = '__task_img__';
 
     // MAX 5 tasks
     function createTask (imageData, sender, storeDate, settings, tilePositions) {
@@ -41,6 +44,35 @@ window.$disc = window.$disc || {};
         return storage.getItem(KEY_LAST_LOADED);
     };
 
+    self.setLanguage = (language) => {
+        storage.setItem(KEY_LANG, language);
+    };
 
+    self.getLanguage = () => {
+        return storage.getItem(KEY_LANG);
+    };
+
+    self.saveCurrentTask = (image, tileStates, settings) => {
+        storage.setItem(KEY_CURRENT_IMAGE, image.src);
+        storage.setItem(KEY_CURRENT_TASK, JSON.stringify({
+            tileStates: tileStates,
+            settings: settings
+        }))
+    };
+
+    self.getCurrentTask = () => {
+        const item = storage.getItem(KEY_CURRENT_TASK);
+        const image = storage.getItem(KEY_CURRENT_IMAGE);
+        if(item) {
+            const result = JSON.parse(item);
+            result.image = image;
+            return result;
+        }
+        return null;
+    };
+
+    self.hasCurrentTaskStored = () => {
+        return !!storage.getItem(KEY_CURRENT_TASK);
+    };
 
 })(window.$disc.storage = window.$disc.storage || {});
