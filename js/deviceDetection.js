@@ -12,14 +12,6 @@ window.$disc = window.$disc || {};
     const Q_TURNED = 2;
     const Q_SEALED = Q_ESTIMATION | Q_TURNED;
 
-    /*
-    1280*800
-1280*768
-1024*600
-1024*800
-960 x 540 --> half FullHd
-720 x 405 --> Some FullHd
-     */
     const DEVICES = [
         {
             name: "iPad",
