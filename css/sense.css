@@ -1,0 +1,25 @@
+div.contentContainer {
+    position: relative;
+    margin: 0 auto;
+    display: table;
+    empty-cells: hide;
+    border-collapse:separate;
+    border-spacing:12px;
+}
+
+div.myDivRow {
+    display: table-row;
+}
+
+div.myDivCell {
+    border: 2px dotted white;
+    display:table-cell;
+}
+
+div.myRight {
+    min-width: 160px;
+}
+
+div.myBottom {
+    height: 60px;
+}

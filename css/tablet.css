@@ -1,0 +1,18 @@
+/*body, html,* {*/
+/*    background: red;*/
+/*    font-family: verdana, arial, sans, sans-serif;*/
+/*    font-size:  14pt;*/
+/*    box-sizing: border-box;*/
+/*}*/
+
+@media screen and (orientation : landscape) {
+    body, html,* {
+        /*background: red;*/
+    }
+}
+
+@media screen and (orientation : portrait) {
+    body, html,* {
+        /*background: pink;*/
+    }
+}

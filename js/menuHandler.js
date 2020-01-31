@@ -84,8 +84,8 @@ window.$disc = window.$disc || {};
         document.getElementById(nodeId).style.display = checkFn() ? 'block': 'none';
     };
 
-    self.alert = (message) => {
-        return new Alert(message);
+    self.alert = (message, timeout) => {
+        return new Alert(message, timeout);
     };
 
     self.handleMenuClick = (showNodes, hideNodes) => {

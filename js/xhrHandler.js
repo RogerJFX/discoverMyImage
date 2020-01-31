@@ -14,32 +14,56 @@ window.$disc = window.$disc || {};
     };
 
     self.uploadImage = (bean) => {
-        const STORE_URL = $disc.constants.IMAGE_STORE_URL;
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', STORE_URL, true);
-        xhr.setRequestHeader('Content-Type', 'application/json')
-        xhr.onload = function(e) {
-            if (this.status === 200) {
-                console.log(this.responseText);
-            }
-        };
-
-        xhr.send(JSON.stringify(bean));
+        $disc.settingsHandler.getSoftSettings().then(settings => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('PUT', `${settings['imageServer']}${settings['storeURL']}`, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            const mH = $disc.menuHandler;
+            xhr.onload = function(e) {
+                if (this.status === 200) {
+                    $disc.lang.getTranslation('sendSuccess').then(t => mH.alert(t, 2000));
+                } else {
+                    switch (this.status) {
+                        case 400:
+                            $disc.lang.getTranslation('errorBadRequest').then(t => mH.alert(t));
+                            break;
+                        case 403:
+                        default:
+                            $disc.lang.getTranslation('errorForbidden').then(t => mH.alert(t));
+                            break;
+                    }
+                }
+            };
+            xhr.send(JSON.stringify(bean));
+        });
     };
 
     self.getImage = (uuid) => {
-        const GET_URL = $disc.constants.IMAGE_GET_URL;
+        //const GET_URL = $disc.constants.IMAGE_GET_URL;
         return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', `${GET_URL}?uuid=${uuid}`, true);
-            xhr.onload = function(e) {
-                if (this.status === 200) {
-                    resolve(JSON.parse(this.responseText));
-                } else {
-                    reject(this.status);
-                }
-            };
-            xhr.send();
+            $disc.settingsHandler.getSoftSettings().then(settings => {
+                const xhr = new XMLHttpRequest();
+                const URL = settings['getURL'].replace('__UUID__', uuid);
+                xhr.open('GET', `${settings['imageServer']}${URL}`, true);
+                xhr.onload = function(e) {
+                    if (this.status === 200) {
+                        resolve(JSON.parse(this.responseText));
+                    } else {
+                        reject(this.status);
+                    }
+                };
+                xhr.send();
+            }).catch(_ => reject(500));
+            // const xhr = new XMLHttpRequest();
+            // xhr.open('GET', `${GET_URL}?uuid=${uuid}`, true);
+            // xhr.onload = function(e) {
+            //     if (this.status === 200) {
+            //         resolve(JSON.parse(this.responseText));
+            //     } else {
+            //         reject(this.status);
+            //     }
+            // };
+            // xhr.send();
         });
     };
 

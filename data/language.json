@@ -117,5 +117,26 @@
       "en": "This doesn't appear to be an image file.<br/>&#160;<br/>Valid formats are e.g. jpg or png.",
       "de": "Diese Datei scheint kein Bild zu sein.<br/>&#160;<br/>Gültige Formate sind z.B. jpg, png."
     }
+  },
+  {
+    "id": "errorBadRequest",
+    "lang": {
+      "en": "We are sorry this did not work.<br/>&#160;<br/>Somehow the server does not accept your data.",
+      "de": "Tut uns leid, das hat nicht geklappt.<br/>&#160;<br/>Irgendwie wollte der Server die Daten nicht."
+    }
+  },
+  {
+    "id": "errorForbidden",
+    "lang": {
+      "en": "We are sorry this did not work.<br/>&#160;<br/>Please try again later.",
+      "de": "Tut uns leid, das hat nicht geklappt.<br/>&#160;<br/>Bitte versuche es später noch einmal."
+    }
+  },
+  {
+    "id": "sendSuccess",
+    "lang": {
+      "en": "It worked!",
+      "de": "Das hat funktioniert."
+    }
   }
 ]

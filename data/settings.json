@@ -1,0 +1,5 @@
+{
+  "imageServer": "http://148.251.6.88:9000/",
+  "storeURL": "store.php",
+  "getURL": "get.php?uuid=__UUID__"
+}

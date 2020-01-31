@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<title>Discover My Image</title>
     <link rel="stylesheet" href="css/common.css">
 	<script src="js/constants.js"></script>
@@ -15,9 +15,21 @@
 	<script src="js/stageActions.js"></script>
 	<script src="js/language.js"></script>
 	<script src="js/settingsHandler.js"></script>
+	<script src="js/deviceDetection.js"></script>
 	<script>
-		window.addEventListener('load', () => {
 
+		function resizeListener() {
+			setTimeout(() => {
+				if($disc.deviceDetection.estimate()) {
+					// if we know the device
+					window.removeEventListener('resize', resizeListener);
+				}
+			}, 88);
+		}
+
+		window.addEventListener('load', () => {
+			window.addEventListener('resize', resizeListener, false);
+			resizeListener(); // might be a first match
 			const uuidCapture = location.href.match(/uuid=(.*?)(&|$)/i);
 			const uuid = uuidCapture ? uuidCapture[1] : null;
 			const langCapture = location.href.match(/lang=(.*?)(&|$)/i);
@@ -168,9 +180,20 @@
 		</div>
 		<div style="text-align:right;padding:2px 22px;"><img alt="logo" src="img/assets/logo.png" height="70" /></div>
 	</div>
-	<div id="outerStage">
-		<div id="stage"></div>
+	<div class="contentContainer">
+		<div class="myDivRow">
+			<div id="outerStage">
+				<div id="stage"></div>
+			</div>
+			<div class="myDivCell myRight">RIGHT</div>
+		</div>
+		<div class="myDivRow">
+			<div class="myDivCell myBottom">BOTTOM</div>
+			<div class="myDivCell"></div>
+		</div>
+
 	</div>
+
 
 </body>
 </html>

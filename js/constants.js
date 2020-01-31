@@ -25,6 +25,7 @@ window.$disc = window.$disc || {};
 
     self.EXAMPLE_LIST_URL = './data/examples.json';
     self.LANGUAGE_URL = './data/language.json';
+    self.SETTINGS_URL = './data/settings.json';
     self.EXAMPLES_FOLDER_URL = './img/examples/';
 
     self.MAX_IMAGE_WIDTH = 840;
