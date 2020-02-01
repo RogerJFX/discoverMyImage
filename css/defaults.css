@@ -3,18 +3,11 @@ body, html,* {
     font-family: verdana, arial, sans, sans-serif;
     font-size:  14pt;
     box-sizing: border-box;
+    /*background: #336688;*/
 
 }
-html {
-    background: #257;
-}
 body {
-    /*margin: 0;*/
-    margin: 24px auto;
-    background: #368;
-    border: 2px solid #37698F;
-    border-radius: 16px;
-    max-width: 1200px;
+    background: #336688;
 }
 #dropImageZone {
     border: 2px dashed #fff;
@@ -110,11 +103,16 @@ body {
     width: 96%;
     max-width: 600px;
     border: 1px solid white;
+    background: #336688;
     border-radius: 5px;
     padding: 12px 24px;
     z-index: 120;
     display:none;
     color: white;
+}
+
+.innerModal * {
+    background: #336688;
 }
 
 .commonAlertModal {

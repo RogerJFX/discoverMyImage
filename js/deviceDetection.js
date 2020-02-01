@@ -1,7 +1,7 @@
 window.$disc = window.$disc || {};
 (function DeviceDetection(self) {
 
-    let foundDevice;
+    let foundDevice = null;
 
     let estimationQuality = 0;
 
@@ -91,6 +91,7 @@ window.$disc = window.$disc || {};
             }
         } else {
             console.log('No device found, should be a desktop');
+            foundDevice = null;
             estimationQuality |= Q_SEALED;
             return true;
         }

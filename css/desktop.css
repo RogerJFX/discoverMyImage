@@ -1,6 +1,12 @@
-/*body, html,* {*/
-/*    background: green;*/
-/*    font-family: verdana, arial, sans, sans-serif;*/
-/*    font-size:  14pt;*/
-/*    box-sizing: border-box;*/
-/*}*/
+html {
+    background: #257;
+}
+
+body {
+    /*margin: 0;*/
+    margin: 24px auto;
+    background: #368;
+    border: 2px solid #37698F;
+    border-radius: 16px;
+    max-width: 1200px;
+}

@@ -2,10 +2,54 @@ window.$disc = window.$disc || {};
 
 (function ImageHandler(self) {
 
-    self.resizeImage = (image) => {
+    const ROTA_0 = 1;
+    const ROTA_90 = 8;
+    const ROTA_180 = 3;
+    const ROTA_270 = 6;
+
+    const ROTA_0_FLIPPED = 2; // Spiegelverkehrt und dann gedreht
+    const ROTA_90_FLIPPED = 7;
+    const ROTA_180_FLIPPED = 4;
+    const ROTA_270_FLIPPED = 5;
+
+    function rotateImage(image, orientation) {
+        return new Promise((resolve) => {
+            if(!orientation || orientation === ROTA_0 || orientation === ROTA_0_FLIPPED || orientation < 0 /*No jpeg or not defined*/) {
+                resolve(image);
+            } else {
+                const canvas = orientation === ROTA_90 || orientation === ROTA_270 || orientation === ROTA_90_FLIPPED || orientation === ROTA_270_FLIPPED ?
+                    createCanvas(image.height, image.width) :
+                    createCanvas(image.width, image.height);
+                const ctx = canvas.getContext('2d');
+                switch (orientation) {
+                    case ROTA_180:
+                    case ROTA_180_FLIPPED:
+                        ctx.rotate(Math.PI);
+                        ctx.translate(-canvas.width, -canvas.height);
+                        break;
+                    case ROTA_90: // 8
+                    case ROTA_270_FLIPPED:
+                        ctx.rotate(Math.PI * 3 / 2);
+                        ctx.translate(-image.width, 0);
+                        break;
+                    case ROTA_270: // 6
+                    case ROTA_90_FLIPPED:
+                        ctx.rotate(Math.PI / 2);
+                        ctx.translate(0, -canvas.width);
+                        break;
+                }
+                ctx.drawImage(image, 0, 0, image.width, image.height);
+                const result = new Image();
+                result.src = canvas.toDataURL("image/jpeg");
+                result.onload = () => resolve(result);
+            }
+        })
+    }
+    self.resizeImage = (image, orientation) => {
         const MAX_HEIGHT = window.$disc.constants.MAX_IMAGE_HEIGHT;
         const MAX_WIDTH = window.$disc.constants.MAX_IMAGE_WIDTH;
         function doResize(width, height) {
+            console.log('resizing to ', width, height);
             const canvas = createCanvas(width, height);
             const ctx = canvas.getContext('2d');
             ctx.drawImage(image, 0, 0, width, height);
@@ -14,22 +58,29 @@ window.$disc = window.$disc || {};
             return result;
         }
         return new Promise(resolve => {
-            if (image.width <= MAX_WIDTH && image.height <= MAX_HEIGHT) {
+            let iW = image.width;
+            let iH = image.height;
+            if(orientation && (orientation === ROTA_90 || orientation === ROTA_270)) {
+                iW = image.height;
+                iH = image.width;
+            }
+            if (iW <= MAX_WIDTH && iH <= MAX_HEIGHT) {
                 resolve(image);
                 return;
             }
             let factor = 0;
-            if (image.width >= MAX_WIDTH) {
-                factor = image.width / MAX_WIDTH;
+            if (iW >= MAX_WIDTH) {
+                factor = iW / MAX_WIDTH;
             }
-            if (image.height >= MAX_HEIGHT) {
-                const nFactor = image.height / MAX_HEIGHT;
+            if (iH >= MAX_HEIGHT) {
+                const nFactor = iH / MAX_HEIGHT;
                 if (nFactor > factor) {
                     factor = nFactor;
                 }
             }
+            //const result = doResize(iW / factor, iH / factor);
             const result = doResize(image.width / factor, image.height / factor);
-            result.onload = () => resolve(result);
+            result.onload = () => rotateImage(result, orientation).then(r => resolve(r));
         });
 
     };
@@ -97,6 +148,50 @@ window.$disc = window.$disc || {};
         return fileName;
     };
 
+    /*
+     1: ok
+     3: Steht auf dem Kopf
+     6: 90 Grad nach links
+     8: 90 Grad nach rechts.
+     */
+    function getFileOrientation(file, callback) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const view = new DataView(e.target.result);
+            const uint8Array = view.buffer;
+            if (view.getUint16(0, false) !== 0xFFD8) {
+                return callback(uint8Array, -2);
+            }
+            const length = view.byteLength;
+            let offset = 2;
+            while (offset < length) {
+                if (view.getUint16(offset + 2, false) <= 8) return callback(-1);
+                const marker = view.getUint16(offset, false);
+                offset += 2;
+                if (marker === 0xFFE1) {
+                    if (view.getUint32(offset += 2, false) !== 0x45786966) {
+                        return callback(uint8Array, -1);
+                    }
+                    const little = view.getUint16(offset += 6, false) === 0x4949;
+                    offset += view.getUint32(offset + 4, little);
+                    const tags = view.getUint16(offset, little);
+                    offset += 2;
+                    for (let i = 0; i < tags; i++) {
+                        if (view.getUint16(offset + (i * 12), little) === 0x0112) {
+                            return callback(uint8Array, view.getUint16(offset + (i * 12) + 8, little));
+                        }
+                    }
+                } else if ((marker & 0xFF00) !== 0xFF00) {
+                    break;
+                } else {
+                    offset += view.getUint16(offset, false);
+                }
+            }
+            return callback(uint8Array, -1);
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
     self.getFile = (evt) => {
         evt.stopPropagation();
         evt.preventDefault();
@@ -106,18 +201,19 @@ window.$disc = window.$disc || {};
 
         return new Promise((resolve, reject) => {
             if (first) {
-                const reader = new FileReader();
-                reader.addEventListener('load', (evt) => {
+                getFileOrientation(first, (uint8Array, orientation) => {
+                    const blob = new Blob( [ uint8Array ], { type: "image/jpeg" } );
+                    const urlCreator = window.URL || window.webkitURL;
+                    const imageUrl = urlCreator.createObjectURL(blob);
                     const result = new Image();
-                    result.src = evt.target.result + '';
+                    result.src = imageUrl;
                     result.onload = () => {
-                        self.resizeImage(result).then(image => {
+                        self.resizeImage(result, orientation).then(image => {
                             $disc.storage.setLastLoadedImage(image.src);
                             resolve(image);
                         }).catch(err => console.log(err));
                     };
-                }, true);
-                reader.readAsDataURL(first);
+                });
             } else {
                 reject('No image');
             }

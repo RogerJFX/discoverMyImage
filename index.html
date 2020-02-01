@@ -7,8 +7,19 @@
 	<link rel="stylesheet" href="css/common.css">
 	<script src="game.min.js"></script>
 	<script>
-		window.addEventListener('load', () => {
 
+		function resizeListener() {
+			setTimeout(() => {
+				if($disc.deviceDetection.estimate()) {
+					// if we know the device
+					window.removeEventListener('resize', resizeListener);
+				}
+			}, 88);
+		}
+
+		window.addEventListener('load', () => {
+			window.addEventListener('resize', resizeListener, false);
+			resizeListener(); // might be a first match
 			const uuidCapture = location.href.match(/uuid=(.*?)(&|$)/i);
 			const uuid = uuidCapture ? uuidCapture[1] : null;
 			const langCapture = location.href.match(/lang=(.*?)(&|$)/i);
@@ -168,7 +179,7 @@
 	</div>
 	<div class="myDivRow">
 		<div class="myDivCell myBottom">BOTTOM AD</div>
-		<div class="myDivCell">GET RID OF ADS</div>
+		<div class="myDivCell"><!--GET RID OF ADS--></div>
 	</div>
 
 </div>
