@@ -1,0 +1,66 @@
+{
+  "desktopImgDim": [840, 720],
+
+  "fixedScreenDevices": [
+    {
+      "name": "iPad",
+      "dimensions": [1024, 768],
+      "imgDim": [780, 588]
+    },
+    {
+      "name": "iPadPro",
+      "dimensions": [1366, 1024],
+      "imgDim": [800, 600]
+    },
+    {
+      "name": "iPhone678",
+      "dimensions": [375, 667],
+      "imgDim": [800, 600]
+    },
+    {
+      "name": "iPhone678+",
+      "dimensions": [414, 736],
+      "imgDim": [800, 600]
+    },
+    {
+      "name": "iPhoneX",
+      "dimensions": [375, 812],
+      "imgDim": [800, 600]
+    },
+    {
+      "name": "GalaxyS5",
+      "dimensions": [360, 640],
+      "imgDim": [560, 300]
+    },
+    {
+      "name": "Some1",
+      "dimensions": [1280, 800],
+      "imgDim": [800, 600]
+    },
+    {
+      "name": "Some2",
+      "dimensions": [1280, 768],
+      "imgDim": [800, 600]
+    },
+    {
+      "name": "Some3",
+      "dimensions": [1024, 600],
+      "imgDim": [800, 600]
+    },
+    {
+      "name": "Some4",
+      "dimensions": [1024, 800],
+      "imgDim": [800, 600]
+    },
+    {
+      "name": "HalfFHD",
+      "dimensions": [960, 540],
+      "imgDim": [800, 600]
+    },
+    {
+      "name": "SomeFHD",
+      "dimensions": [720, 405],
+      "imgDim": [800, 600]
+    }
+  ]
+}

@@ -18,18 +18,20 @@
 	<script src="js/deviceDetection.js"></script>
 	<script>
 
-		function resizeListener() {
-			setTimeout(() => {
-				if($disc.deviceDetection.estimate()) {
-					// if we know the device
-					window.removeEventListener('resize', resizeListener);
-				}
-			}, 88);
+		function resizeListener(noTimeout) {
+			function estimate() {
+				$disc.deviceDetection.estimate(() => window.removeEventListener('resize', resizeListener));
+			}
+			if(noTimeout) {
+				estimate(); // we need it immediately
+			} else {
+				setTimeout(estimate, 88); // Some devices will take some time while rotating
+			}
 		}
 
 		window.addEventListener('load', () => {
-			window.addEventListener('resize', resizeListener, false);
-			resizeListener(); // might be a first match
+			window.addEventListener('resize', () => resizeListener(false), false);
+			resizeListener(true); // might be a first match
 			const uuidCapture = location.href.match(/uuid=(.*?)(&|$)/i);
 			const uuid = uuidCapture ? uuidCapture[1] : null;
 			const langCapture = location.href.match(/lang=(.*?)(&|$)/i);
@@ -64,7 +66,7 @@
 			}
 
 			function handleFileSelect(evt) {
-				window.$disc.menuHandler.handleMenuClick([], ['selectModal', 'modalLayer']);
+				window.$disc.menuHandler.handleMenuClick([], ['selectModal', 'modalLayer', 'modalBG']);
 				$disc.stageActions.processFile(window.$disc.imageHandler.getFile(evt), $disc.settingsHandler.getTileSettings());
 			}
 
@@ -96,19 +98,21 @@
 </head>
 <body>
 	<dynStylecontainer></dynStylecontainer>
+	<div class="modalBG" id="modalBG"></div>
+
 	<div class="modalLayer" id="modalLayer">
 		<div class="innerModal" id="mainMenu">
 			<div style="float:right">
-				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['mainMenu','modalLayer']);">
+				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['mainMenu','modalLayer', 'modalBG']);">
 					<div></div>
 				</div>
 			</div><div style="clear: both"></div>
 			<button id="switchLangButton" onclick="$mH.handleMenuClick(['languageModal'], ['mainMenu']);"></button>
-			<button id="exampleImageSelect" onclick="$mH.handleMenuClick(['exampleModal'], ['mainMenu']);$mH.listExampleImages('exampleModal',() => {$mH.handleMenuClick([], ['exampleModal','modalLayer']);});"></button>
+			<button id="exampleImageSelect" onclick="$mH.handleMenuClick(['exampleModal'], ['mainMenu']);$mH.listExampleImages('exampleModal',() => {$mH.handleMenuClick([], ['exampleModal','modalLayer','modalBG']);});"></button>
 			<button id="ownImageSelect" onclick="$mH.handleMenuClick(['selectModal'], ['mainMenu']);"></button>
 			<button id="uploadMenuButton" onclick="if($mH.checkImageLoaded()){$mH.handleMenuClick(['uploadModal'], ['mainMenu']);}"></button>
-			<button id="storeGameButton" onclick="if($mH.saveCurrentTask()){$mH.handleMenuClick([], ['mainMenu', 'modalLayer']);}"></button>
-			<button id="loadGameButton" onclick="$mH.loadCurrentTask();$mH.handleMenuClick([], ['mainMenu', 'modalLayer']);"></button>
+			<button id="storeGameButton" onclick="if($mH.saveCurrentTask()){$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);}"></button>
+			<button id="loadGameButton" onclick="$mH.loadCurrentTask();$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);"></button>
 			<button id="changeSettingsButton" onclick="$mH.handleMenuClick(['settingsModal'], ['mainMenu']);"></button>
 		</div>
 		<div class="innerModal" id="languageModal">
@@ -145,13 +149,13 @@
 					<div></div>
 				</div>
 			</div><div style="clear: both"></div>
-			<button id="settingThree" onclick="$mH.setSettings(3);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer']);">3 x 3</button>
-			<button id="settingFour" onclick="$mH.setSettings(4);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer']);">4 x 4</button>
-			<button id="settingFive" onclick="$mH.setSettings(5);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer']);">5 x 5</button>
+			<button id="settingThree" onclick="$mH.setSettings(3);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">3 x 3</button>
+			<button id="settingFour" onclick="$mH.setSettings(4);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">4 x 4</button>
+			<button id="settingFive" onclick="$mH.setSettings(5);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">5 x 5</button>
 		</div>
 		<div class="innerModal" id="uploadModal">
 			<div style="float:right">
-				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['uploadModal']);">
+				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['uploadModal', 'modalLayer', 'modalBG']);">
 					<div></div>
 				</div>
 			</div><div style="clear: both"></div>
@@ -175,7 +179,7 @@
 	</div>
 
 	<div class="header">
-		<div class="nav-icon" style="float:left;" onclick="toggleShowButtons();$mH.handleMenuClick(['mainMenu','modalLayer'], []);">
+		<div class="nav-icon" style="float:left;" onclick="toggleShowButtons();$mH.handleMenuClick(['mainMenu', 'modalLayer', 'modalBG'], []);">
 			<div></div>
 		</div>
 		<div style="text-align:right;padding:2px 22px;"><img alt="logo" src="img/assets/logo.png" height="70" /></div>

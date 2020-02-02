@@ -45,11 +45,22 @@ window.$disc = window.$disc || {};
             }
         })
     }
-    self.resizeImage = (image, orientation) => {
-        const MAX_HEIGHT = window.$disc.constants.MAX_IMAGE_HEIGHT;
-        const MAX_WIDTH = window.$disc.constants.MAX_IMAGE_WIDTH;
+
+    self.resizeToReference = (image, orientation) => {
+        orientation = orientation || 1;
+        const edgeLen = $disc.constants.REFERENCE_IMAGE_MAX_EDGE;
+        return resizeImage(image, [edgeLen, edgeLen], orientation, true);
+    };
+
+    self.resizeToStage = (image) => {
+        return $disc.deviceDetection.getRecommendedDimensions()
+            .then(recommended => resizeImage(image, recommended.dim, null, recommended.rotatable));
+    };
+
+    function resizeImage (image, dimension, orientation, deviceRotatable) {
+        const maxH = dimension[1];
+        const maxW = dimension[0];
         function doResize(width, height) {
-            console.log('resizing to ', width, height);
             const canvas = createCanvas(width, height);
             const ctx = canvas.getContext('2d');
             ctx.drawImage(image, 0, 0, width, height);
@@ -64,16 +75,16 @@ window.$disc = window.$disc || {};
                 iW = image.height;
                 iH = image.width;
             }
-            if (iW <= MAX_WIDTH && iH <= MAX_HEIGHT) {
-                resolve(image);
+            if (iW <= maxW && iH <= maxH) {
+                rotateImage(image, orientation).then(r => resolve(r));
                 return;
             }
             let factor = 0;
-            if (iW >= MAX_WIDTH) {
-                factor = iW / MAX_WIDTH;
+            if (iW >= maxW) {
+                factor = iW / maxW;
             }
-            if (iH >= MAX_HEIGHT) {
-                const nFactor = iH / MAX_HEIGHT;
+            if (iH >= maxH) {
+                const nFactor = iH / maxH;
                 if (nFactor > factor) {
                     factor = nFactor;
                 }
@@ -83,7 +94,7 @@ window.$disc = window.$disc || {};
             result.onload = () => rotateImage(result, orientation).then(r => resolve(r));
         });
 
-    };
+    }
 
     function createCanvas(w, h) {
         const result = document.createElement("CANVAS");
@@ -148,13 +159,7 @@ window.$disc = window.$disc || {};
         return fileName;
     };
 
-    /*
-     1: ok
-     3: Steht auf dem Kopf
-     6: 90 Grad nach links
-     8: 90 Grad nach rechts.
-     */
-    function getFileOrientation(file, callback) {
+    function getFileData(file, callback) {
         const reader = new FileReader();
         reader.onload = function(e) {
             const view = new DataView(e.target.result);
@@ -165,7 +170,9 @@ window.$disc = window.$disc || {};
             const length = view.byteLength;
             let offset = 2;
             while (offset < length) {
-                if (view.getUint16(offset + 2, false) <= 8) return callback(-1);
+                if (view.getUint16(offset + 2, false) <= 8) {
+                    return callback(uint8Array, -1);
+                }
                 const marker = view.getUint16(offset, false);
                 offset += 2;
                 if (marker === 0xFFE1) {
@@ -201,14 +208,14 @@ window.$disc = window.$disc || {};
 
         return new Promise((resolve, reject) => {
             if (first) {
-                getFileOrientation(first, (uint8Array, orientation) => {
+                getFileData(first, (uint8Array, orientation) => {
                     const blob = new Blob( [ uint8Array ], { type: "image/jpeg" } );
                     const urlCreator = window.URL || window.webkitURL;
                     const imageUrl = urlCreator.createObjectURL(blob);
                     const result = new Image();
                     result.src = imageUrl;
                     result.onload = () => {
-                        self.resizeImage(result, orientation).then(image => {
+                        self.resizeToReference(result, orientation).then(image => {
                             $disc.storage.setLastLoadedImage(image.src);
                             resolve(image);
                         }).catch(err => console.log(err));

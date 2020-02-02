@@ -23,11 +23,13 @@ window.$disc = window.$disc || {};
     self.IMAGE_STORE_URL = '../discCgi/store.php';
     self.IMAGE_GET_URL = '../discCgi/get.php';
 
+    self.DEVICE_LIST_URL = './data/devices.json';
     self.EXAMPLE_LIST_URL = './data/examples.json';
     self.LANGUAGE_URL = './data/language.json';
     self.SETTINGS_URL = './data/settings.json';
     self.EXAMPLES_FOLDER_URL = './img/examples/';
 
+    self.REFERENCE_IMAGE_MAX_EDGE = 1000;
     self.MAX_IMAGE_WIDTH = 840;
     self.MAX_IMAGE_HEIGHT = 720;
 

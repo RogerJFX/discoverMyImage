@@ -73,7 +73,7 @@ window.$disc = window.$disc || {};
             const img = new Image();
             img.src = url;
             img.onload = () => {
-                $disc.imageHandler.resizeImage(img).then(image => {
+                $disc.imageHandler.resizeToReference(img).then(image => {
                     resolve(image);
                 }).catch(err => console.log(err));
             }

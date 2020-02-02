@@ -2,34 +2,43 @@ window.$disc = window.$disc || {};
 (function StageActions(self) {
 
     let stage, outerStage;
-    let originalImage;
+    let originalImage, stageImage;
 
+    // Workhorse. This will be called for any image.
     self.processFile = (promise, settings, tileStates) => {
-        const ih = window.$disc.imageHandler;
+        const {convert2BW, modifyImage, simpleDarken, resizeToStage} = window.$disc.imageHandler;
         promise.then(image => {
             originalImage = image;
-            ih.modifyImage(image, [ih.convert2BW, ih.simpleDarken])
-                .then(bgImg => {
-                    stage.style.backgroundImage = `URL(${bgImg.src})`;
-                });
             return image;
         }).catch(_ => {
             return Promise.reject('wrongImageFormat');
-        }).then(_ => {
+        }).then(image => {
+            return resizeToStage(image).then(stImage => {
+                stageImage = stImage;
+                return stImage;
+            });
+        }).then(image => {
+            // Background
+            modifyImage(image, [convert2BW, simpleDarken])
+                .then(bgImg => {
+                    stage.style.backgroundImage = `URL(${bgImg.src})`;
+                });
+            // Tiles
             self.buildTiles(settings, tileStates ? () => window.$disc.tileManager
-                .fromStoredArray(originalImage, settings[0], settings[1], tileStates, winAction) : null);
+                .fromStoredArray(image, settings[0], settings[1], tileStates, winAction) : null);
         }).catch(err => {
+            console.error(err);
             $disc.lang.getTranslation(err).then(t => {
                 $disc.menuHandler.alert(t);
-            }).catch(err => $disc.menuHandler.alert(`No translation for "${err}"`));
+            }).catch(err => console.error(`No translation for "${err}"`));
         });
     };
 
     self.buildTiles = (settings, initFn) => {
         initFn = initFn || function () {
-            return window.$disc.tileManager.buildTiles(originalImage, settings[0], settings[1], winAction);
+            return window.$disc.tileManager.buildTiles(stageImage, settings[0], settings[1], winAction);
         };
-        if(originalImage) {
+        if(stageImage) {
             outerStage.innerHTML = '';
             const tiles = initFn();
             stage.innerHTML = '';
