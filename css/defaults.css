@@ -6,6 +6,10 @@ body, html,* {
     /*background: #336688;*/
 
 }
+div.logoImage {
+    text-align:right;
+    padding:2px 22px;
+}
 body {
     background: #336688;
 }

@@ -94,7 +94,7 @@ window.$disc = window.$disc || {};
 
     function winAction () {
         stage.innerHTML = '';
-        stage.style.backgroundImage=`URL(${originalImage.src})`;
+        stage.style.backgroundImage=`URL(${stageImage.src})`;
     }
 
 })(window.$disc.stageActions = window.$disc.stageActions || {});

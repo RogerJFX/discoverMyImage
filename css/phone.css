@@ -1,0 +1,41 @@
+div.innerModal button, input {
+    margin: 14px auto;
+}
+
+@media screen and (orientation : landscape) {
+    /*body, html,* {*/
+    /*    background: red;*/
+    /*}*/
+    div.myBottom {
+        display:none;
+    }
+}
+
+@media screen and (orientation : portrait) {
+    /*body, html,* {*/
+    /*    background: red;*/
+    /*}*/
+
+    div.logoImage {
+        padding: 6px 4px;
+    }
+    div.logoImage img {
+        max-width: 220px;
+        max-height: 52px;
+    }
+    div.modalLayer {
+        padding: 12px 12px;
+    }
+    div.innerModal {
+        padding: 12px 12px;
+    }
+
+    div.contentContainer {
+        padding: 2px;
+        margin-top:16px;
+        border-spacing: 2px;
+    }
+    div.myRight {
+        display:none;
+    }
+}

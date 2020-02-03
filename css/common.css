@@ -1,8 +1,15 @@
 @import "defaults.css";
 @import "sense.css";
 
-@import "ipad.css" only screen
-and (min-device-width : 768px)
-and (max-device-width : 1024px);
+/*
+"dimensions": [1280, 800] <- max tablet
+ */
+@import "tablet.css" only screen and
+(min-device-width : 600px) and (max-device-width : 1280px);
+
+@import "phone.css" only screen and
+(min-device-width : 320px) and (max-device-width : 640px),
+(device-width: 414px) and (device-height: 896px);
 
 @import "desktop.css" only screen and (min-device-width: 1025px) and (orientation : landscape);
+

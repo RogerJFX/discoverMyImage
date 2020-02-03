@@ -15,18 +15,42 @@ window.$disc = window.$disc || {};
 
     let fixedScreenDevices = null;
 
-    function loadDevices() {
-        return new Promise((resolve, reject) => {
-            if(fixedScreenDevices) {
-                resolve();
-            } else {
+    let loadObserverFns = [];
+
+    let loading = false;
+
+    // function loadDevices() {
+    //     return new Promise((resolve, reject) => {
+    //         if(fixedScreenDevices) {
+    //             resolve();
+    //         } else {
+    //             console.trace();
+    //             $disc.xhrHandler.loadJsonProperties($disc.constants.DEVICE_LIST_URL).then(data => {
+    //                 fixedScreenDevices = data['fixedScreenDevices'];
+    //                 desktopImgDim = data['desktopImgDim'];
+    //                 resolve();
+    //             }).catch(err => console.error(err));
+    //         }
+    //     })
+    // }
+
+    function loadDevicesObservable(callback) {
+        if(fixedScreenDevices) {
+            loading = false;
+            callback();
+        } else {
+            loadObserverFns.push(callback);
+            if(!loading) {
+                loading = true;
                 $disc.xhrHandler.loadJsonProperties($disc.constants.DEVICE_LIST_URL).then(data => {
                     fixedScreenDevices = data['fixedScreenDevices'];
                     desktopImgDim = data['desktopImgDim'];
-                    resolve();
+                    loading = false;
+                    loadObserverFns.forEach(fn => fn());
+                    loadObserverFns = [];
                 }).catch(err => console.error(err));
             }
-        })
+        }
     }
 
     self.getRecommendedDimensions = () => {
@@ -58,7 +82,8 @@ window.$disc = window.$disc || {};
         const w = window.outerWidth;
         const h = window.outerHeight;
         return new Promise(resolve => {
-            loadDevices().then(() => {
+            // loadDevices().then(() => {
+            loadDevicesObservable(() => {
                 const found = fixedScreenDevices.find(device => {
                     const dW = device.dimensions[0];
                     const dH = device.dimensions[1];

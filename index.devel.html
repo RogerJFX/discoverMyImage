@@ -91,10 +91,12 @@
 			$mH.toggleShowButton('uploadMenuButton', $mH.hasCurrentImage);
 			$mH.toggleShowButton('changeSettingsButton', $mH.hasCurrentImage);
 			$mH.toggleShowButton('loadGameButton', $mH.hasCurrentTask);
+			$mH.toggleShowButton('solveButton', $mH.hasCurrentImage);
 
 		}
 
 	</script>
+	<script data-ad-client="ca-pub-5386329083980702" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
 	<dynStylecontainer></dynStylecontainer>
@@ -114,6 +116,7 @@
 			<button id="storeGameButton" onclick="if($mH.saveCurrentTask()){$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);}"></button>
 			<button id="loadGameButton" onclick="$mH.loadCurrentTask();$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);"></button>
 			<button id="changeSettingsButton" onclick="$mH.handleMenuClick(['settingsModal'], ['mainMenu']);"></button>
+			<button id="solveButton" onclick="if($mH.solveCurrentTask()){$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);}"></button>
 		</div>
 		<div class="innerModal" id="languageModal">
 			<div style="float:right">
@@ -182,7 +185,7 @@
 		<div class="nav-icon" style="float:left;" onclick="toggleShowButtons();$mH.handleMenuClick(['mainMenu', 'modalLayer', 'modalBG'], []);">
 			<div></div>
 		</div>
-		<div style="text-align:right;padding:2px 22px;"><img alt="logo" src="img/assets/logo.png" height="70" /></div>
+		<div class="logoImage"><img alt="logo" src="img/assets/logo.png" height="70" /></div>
 	</div>
 	<div class="contentContainer">
 		<div class="myDivRow">

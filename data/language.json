@@ -56,6 +56,13 @@
     }
   },
   {
+    "id": "solveButton",
+    "lang": {
+      "en": "Give up",
+      "de": "Aufgeben"
+    }
+  },
+  {
     "id": "changeSettingsButton",
     "lang": {
       "en": "Change settings",

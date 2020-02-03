@@ -149,6 +149,10 @@ window.$disc = window.$disc || {};
         setTileStyle(image);
     }
 
+    self.solve = () => {
+        winningAction();
+    };
+
     self.getCurrentTilesState = () => {
         return tiles.map(tile => tile.serialize());
     };

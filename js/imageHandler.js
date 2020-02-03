@@ -57,6 +57,36 @@ window.$disc = window.$disc || {};
             .then(recommended => resizeImage(image, recommended.dim, null, recommended.rotatable));
     };
 
+    function calculateResizeFactor(imgW, imgH, maxW, maxH, deviceR) {
+        function doCalculate(iW, iH, mW, mH) {
+            let factor = 0;
+            if (iW <= mW && iH <= mH) {
+                return -1;
+            }
+            if (iW >= mW) {
+                factor = iW / mW;
+            }
+            if (iW >= mH) {
+                const nFactor = iH / mH;
+                if (nFactor > factor) {
+                    factor = nFactor;
+                }
+            }
+            return factor;
+        }
+
+        if (!deviceR) {
+            return doCalculate(imgW, imgH, maxW, maxH);
+        }
+        const imagePortrait = imgH > imgW;
+        const devicePortrait = maxH > maxW;
+        if (imagePortrait === devicePortrait) {
+            return doCalculate(imgW, imgH, maxW, maxH);
+        } else {
+            return doCalculate(imgW, imgH, maxH, maxW); // turn maxW and maxH
+        }
+    }
+
     function resizeImage (image, dimension, orientation, deviceRotatable) {
         const maxH = dimension[1];
         const maxW = dimension[0];
@@ -75,23 +105,31 @@ window.$disc = window.$disc || {};
                 iW = image.height;
                 iH = image.width;
             }
-            if (iW <= maxW && iH <= maxH) {
+            const factor = calculateResizeFactor(iW, iH, maxW, maxH, deviceRotatable);
+            if(factor === -1) {
                 rotateImage(image, orientation).then(r => resolve(r));
-                return;
+            } else {
+                const result = doResize(image.width / factor, image.height / factor);
+                result.onload = () => rotateImage(result, orientation).then(r => resolve(r));
             }
-            let factor = 0;
-            if (iW >= maxW) {
-                factor = iW / maxW;
-            }
-            if (iH >= maxH) {
-                const nFactor = iH / maxH;
-                if (nFactor > factor) {
-                    factor = nFactor;
-                }
-            }
+            //////
+            // if (iW <= maxW && iH <= maxH) {
+            //     rotateImage(image, orientation).then(r => resolve(r));
+            //     return;
+            // }
+            // let factor = 0;
+            // if (iW >= maxW) {
+            //     factor = iW / maxW;
+            // }
+            // if (iH >= maxH) {
+            //     const nFactor = iH / maxH;
+            //     if (nFactor > factor) {
+            //         factor = nFactor;
+            //     }
+            // }
+            /////
             //const result = doResize(iW / factor, iH / factor);
-            const result = doResize(image.width / factor, image.height / factor);
-            result.onload = () => rotateImage(result, orientation).then(r => resolve(r));
+
         });
 
     }

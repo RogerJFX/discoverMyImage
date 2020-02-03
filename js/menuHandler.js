@@ -108,6 +108,11 @@ window.$disc = window.$disc || {};
         }
     };
 
+    self.solveCurrentTask = () => {
+        $disc.tileManager.solve();
+        return true;
+    };
+
     self.listExampleImages = (nodeId, onClickFn) => {
         const lang = $disc.lang.getCurrLang();
         const node = document.getElementById(nodeId);
