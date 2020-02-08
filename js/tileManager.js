@@ -67,6 +67,8 @@ window.$disc = window.$disc || {};
             return [xPos, yPos];
         };
 
+        this.move = tryMove;
+
         this.serialize = () => {
             return {
                 xPos: xPos,
@@ -150,7 +152,28 @@ window.$disc = window.$disc || {};
     }
 
     self.solve = () => {
-        winningAction();
+        function onSuccess(data) {
+            let counter = 0;
+            function nextAutoMove() {
+                if(counter++ < data.length) {
+                    console.log(counter);
+                    setTimeout(() => {
+                        const entry = data[counter - 1];
+                        const found = tiles.find(tile => {
+                            const coords = tile.getCoords();
+                            return coords[0] === entry[0] && coords[1] === entry[1];
+                        });
+                        if(found) {
+                            // found.move();
+                            nextAutoMove();
+                        }
+                    }, 400);
+                }
+            }
+            console.log(data);
+            nextAutoMove();
+        }
+        $disc.ai.resolveTask(tiles, onSuccess, winningAction);
     };
 
     self.getCurrentTilesState = () => {
@@ -180,34 +203,21 @@ window.$disc = window.$disc || {};
         return new Promise(resolve => {
             commonIssues(image, numW, numH, winAction);
             const indices = numW * numH;
-            const arr = [];
-
-            function shuffle() {
-                const candidate = Math.floor(Math.random() * indices);
-                if (arr.includes(candidate)) {
-                    return shuffle();
+            $disc.ai.getTask(numW, numH).then(arr => {
+                const result = [];
+                for (let i = 0; i < indices; i++) {
+                    result.push(new Tile(
+                        i % numW,
+                        Math.floor(i / numW) % numH,
+                        arr[i] % numW,
+                        Math.floor(arr[i] / numW) % numH));
                 }
-                return candidate;
-            }
+                result[indices - 1].setOmitted(); // right bottom
+                tiles = result;
+                fillBoard();
+                resolve(result);
+            });
 
-            for (let i = 0; i < indices; i++) {
-                arr.push(shuffle());
-                //arr.push(i); // Testing
-            }
-
-            const result = [];
-            for (let i = 0; i < indices; i++) {
-                result.push(new Tile(
-                    i % numW,
-                    Math.floor(i / numW) % numH,
-                    arr[i] % numW,
-                    Math.floor(arr[i] / numW) % numH));
-            }
-            result[indices - 1].setOmitted(); // right bottom
-            //result[Math.floor(Math.random() * indices)].setOmitted(); // double random
-            tiles = result;
-            fillBoard();
-            resolve(result);
         });
 
     }

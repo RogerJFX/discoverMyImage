@@ -16,9 +16,11 @@ window.$disc = window.$disc || {};
     self.uploadImage = (bean) => {
         $disc.settingsHandler.getSoftSettings().then(settings => {
             const xhr = new XMLHttpRequest();
+            const mH = $disc.menuHandler;
+            xhr.onerror = () => mH.alert("Connection refused. Please try again later.");
             xhr.open('PUT', `${settings['imageServer']}${settings['storeURL']}`, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-            const mH = $disc.menuHandler;
+
             xhr.onload = function(e) {
                 if (this.status === 200) {
                     $disc.lang.getTranslation('sendSuccess').then(t => mH.alert(t, 2000));
@@ -43,6 +45,7 @@ window.$disc = window.$disc || {};
         return new Promise((resolve, reject) => {
             $disc.settingsHandler.getSoftSettings().then(settings => {
                 const xhr = new XMLHttpRequest();
+                xhr.onerror = () => reject(-1);
                 const URL = settings['getURL'].replace('__UUID__', uuid);
                 xhr.open('GET', `${settings['imageServer']}${URL}`, true);
                 xhr.onload = function(e) {
@@ -54,16 +57,6 @@ window.$disc = window.$disc || {};
                 };
                 xhr.send();
             }).catch(_ => reject(500));
-            // const xhr = new XMLHttpRequest();
-            // xhr.open('GET', `${GET_URL}?uuid=${uuid}`, true);
-            // xhr.onload = function(e) {
-            //     if (this.status === 200) {
-            //         resolve(JSON.parse(this.responseText));
-            //     } else {
-            //         reject(this.status);
-            //     }
-            // };
-            // xhr.send();
         });
     };
 
@@ -83,6 +76,7 @@ window.$disc = window.$disc || {};
     self.loadJsonProperties = (url) => {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
+            xhr.onerror = () => reject(-1);
             xhr.open('GET', url, true);
             xhr.onload = function(e) {
                 if (this.status === 200) {
