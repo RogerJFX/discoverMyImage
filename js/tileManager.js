@@ -177,35 +177,38 @@ window.$disc = window.$disc || {};
     };
 
     self.buildTiles = (image, numW, numH, winAction) => {
-        commonIssues(image, numW, numH, winAction);
-        const indices = numW * numH;
-        const arr = [];
+        return new Promise(resolve => {
+            commonIssues(image, numW, numH, winAction);
+            const indices = numW * numH;
+            const arr = [];
 
-        function shuffle() {
-            const candidate = Math.floor(Math.random() * indices);
-            if (arr.includes(candidate)) {
-                return shuffle();
+            function shuffle() {
+                const candidate = Math.floor(Math.random() * indices);
+                if (arr.includes(candidate)) {
+                    return shuffle();
+                }
+                return candidate;
             }
-            return candidate;
-        }
 
-        for (let i = 0; i < indices; i++) {
-            arr.push(shuffle());
-            //arr.push(i); // Testing
-        }
+            for (let i = 0; i < indices; i++) {
+                arr.push(shuffle());
+                //arr.push(i); // Testing
+            }
 
-        const result = [];
-        for (let i = 0; i < indices; i++) {
-            result.push(new Tile(
-                i % numW,
-                Math.floor(i / numW) % numH,
-                arr[i] % numW,
-                Math.floor(arr[i] / numW) % numH));
-        }
-        result[indices - 1].setOmitted(); // right bottom
-        //result[Math.floor(Math.random() * indices)].setOmitted(); // double random
-        tiles = result;
-        fillBoard();
-        return result;
+            const result = [];
+            for (let i = 0; i < indices; i++) {
+                result.push(new Tile(
+                    i % numW,
+                    Math.floor(i / numW) % numH,
+                    arr[i] % numW,
+                    Math.floor(arr[i] / numW) % numH));
+            }
+            result[indices - 1].setOmitted(); // right bottom
+            //result[Math.floor(Math.random() * indices)].setOmitted(); // double random
+            tiles = result;
+            fillBoard();
+            resolve(result);
+        });
+
     }
 })(window.$disc.tileManager = window.$disc.tileManager || {});

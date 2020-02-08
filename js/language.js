@@ -5,6 +5,10 @@ window.$disc = window.$disc || {};
     let currLang = 'latin';
     const supported = ['en', 'de'];
 
+    self.isLangSupported = (language) => {
+        return supported.includes(language);
+    };
+
     self.getCurrLang = () => {
         return supported.includes(currLang) ? currLang : supported[0];
     };

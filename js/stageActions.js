@@ -3,6 +3,7 @@ window.$disc = window.$disc || {};
 
     let stage, outerStage;
     let originalImage, stageImage;
+    let won = false;
 
     // Workhorse. This will be called for any image.
     self.processFile = (promise, settings, tileStates) => {
@@ -24,8 +25,8 @@ window.$disc = window.$disc || {};
                     stage.style.backgroundImage = `URL(${bgImg.src})`;
                 });
             // Tiles
-            self.buildTiles(settings, tileStates ? () => window.$disc.tileManager
-                .fromStoredArray(image, settings[0], settings[1], tileStates, winAction) : null);
+            self.buildTiles(settings, tileStates ? new Promise(resolve => resolve(window.$disc.tileManager
+                .fromStoredArray(image, settings[0], settings[1], tileStates, winAction))) : null);
         }).catch(err => {
             console.error(err);
             $disc.lang.getTranslation(err).then(t => {
@@ -35,25 +36,34 @@ window.$disc = window.$disc || {};
     };
 
     self.buildTiles = (settings, initFn) => {
+        if(won && stageImage) {
+            const {convert2BW, modifyImage, simpleDarken} = window.$disc.imageHandler;
+            modifyImage(stageImage, [convert2BW, simpleDarken])
+                .then(bgImg => {
+                    stage.style.backgroundImage = `URL(${bgImg.src})`;
+                });
+        }
+        won = false;
         initFn = initFn || function () {
-            return window.$disc.tileManager.buildTiles(stageImage, settings[0], settings[1], winAction);
+            return window.$disc.tileManager.buildTiles(stageImage, settings[0], settings[1], winAction); // is a promise
         };
         if(stageImage) {
             outerStage.innerHTML = '';
-            const tiles = initFn();
-            stage.innerHTML = '';
-            const tD = tiles[0].getDimensions();
-            const stageWidth = tD[0] * settings[0];
-            const stageHeight = tD[1] * settings[1];
-            stage.style.height = `${stageHeight}px`;
-            stage.style.width = `${stageWidth}px`;
-            outerStage.style.height = `${stageHeight + 24}px`;
-            outerStage.style.width = `${stageWidth + 24}px`;
-            tiles.forEach(tile => {
-                stage.appendChild(tile.toNode());
+            initFn().then(tiles => {
+                stage.innerHTML = '';
+                const tD = tiles[0].getDimensions();
+                const stageWidth = tD[0] * settings[0];
+                const stageHeight = tD[1] * settings[1];
+                stage.style.height = `${stageHeight}px`;
+                stage.style.width = `${stageWidth}px`;
+                outerStage.style.height = `${stageHeight + 24}px`;
+                outerStage.style.width = `${stageWidth + 24}px`;
+                tiles.forEach(tile => {
+                    stage.appendChild(tile.toNode());
+                });
+                createLegend(settings, tD);
+                outerStage.appendChild(stage);
             });
-            createLegend(settings, tD);
-            outerStage.appendChild(stage);
         }
     };
 
@@ -77,6 +87,7 @@ window.$disc = window.$disc || {};
             node.style.top = `${i * tD[1]}px`;
             outerStage.appendChild(node);
         }
+        stage.addClass('withNumbers');
     }
 
     self.getCurrentImage = () => {
@@ -93,6 +104,7 @@ window.$disc = window.$disc || {};
     };
 
     function winAction () {
+        won = true;
         stage.innerHTML = '';
         stage.style.backgroundImage=`URL(${stageImage.src})`;
     }

@@ -27,7 +27,11 @@
 			const langCapture = location.href.match(/lang=(.*?)(&|$)/i);
 
 			const myLanguage = $disc.storage.getLanguage();
-			const lang = myLanguage ? myLanguage : langCapture ? langCapture[1] : 'en';
+			let userLang = navigator.language || navigator.userLanguage;
+			if(userLang && userLang.indexOf('-') !== -1) {
+				userLang = userLang.substring(0, userLang.indexOf('-'));
+			}
+			const lang = myLanguage ? myLanguage : langCapture ? langCapture[1] : $disc.lang.isLangSupported(userLang) ? userLang: 'en';
 
 			$disc.stageActions.init(document.getElementById('stage'), document.getElementById('outerStage'));
 
@@ -41,6 +45,11 @@
 							resolve(img);
 						};
 					})
+				}).catch(_ => {
+					$disc.lang.getTranslation('errorWrongOrExpiredImage').then(msg => {
+						$disc.menuHandler.alert(msg, 3000);
+					});
+					toggleWelcomeLanguage(lang);
 				}), $disc.settingsHandler.getTileSettings());
 			} else {
 				const lastLoadedImage = $disc.storage.getLastLoadedImage();
@@ -52,6 +61,8 @@
 							resolve(img);
 						};
 					}), $disc.settingsHandler.getTileSettings());
+				} else {
+					toggleWelcomeLanguage(lang);
 				}
 			}
 
@@ -82,10 +93,23 @@
 			$mH.toggleShowButton('changeSettingsButton', $mH.hasCurrentImage);
 			$mH.toggleShowButton('loadGameButton', $mH.hasCurrentTask);
 			$mH.toggleShowButton('solveButton', $mH.hasCurrentImage);
+		}
 
+		function toggleWelcomeLanguage(lang) {
+			const welcomeDiv = document.getElementById('welcome');
+			if(welcomeDiv) {
+				const children = welcomeDiv.querySelectorAll('DIV.welcome');
+				[... children].forEach(node => node.addClass('hiddenDiv'));
+				const divToShow = document.getElementById(`welcome-${lang || $disc.lang.getCurrLang()}`);
+				if(divToShow) {
+					divToShow.removeClass('hiddenDiv');
+				}
+				$mH.handleMenuClick([], ['mainMenu', 'languageModal','modalLayer', 'modalBG']);
+			}
 		}
 
 	</script>
+
 	<script data-ad-client="ca-pub-5386329083980702" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
@@ -99,14 +123,15 @@
 				<div></div>
 			</div>
 		</div><div style="clear: both"></div>
-		<button id="switchLangButton" onclick="$mH.handleMenuClick(['languageModal'], ['mainMenu']);"></button>
-		<button id="exampleImageSelect" onclick="$mH.handleMenuClick(['exampleModal'], ['mainMenu']);$mH.listExampleImages('exampleModal',() => {$mH.handleMenuClick([], ['exampleModal','modalLayer','modalBG']);});"></button>
+		<button id="switchLangButton" onclick="$mH.handleMenuClick(['languageModal','modalLayer', 'modalBG'], ['mainMenu']);"></button>
+		<button id="exampleImageSelect" onclick="$mH.handleMenuClick(['exampleModal','modalLayer', 'modalBG'], ['mainMenu']);$mH.listExampleImages('exampleModal',() => {$mH.handleMenuClick([], ['exampleModal','modalLayer','modalBG']);});"></button>
 		<button id="ownImageSelect" onclick="$mH.handleMenuClick(['selectModal'], ['mainMenu']);"></button>
 		<button id="uploadMenuButton" onclick="if($mH.checkImageLoaded()){$mH.handleMenuClick(['uploadModal'], ['mainMenu']);}"></button>
 		<button id="storeGameButton" onclick="if($mH.saveCurrentTask()){$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);}"></button>
 		<button id="loadGameButton" onclick="$mH.loadCurrentTask();$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);"></button>
 		<button id="changeSettingsButton" onclick="$mH.handleMenuClick(['settingsModal'], ['mainMenu']);"></button>
 		<button id="solveButton" onclick="if($mH.solveCurrentTask()){$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);}"></button>
+		<button id="aboutButton" onclick="$mH.handleMenuClick(['aboutModal'], ['mainMenu']);"></button>
 	</div>
 	<div class="innerModal" id="languageModal">
 		<div style="float:right">
@@ -114,19 +139,19 @@
 				<div></div>
 			</div>
 		</div><div style="clear: both"></div>
-		<button id="langDe" onclick="$disc.lang.switchLanguage('de');$mH.handleMenuClick(['mainMenu'], ['languageModal']);"></button>
-		<button id="langEn" onclick="$disc.lang.switchLanguage('en');$mH.handleMenuClick(['mainMenu'], ['languageModal']);"></button>
+		<button id="langDe" onclick="$disc.lang.switchLanguage('de');$mH.handleMenuClick(['mainMenu'], ['languageModal']);toggleWelcomeLanguage()"></button>
+		<button id="langEn" onclick="$disc.lang.switchLanguage('en');$mH.handleMenuClick(['mainMenu'], ['languageModal']);toggleWelcomeLanguage()"></button>
 	</div>
 	<div class="innerModal" id="exampleModal">
 		<div style="float:right">
-			<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['exampleModal']);">
+			<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['exampleModal', 'modalLayer', 'modalBG']);">
 				<div></div>
 			</div>
 		</div><div style="clear: both"></div>
 	</div>
 	<div class="innerModal" id="selectModal">
 		<div style="float:right">
-			<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['selectModal']);">
+			<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['selectModal', 'modalLayer', 'modalBG']);">
 				<div></div>
 			</div>
 		</div><div style="clear: both"></div>
@@ -158,6 +183,14 @@
 		<div>&#160;</div>
 		<button id="uploadButton" onclick="$mH.upload({myName: 'sendMyName', hisName: 'sendHisName', mailTo: 'sendToEmail'});"></button>
 	</div>
+	<div class="innerModal" id="aboutModal">
+		<div style="float:right">
+			<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['aboutModal', 'modalLayer', 'modalBG']);">
+				<div></div>
+			</div>
+		</div><div style="clear: both"></div>
+		<div id="txtImprint"></div>
+	</div>
 
 </div>
 <div class="modalLayer alertModalLayer" id="alertModalLayer">
@@ -180,13 +213,56 @@
 <div class="contentContainer">
 	<div class="myDivRow">
 		<div id="outerStage">
-			<div id="stage"></div>
+			<div id="stage">
+				<div id="welcome">
+					<div id="welcome-de" class="welcome hiddenDiv">
+						<h1>Hey, neu hier?</h1>
+						<p>Not the expected language / Nicht die erwartete Sprache? <span class="clickMe" onclick="$mH.handleMenuClick(['languageModal','modalLayer', 'modalBG'], []);">Click here</span></p>
+						<p>Discover My Image ist ein Bilder-Puzzle mit vielen Möglichkeiten.</p>
+						<ul>
+							<li class="clickMe" onclick="$mH.handleMenuClick(['exampleModal','modalLayer', 'modalBG'], ['mainMenu']);$mH.listExampleImages('exampleModal',() => {$mH.handleMenuClick([], ['exampleModal','modalLayer','modalBG']);});">Fange einfach mal mit einem Beispiel an</li>
+							<li class="clickMe" onclick="$mH.handleMenuClick(['selectModal','modalLayer', 'modalBG'], ['mainMenu']);">Lade Dein eigenes Bild von der Festplatte</li>
+							<li>Viel Spaß.</li>
+						</ul>
+						<p>Das Menu links oben zeigt nur jeweils verfügbare Optionen an.</p>
+						<p>Ist erst einmal ein Bild geladen, gibt es weitere Optionen, wie:</p>
+						<ul>
+							<li>Sende Dein Puzzle einer Freundin oder einem Freund</li>
+							<li>Speichere Deinen Spielstand und lade ihn später wieder</li>
+							<li>Ändere die Einstellungen, schwerer oder leichter</li>
+							<li>Aufgeben, aber das wirst Du sicher nicht, oder?</li>
+							<li>usw.</li>
+						</ul>
+
+					</div>
+					<div id="welcome-en" class="welcome hiddenDiv">
+						<h1>Hey! New to Discover My Image?</h1>
+						<p>Not the expected language / Nicht die erwartete Sprache? <span class="clickMe" onclick="$mH.handleMenuClick(['languageModal','modalLayer', 'modalBG'], []);">Click here</span></p>
+						<p>Discover My Image is an image puzzle site with many features.</p>
+						<ul>
+							<li class="clickMe" onclick="$mH.handleMenuClick(['exampleModal','modalLayer', 'modalBG'], ['mainMenu']);$mH.listExampleImages('exampleModal',() => {$mH.handleMenuClick([], ['exampleModal','modalLayer','modalBG']);});">Start playing with some example image</li>
+							<li class="clickMe" onclick="$mH.handleMenuClick(['selectModal','modalLayer', 'modalBG'], ['mainMenu']);">Load Your own image from hard disk</li>
+							<li>Enjoy.</li>
+						</ul>
+						<p>The menu on top left will dynamically show only available options.</p>
+						<p>Once an image is loaded, there are many more options like:</p>
+						<ul>
+							<li>Send Your puzzle to a friend</li>
+							<li>Save current game and load it later</li>
+							<li>Change settings</li>
+							<li>Give up. You won't, will you?</li>
+							<li>...</li>
+						</ul>
+
+					</div>
+				</div>
+			</div>
 		</div>
-		<div class="myDivCell myRight"><!--RIGHT AD--></div>
+		<div class="myDivCell myRight"></div>
 	</div>
 	<div class="myDivRow">
-		<div class="myDivCell myBottom"><!--BOTTOM AD--></div>
-		<div class="myDivCell"><!--GET RID OF ADS--></div>
+		<div class="myDivCell myBottom"></div>
+		<div class="myDivCell"></div>
 	</div>
 
 </div>

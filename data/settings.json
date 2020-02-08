@@ -1,5 +1,10 @@
 {
-  "imageServer": "http://148.251.6.88:9000/",
+  "imageServer": "https://7fx.de:9443/",
   "storeURL": "store.php",
-  "getURL": "get.php?uuid=__UUID__"
+  "getURL": "get.php?uuid=__UUID__",
+
+  "aiServer": "http://localhost/",
+  "taskURL": "task.php?level=__LEVEL__",
+  "resolveURL": "resolve.php?task=__TASK__",
+  "checkURL": "check.php?task=__TASK__"
 }

@@ -20,9 +20,6 @@ window.$disc = window.$disc || {};
         return this.getAttribute('class') && this.getAttribute('class').split(' ').find(item => item === clazz) === clazz;
     };
 
-    self.IMAGE_STORE_URL = '../discCgi/store.php';
-    self.IMAGE_GET_URL = '../discCgi/get.php';
-
     self.DEVICE_LIST_URL = './data/devices.json';
     self.EXAMPLE_LIST_URL = './data/examples.json';
     self.LANGUAGE_URL = './data/language.json';

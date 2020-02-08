@@ -6,3 +6,21 @@ google adsense
 320x50
 
 590x60
+
+Geht alles nicht.
+<!--	<script>-->
+<!--		setTimeout(() => {-->
+<!--		console.log('https://page\101d2.g\157\157glesyndic\141tion.com/page\101d/js/\141dsbyg\x6f\157gle.js');-->
+<!--		const node = document.createElement('SCRIPT');-->
+<!--		node.setAttribute('data-\141d-client', 'c\141-\160ub-53863290\703980702');-->
+<!--		node.setAttribute('async', '');-->
+<!--		node.setAttribute('src', 'https://page\101d2.g\157\157glesyndic\141tion.com/page\101d/js/\141dsbyg\x6f\157gle.js');-->
+<!--		document.head.appendChild(node);-->
+<!--		}, 1000);-->
+<!--	</script>-->
+<!--	<script>-->
+<!--		setTimeout(() => {-->
+<!--			document.write("<script data-ad-client=\"ca-pub-5386329083980702\" async src=\"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js\">" + "\74/script>");-->
+<!--		}, 1000);-->
+
+<!--	</script>-->

@@ -247,13 +247,15 @@ window.$disc = window.$disc || {};
         return new Promise((resolve, reject) => {
             if (first) {
                 getFileData(first, (uint8Array, orientation) => {
-                    const blob = new Blob( [ uint8Array ], { type: "image/jpeg" } );
+                    const blob = new Blob([uint8Array], {type: "image/jpeg"});
                     const urlCreator = window.URL || window.webkitURL;
                     const imageUrl = urlCreator.createObjectURL(blob);
                     const result = new Image();
                     result.src = imageUrl;
                     result.onload = () => {
                         self.resizeToReference(result, orientation).then(image => {
+                            return self.modifyImage(image, []);
+                        }).then(image => {
                             $disc.storage.setLastLoadedImage(image.src);
                             resolve(image);
                         }).catch(err => console.log(err));

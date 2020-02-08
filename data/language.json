@@ -63,6 +63,13 @@
     }
   },
   {
+    "id": "aboutButton",
+    "lang": {
+      "en": "Imprint",
+      "de": "Impressum"
+    }
+  },
+  {
     "id": "changeSettingsButton",
     "lang": {
       "en": "Change settings",
@@ -140,10 +147,25 @@
     }
   },
   {
+    "id": "errorWrongOrExpiredImage",
+    "lang": {
+      "en": "We are sorry the image wasn't found.<br/>&#160;<br/>Has it expired?",
+      "de": "Tut uns leid, das Bild wurde nicht gefunden.<br/>&#160;<br/>Ist es abgelaufen?"
+    }
+  },
+  {
     "id": "sendSuccess",
     "lang": {
       "en": "It worked!",
       "de": "Das hat funktioniert."
     }
+  },
+  {
+    "id": "txtImprint",
+    "lang": {
+      "en": "This service is brought to you by Roger Francis Hösl, Frankfurt, Germany.<br/>&#160;<br/>We are aware of potential abuse of this site and will do everything against it.<br/>&#160;<br/>This site is still in beta state.",
+      "de": "Verantwortlich für diese Seite ist Roger Francis Hösl, Frankfurt, Deutschland.<br/>&#160;<br/>Die potentielle Gefahr dieser Anwendung ist uns bewusst. Wir werden alles tun, um dieser Gefahr zu begegnen.<br/>&#160;<br/>Die Seite befindet sich noch in einem Status 'BETA'"
+    }
   }
+
 ]

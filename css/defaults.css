@@ -1,10 +1,11 @@
 body, html,* {
-
     font-family: verdana, arial, sans, sans-serif;
-    font-size:  14pt;
+    font-size: 14pt;
     box-sizing: border-box;
-    /*background: #336688;*/
-
+    color: white;
+}
+h1 {
+    font-size: 16pt;
 }
 div.logoImage {
     text-align:right;
@@ -12,6 +13,19 @@ div.logoImage {
 }
 body {
     background: #336688;
+}
+
+div#welcome .clickMe {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+div#welcome ul > li {
+   padding: 6px 0;
+}
+
+div.hiddenDiv {
+    display: none;
 }
 #dropImageZone {
     border: 2px dashed #fff;
@@ -37,9 +51,12 @@ body {
 
 #stage {
     position:relative;
-    left: 24px;
     background-repeat: no-repeat;
     border-radius: 16px;
+}
+
+#stage.withNumbers {
+    left: 24px;
 }
 
 .board-letter {
