@@ -25,7 +25,7 @@ window.$disc = window.$disc || {};
                     stage.style.backgroundImage = `URL(${bgImg.src})`;
                 });
             // Tiles
-            self.buildTiles(settings, tileStates ? new Promise(resolve => resolve(window.$disc.tileManager
+            self.buildTiles(settings, tileStates ? () => new Promise(resolve => resolve(window.$disc.tileManager
                 .fromStoredArray(image, settings[0], settings[1], tileStates, winAction))) : null);
         }).catch(err => {
             console.error(err);
@@ -45,7 +45,7 @@ window.$disc = window.$disc || {};
         }
         won = false;
         initFn = initFn || function () {
-            return window.$disc.tileManager.buildTiles(stageImage, settings[0], settings[1], winAction); // is a promise
+            return window.$disc.tileManager.buildTiles(stageImage, settings[0], settings[1], settings[2], winAction); // is a promise
         };
         if(stageImage) {
             outerStage.innerHTML = '';
@@ -107,6 +107,18 @@ window.$disc = window.$disc || {};
         won = true;
         stage.innerHTML = '';
         stage.style.backgroundImage=`URL(${stageImage.src})`;
+        (function flicker(c) {
+            setTimeout(() => {
+                stage.style.opacity = '0.4';
+                setTimeout(() => {
+                    stage.style.opacity = '1';
+                    if(--c > 0) {
+                        flicker(c);
+                    }
+                }, 80);
+            }, 80);
+        })(3);
+
     }
 
 })(window.$disc.stageActions = window.$disc.stageActions || {});

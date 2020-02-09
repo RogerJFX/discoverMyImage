@@ -58,8 +58,8 @@
   {
     "id": "solveButton",
     "lang": {
-      "en": "Give up",
-      "de": "Aufgeben"
+      "en": "Please help!",
+      "de": "Hilfe!"
     }
   },
   {
@@ -165,6 +165,76 @@
     "lang": {
       "en": "This service is brought to you by Roger Francis Hösl, Frankfurt, Germany.<br/>&#160;<br/>We are aware of potential abuse of this site and will do everything against it.<br/>&#160;<br/>This site is still in beta state.",
       "de": "Verantwortlich für diese Seite ist Roger Francis Hösl, Frankfurt, Deutschland.<br/>&#160;<br/>Die potentielle Gefahr dieser Anwendung ist uns bewusst. Wir werden alles tun, um dieser Gefahr zu begegnen.<br/>&#160;<br/>Die Seite befindet sich noch in einem Status 'BETA'"
+    }
+  },
+  {
+    "id": "settingExplain",
+    "lang": {
+      "en": "",
+      "de": ""
+    }
+  },
+  {
+    "id": "settingExplain",
+    "lang": {
+      "en": "",
+      "de": ""
+    }
+  },
+  {
+    "id": "settingExplain",
+    "lang": {
+      "en": "",
+      "de": ""
+    }
+  },
+  {
+    "id": "settingExplain",
+    "lang": {
+      "en": "",
+      "de": ""
+    }
+  },
+  {
+    "id": "settingThreeKidding",
+    "lang": {
+      "en": "3x3 kidding",
+      "de": "3 x 3 kinderleicht"
+    }
+  },
+  {
+    "id": "settingThreeEasy",
+    "lang": {
+      "en": "3x3 easy",
+      "de": "3 x 3 einfach"
+    }
+  },
+  {
+    "id": "settingThreeMedium",
+    "lang": {
+      "en": "3x3 medium",
+      "de": "3 x 3 mittel"
+    }
+  },
+  {
+    "id": "settingThreeHard",
+    "lang": {
+      "en": "3x3 hard",
+      "de": "3 x 3 schwer"
+    }
+  },
+  {
+    "id": "settingFour",
+    "lang": {
+      "en": "4x4 challenge",
+      "de": "4 x 4"
+    }
+  },
+  {
+    "id": "settingFive",
+    "lang": {
+      "en": "5x5 challenge",
+      "de": "5 x 5"
     }
   }
 

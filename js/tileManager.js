@@ -5,7 +5,7 @@ window.$disc = window.$disc || {};
     let tileWidth;
     let tileHeight;
     let tiles;
-    // let numW, numH;
+    let animationStoppedByUser = false;
     let board = [];
     let locked = false;
     let winningAction;
@@ -48,6 +48,12 @@ window.$disc = window.$disc || {};
             identDiv.innerHTML = `${String.fromCharCode(65 + oX)}${oY + 1}`; //String.fromCharCode(65);
             htmlElement.appendChild(identDiv);
             htmlElement.onclick = tryMove;
+            htmlElement.onmousedown = () => {
+                animationStoppedByUser = true;
+            };
+            htmlElement.ontouchstart = () => {
+                animationStoppedByUser = true;
+            };
             return htmlElement;
         };
 
@@ -156,7 +162,6 @@ window.$disc = window.$disc || {};
             let counter = 0;
             function nextAutoMove() {
                 if(counter++ < data.length) {
-                    console.log(counter);
                     setTimeout(() => {
                         const entry = data[counter - 1];
                         const found = tiles.find(tile => {
@@ -164,15 +169,17 @@ window.$disc = window.$disc || {};
                             return coords[0] === entry[0] && coords[1] === entry[1];
                         });
                         if(found) {
-                            // found.move();
-                            nextAutoMove();
+                            found.move();
+                            if(!animationStoppedByUser) {
+                                nextAutoMove();
+                            }
                         }
-                    }, 400);
+                    }, 1234);
                 }
             }
-            console.log(data);
             nextAutoMove();
         }
+        animationStoppedByUser = false;
         $disc.ai.resolveTask(tiles, onSuccess, winningAction);
     };
 
@@ -199,11 +206,11 @@ window.$disc = window.$disc || {};
         return result;
     };
 
-    self.buildTiles = (image, numW, numH, winAction) => {
+    self.buildTiles = (image, numW, numH, level, winAction) => {
         return new Promise(resolve => {
             commonIssues(image, numW, numH, winAction);
             const indices = numW * numH;
-            $disc.ai.getTask(numW, numH).then(arr => {
+            $disc.ai.getTask(numW, numH, level).then(arr => {
                 const result = [];
                 for (let i = 0; i < indices; i++) {
                     result.push(new Tile(

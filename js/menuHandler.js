@@ -39,9 +39,9 @@ window.$disc = window.$disc || {};
         return ok;
     }
 
-    self.setSettings = (wh) => {
-        $disc.settingsHandler.setSettings(wh);
-        $disc.stageActions.buildTiles([wh, wh]);
+    self.setSettings = (wh, level) => {
+        $disc.settingsHandler.setSettings(wh, level);
+        $disc.stageActions.buildTiles([wh, wh, level]);
     };
 
     self.saveCurrentTask = () => {

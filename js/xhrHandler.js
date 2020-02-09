@@ -73,7 +73,8 @@ window.$disc = window.$disc || {};
         })
     };
 
-    self.loadJsonProperties = (url) => {
+    self.loadJsonProperties = (_url, once) => {
+        const url = once ? `${_url}?ts=${new Date().getTime()}` : _url;
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.onerror = () => reject(-1);

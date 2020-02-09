@@ -20,15 +20,16 @@ window.$disc = window.$disc || {};
         }
     }
 
-    function createSettings(wh, allowDynIncreaseWorH) {
+    function createSettings(wh, level, allowDynIncreaseWorH) {
         return {
             wh: wh,
+            level: level,
             allowDynIncreaseWorH: allowDynIncreaseWorH || false
         }
     }
 
-    self.setSettings = (wh, allowDynIncrease) => {
-        storage.setItem(KEY_SETTINGS, JSON.stringify(createSettings(wh, allowDynIncrease)));
+    self.setSettings = (wh, level, allowDynIncrease) => {
+        storage.setItem(KEY_SETTINGS, JSON.stringify(createSettings(wh, level, allowDynIncrease)));
     };
 
     self.getSettings = () => {

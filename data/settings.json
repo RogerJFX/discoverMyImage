@@ -3,7 +3,7 @@
   "storeURL": "store.php",
   "getURL": "get.php?uuid=__UUID__",
 
-  "aiServer": "http://localhost:9000/",
+  "aiServer": "https://7fx.de:9443/",
   "taskURL": "task.php?level=__LEVEL__",
   "resolveURL": "resolve.php?task=__TASK__",
   "checkURL": "check.php?task=__TASK__"
