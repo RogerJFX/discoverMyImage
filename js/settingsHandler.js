@@ -3,7 +3,7 @@ window.$disc = window.$disc || {};
 
     //const supported = [3, 4, 5];
 
-    let currSettings = [4, 4, 0];
+    let currSettings = [3, 3, 2];
 
     let softSettings;
 
@@ -24,6 +24,9 @@ window.$disc = window.$disc || {};
 
     self.getSoftSettings = () => {
         return new Promise((resolve, reject) => {
+            if(softSettings) {
+                resolve(softSettings);
+            }
             $disc.xhrHandler.loadJsonProperties($disc.constants.SETTINGS_URL).then(settings => {
                 softSettings = settings;
                 resolve(settings);

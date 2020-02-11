@@ -1,0 +1,88 @@
+#spinnerBG {
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    display:none;
+    background: rgba(23,23,23,0.7);
+    z-index:100010;
+}
+
+.spinner-wrapper {
+    position:relative;
+    height:100%;
+}
+
+.lds-grid {
+    color: white;
+    display: block;
+    position: relative;
+    width: 128px;
+    height: 128px;
+    margin:0 auto;
+    top:40%;
+}
+
+.lds-grid div {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background: #fff;
+    animation: lds-grid 1.2s linear infinite;
+}
+.lds-grid div:nth-child(1) {
+    top: 8px;
+    left: 8px;
+    animation-delay: 0s;
+}
+.lds-grid div:nth-child(2) {
+    top: 8px;
+    left: 48px;
+    animation-delay: -0.4s;
+}
+.lds-grid div:nth-child(3) {
+    top: 8px;
+    left: 88px;
+    animation-delay: -0.8s;
+}
+.lds-grid div:nth-child(4) {
+    top: 48px;
+    left: 8px;
+    animation-delay: -0.4s;
+}
+.lds-grid div:nth-child(5) {
+    top: 48px;
+    left: 48px;
+    animation-delay: -0.8s;
+}
+.lds-grid div:nth-child(6) {
+    top: 48px;
+    left: 88px;
+    animation-delay: -1.2s;
+}
+.lds-grid div:nth-child(7) {
+    top: 88px;
+    left: 8px;
+    animation-delay: -0.8s;
+}
+.lds-grid div:nth-child(8) {
+    top: 88px;
+    left: 48px;
+    animation-delay: -1.2s;
+}
+.lds-grid div:nth-child(9) {
+    top: 88px;
+    left: 88px;
+    animation-delay: -1.6s;
+}
+@keyframes lds-grid {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.2;
+    }
+}
+

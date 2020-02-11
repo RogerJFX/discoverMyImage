@@ -90,7 +90,7 @@ window.$disc = window.$disc || {};
                         resolve(str2Data(data.response));
                     }).catch(err => {
                         console.error(`Error ${err}, now shuffling randomly`);
-                        resolve(randomShuffle(numW, numH));
+                        resolve(randomShuffle(numW * numH));
                     });
                 });
             }

@@ -7,16 +7,16 @@
     <link rel="stylesheet" href="css/common.css">
 	<script src="js/constants.js"></script>
 	<script src="js/storage.js"></script>
-	<script src="js/tileManager.js"></script>
-	<script src="js/imageHandler.js"></script>
+	<script src="js/tileManager.js?12"></script>
+	<script src="js/imageHandler.js?123450"></script>
 	<script src="js/animator.js"></script>
 	<script src="js/xhrHandler.js"></script>
 	<script src="js/menuHandler.js"></script>
-	<script src="js/stageActions.js"></script>
+	<script src="js/stageActions.js?123456"></script>
 	<script src="js/language.js"></script>
 	<script src="js/settingsHandler.js"></script>
 	<script src="js/deviceDetection.js"></script>
-	<script src="js/aiManager.js"></script>
+	<script src="js/aiManager.js?12"></script>
 	<script>
 
 		function resizeListener(noTimeout) {
@@ -68,10 +68,10 @@
 				if(lastLoadedImage) {
 					$disc.stageActions.processFile(new Promise(resolve => {
 						const img = new Image();
-						img.src = lastLoadedImage;
 						img.onload = () => {
 							resolve(img);
 						};
+						img.src = lastLoadedImage;
 					}), $disc.settingsHandler.getTileSettings());
 				} else {
 					toggleWelcomeLanguage(lang);
@@ -79,6 +79,7 @@
 			}
 
 			function handleFileSelect(evt) {
+				// const event = evt || window.event;
 				window.$disc.menuHandler.handleMenuClick([], ['selectModal', 'modalLayer', 'modalBG']);
 				$disc.stageActions.processFile(window.$disc.imageHandler.getFile(evt), $disc.settingsHandler.getTileSettings());
 			}
@@ -93,7 +94,9 @@
 			dropZone.addEventListener('dragover', handleDragOver, false);
 			dropZone.addEventListener('drop', handleFileSelect, false);
 
-			document.getElementById('files').addEventListener('input', handleFileSelect, false); // or change
+			document.getElementById('files').addEventListener('change', (evt) => {
+				handleFileSelect(evt);
+			}, true); // input or change
 			$disc.lang.switchLanguage(lang);
 		}, false);
 
@@ -119,11 +122,13 @@
 				$mH.handleMenuClick([], ['mainMenu', 'languageModal','modalLayer', 'modalBG']);
 			}
 		}
-
 	</script>
 	<script data-ad-client="ca-pub-5386329083980702" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
+<div id="spinnerBG"><div class="spinner-wrapper">
+	<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+</div></div>
 	<dynStylecontainer></dynStylecontainer>
 	<div class="modalBG" id="modalBG"></div>
 

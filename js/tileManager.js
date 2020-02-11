@@ -93,7 +93,6 @@ window.$disc = window.$disc || {};
     function checkReady() {
         const firstWrongPlaced = tiles.find(tile => !tile.isCorrectPlaced());
         if(!firstWrongPlaced) {
-            // alert('GREAT!');
             winningAction();
         }
     }
@@ -168,11 +167,9 @@ window.$disc = window.$disc || {};
                             const coords = tile.getCoords();
                             return coords[0] === entry[0] && coords[1] === entry[1];
                         });
-                        if(found) {
+                        if(!animationStoppedByUser && found) {
                             found.move();
-                            if(!animationStoppedByUser) {
-                                nextAutoMove();
-                            }
+                            nextAutoMove();
                         }
                     }, 1234);
                 }

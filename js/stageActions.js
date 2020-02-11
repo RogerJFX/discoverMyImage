@@ -5,8 +5,17 @@ window.$disc = window.$disc || {};
     let originalImage, stageImage;
     let won = false;
 
+    function showSpinner() {
+        document.getElementById('spinnerBG').style.display = 'block';
+    }
+
+    function hideSpinner() {
+       document.getElementById('spinnerBG').style.display = 'none';
+    }
+
     // Workhorse. This will be called for any image.
     self.processFile = (promise, settings, tileStates) => {
+        showSpinner();
         const {convert2BW, modifyImage, simpleDarken, resizeToStage} = window.$disc.imageHandler;
         promise.then(image => {
             originalImage = image;
@@ -25,9 +34,13 @@ window.$disc = window.$disc || {};
                     stage.style.backgroundImage = `URL(${bgImg.src})`;
                 });
             // Tiles
-            self.buildTiles(settings, tileStates ? () => new Promise(resolve => resolve(window.$disc.tileManager
-                .fromStoredArray(image, settings[0], settings[1], tileStates, winAction))) : null);
+            self.buildTiles(settings, tileStates ? () => {
+                return new Promise(resolve => {
+                    resolve(window.$disc.tileManager.fromStoredArray(image, settings[0], settings[1], tileStates, winAction));
+                });
+            } : null);
         }).catch(err => {
+            hideSpinner();
             console.error(err);
             $disc.lang.getTranslation(err).then(t => {
                 $disc.menuHandler.alert(t);
@@ -36,6 +49,7 @@ window.$disc = window.$disc || {};
     };
 
     self.buildTiles = (settings, initFn) => {
+
         if(won && stageImage) {
             const {convert2BW, modifyImage, simpleDarken} = window.$disc.imageHandler;
             modifyImage(stageImage, [convert2BW, simpleDarken])
@@ -44,9 +58,11 @@ window.$disc = window.$disc || {};
                 });
         }
         won = false;
+
         initFn = initFn || function () {
             return window.$disc.tileManager.buildTiles(stageImage, settings[0], settings[1], settings[2], winAction); // is a promise
         };
+
         if(stageImage) {
             outerStage.innerHTML = '';
             initFn().then(tiles => {
@@ -63,6 +79,7 @@ window.$disc = window.$disc || {};
                 });
                 createLegend(settings, tD);
                 outerStage.appendChild(stage);
+                hideSpinner();
             });
         }
     };

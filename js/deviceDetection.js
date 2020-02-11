@@ -79,8 +79,8 @@ window.$disc = window.$disc || {};
             // console.log('SEALED, nothing to do');
             return;
         }
-        const w = window.outerWidth;
-        const h = window.outerHeight;
+        const w = screen.availWidth;
+        const h = screen.availHeight;
         return new Promise(resolve => {
             // loadDevices().then(() => {
             loadDevicesObservable(() => {

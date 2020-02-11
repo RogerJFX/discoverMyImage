@@ -1,0 +1,20 @@
+{
+  "short_name": "D-M-I",
+  "name": "Discover My Image",
+  "icons": [
+    {
+      "src": "img/icons/192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "img/icons/512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/discoverMyImage/",
+  "background_color": "#336688",
+  "display": "standalone",
+  "theme_color": "#336688"
+}

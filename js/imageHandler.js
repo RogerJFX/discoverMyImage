@@ -240,10 +240,8 @@ window.$disc = window.$disc || {};
     self.getFile = (evt) => {
         evt.stopPropagation();
         evt.preventDefault();
-
-        const files = evt.dataTransfer ? evt.dataTransfer.files : evt.target.files; // FileList object.
+        const files = evt.dataTransfer && evt.dataTransfer.files ? evt.dataTransfer.files : evt.target.files; // FileList object.
         const first = [...files].filter(f => f.type.match('image.*'))[0]; // Convert to array, then filter.
-
         return new Promise((resolve, reject) => {
             if (first) {
                 getFileData(first, (uint8Array, orientation) => {
@@ -258,7 +256,9 @@ window.$disc = window.$disc || {};
                         }).then(image => {
                             $disc.storage.setLastLoadedImage(image.src);
                             resolve(image);
-                        }).catch(err => console.log(err));
+                        }).catch(err => {
+                            console.log(err);
+                        });
                     };
                 });
             } else {
