@@ -18,7 +18,7 @@
 	<link rel="apple-touch-icon" sizes="152x152" href="/img/icons/apple-touch-icon-152x152.png" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/img/icons/apple-touch-icon-180x180.png" />
 	<link rel="stylesheet" href="css/common.css">
-	<script src="game.min.js?1_1_1"></script>
+	<script src="game.min.js?1_2_1"></script>
 	<script>
 
 		if(!location.href.startsWith("https")) {
@@ -100,7 +100,7 @@
 			dropZone.addEventListener('drop', handleFileSelect, false);
 
 			document.getElementById('files').addEventListener('change', (evt) => {
-				handleFileSelect(evt);
+				handleFileSelect(evt); // Caution! Explicitly pass evt here!
 			}, true); // input or change
 			$disc.lang.switchLanguage(lang);
 		}, false);
@@ -113,6 +113,7 @@
 			$mH.toggleShowButton('changeSettingsButton', $mH.hasCurrentImage);
 			$mH.toggleShowButton('loadGameButton', $mH.hasCurrentTask);
 			$mH.toggleShowButton('solveButton', $mH.hasCurrentImage);
+			$mH.toggleShowButton('waUploadButton', $mH.isMobileDevice);
 		}
 
 		function toggleWelcomeLanguage(lang) {
@@ -129,7 +130,7 @@
 		}
 
 	</script>
-	<script data-ad-client="ca-pub-5386329083980702" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!--	<script data-ad-client="ca-pub-5386329083980702" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
 </head>
 <body>
 <div id="spinnerBG"><div class="spinner-wrapper">
@@ -207,6 +208,8 @@
 		<input placeholder="Receiver's email address" id="sendToEmail" maxlength="128"/>
 		<div>&#160;</div>
 		<button id="uploadButton" onclick="$mH.upload({myName: 'sendMyName', hisName: 'sendHisName', mailTo: 'sendToEmail'});"></button>
+		<div>&#160;</div>
+		<button id="waUploadButton" onclick="$mH.uploadUsingWhatsApp();"></button>
 	</div>
 	<div class="innerModal" id="aboutModal">
 		<div style="float:right">

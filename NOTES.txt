@@ -1,5 +1,14 @@
 whatsapp://send/?phone=+491721420329&text=Hi+Karin&source&data
 
+// das %20 am Anfang der NAchricht scheint wichtig zu sein. Außerdem alle space durch %20 ersetzen.
+https://api.whatsapp.com/send?phone=+*YOURNUMBER*&text=%20*YOURMESSAGE*
+
+Öffnet automatisch whatsapp. Nummer vielleicht mal weglassen.
+
+Soll auch so geht <a href="">
+
+Oder document.createElement('A'), href rein und click().
+
 google adsense
 160x604
 

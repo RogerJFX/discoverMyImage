@@ -27,7 +27,7 @@ window.$disc = window.$disc || {};
             if(softSettings) {
                 resolve(softSettings);
             }
-            $disc.xhrHandler.loadJsonProperties($disc.constants.SETTINGS_URL).then(settings => {
+            $disc.xhrHandler.loadJsonProperties($disc.constants.SETTINGS_URL, true).then(settings => {
                 softSettings = settings;
                 resolve(settings);
             }).catch(err => reject(err));

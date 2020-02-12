@@ -108,6 +108,7 @@
 			$mH.toggleShowButton('changeSettingsButton', $mH.hasCurrentImage);
 			$mH.toggleShowButton('loadGameButton', $mH.hasCurrentTask);
 			$mH.toggleShowButton('solveButton', $mH.hasCurrentImage);
+			$mH.toggleShowButton('waUploadButton', $mH.isMobileDevice);
 		}
 
 		function toggleWelcomeLanguage(lang) {
@@ -201,6 +202,8 @@
 			<input placeholder="Receiver's email address" id="sendToEmail" maxlength="128"/>
 			<div>&#160;</div>
 			<button id="uploadButton" onclick="$mH.upload({myName: 'sendMyName', hisName: 'sendHisName', mailTo: 'sendToEmail'});"></button>
+			<div>&#160;</div>
+			<button id="waUploadButton" onclick="$mH.uploadUsingWhatsApp();"></button>
 		</div>
 		<div class="innerModal" id="aboutModal">
 			<div style="float:right">

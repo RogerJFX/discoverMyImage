@@ -13,19 +13,32 @@ window.$disc = window.$disc || {};
         return new EnterpriseBean(imgSrc, myName, herName, email, $disc.lang.getCurrLang());
     };
 
-    self.uploadImage = (bean) => {
+    self.putImage = (bean) => {
+        doUpload('PUT', bean, () => {
+            $disc.lang.getTranslation('sendSuccess').then(t => $disc.menuHandler.alert(t, 2000));
+        });
+    };
+
+    self.postImage = (bean, thenFn) => {
+        doUpload('POST', bean, thenFn);
+    };
+
+    function doUpload(method, bean, onSuccessFn) {
         $disc.settingsHandler.getSoftSettings().then(settings => {
             const xhr = new XMLHttpRequest();
             const mH = $disc.menuHandler;
             xhr.onerror = () => mH.alert("Connection refused. Please try again later.");
-            xhr.open('PUT', `${settings['imageServer']}${settings['storeURL']}`, true);
+            xhr.open(method, `${settings['imageServer']}${settings['storeURL']}`, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
 
             xhr.onload = function(e) {
                 if (this.status === 200) {
-                    $disc.lang.getTranslation('sendSuccess').then(t => mH.alert(t, 2000));
+                    onSuccessFn(this.responseText);
                 } else {
                     switch (this.status) {
+                        case 507:
+                            $disc.lang.getTranslation('errorInsufficientStorage').then(t => mH.alert(t));
+                            break;
                         case 400:
                             $disc.lang.getTranslation('errorBadRequest').then(t => mH.alert(t));
                             break;
@@ -38,7 +51,34 @@ window.$disc = window.$disc || {};
             };
             xhr.send(JSON.stringify(bean));
         });
-    };
+    }
+
+    // self.uploadImage = (bean) => {
+    //     // $disc.settingsHandler.getSoftSettings().then(settings => {
+    //     //     const xhr = new XMLHttpRequest();
+    //     //     const mH = $disc.menuHandler;
+    //     //     xhr.onerror = () => mH.alert("Connection refused. Please try again later.");
+    //     //     xhr.open('PUT', `${settings['imageServer']}${settings['storeURL']}`, true);
+    //     //     xhr.setRequestHeader('Content-Type', 'application/json');
+    //     //
+    //     //     xhr.onload = function(e) {
+    //     //         if (this.status === 200) {
+    //     //             $disc.lang.getTranslation('sendSuccess').then(t => mH.alert(t, 2000));
+    //     //         } else {
+    //     //             switch (this.status) {
+    //     //                 case 400:
+    //     //                     $disc.lang.getTranslation('errorBadRequest').then(t => mH.alert(t));
+    //     //                     break;
+    //     //                 case 403:
+    //     //                 default:
+    //     //                     $disc.lang.getTranslation('errorForbidden').then(t => mH.alert(t));
+    //     //                     break;
+    //     //             }
+    //     //         }
+    //     //     };
+    //     //     xhr.send(JSON.stringify(bean));
+    //     // });
+    // };
 
     self.getImage = (uuid) => {
         //const GET_URL = $disc.constants.IMAGE_GET_URL;

@@ -86,7 +86,7 @@ window.$disc = window.$disc || {};
             } else {
                 level = level || $disc.settingsHandler.getTileSettings()[2] || 4; // random on ai server
                 fetchDataAndDo((settings) => {
-                    $disc.xhrHandler.loadJsonProperties(`${settings['aiServer']}${settings['taskURL'].replace('__LEVEL__', level)}`).then(data => {
+                    $disc.xhrHandler.loadJsonProperties(`${settings['aiServer']}${settings['taskURL'].replace('__LEVEL__', level)}`, false).then(data => {
                         resolve(str2Data(data.response));
                     }).catch(err => {
                         console.error(`Error ${err}, now shuffling randomly`);
@@ -103,7 +103,7 @@ window.$disc = window.$disc || {};
             return;
         }
         fetchDataAndDo((settings) => {
-            $disc.xhrHandler.loadJsonProperties(`${settings['aiServer']}${settings['resolveURL'].replace('__TASK__', tiles2Task(tiles))}`).then(data => {
+            $disc.xhrHandler.loadJsonProperties(`${settings['aiServer']}${settings['resolveURL'].replace('__TASK__', tiles2Task(tiles))}`, false).then(data => {
                 onSuccessFn(data.response);
             }).catch(err => {
                 console.error(err);
@@ -115,7 +115,7 @@ window.$disc = window.$disc || {};
     self.checkTask = (task) => {
         return new Promise((resolve, reject) => {
             fetchDataAndDo((settings) => {
-                $disc.xhrHandler.loadJsonProperties(`${settings['aiServer']}${settings['checkURL'].replace('__TASK__', task)}`).then(data => {
+                $disc.xhrHandler.loadJsonProperties(`${settings['aiServer']}${settings['checkURL'].replace('__TASK__', task)}`, false).then(data => {
                     resolve(data);
                 }).catch(err => reject(err));
             })

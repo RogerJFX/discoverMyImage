@@ -19,21 +19,6 @@ window.$disc = window.$disc || {};
 
     let loading = false;
 
-    // function loadDevices() {
-    //     return new Promise((resolve, reject) => {
-    //         if(fixedScreenDevices) {
-    //             resolve();
-    //         } else {
-    //             console.trace();
-    //             $disc.xhrHandler.loadJsonProperties($disc.constants.DEVICE_LIST_URL).then(data => {
-    //                 fixedScreenDevices = data['fixedScreenDevices'];
-    //                 desktopImgDim = data['desktopImgDim'];
-    //                 resolve();
-    //             }).catch(err => console.error(err));
-    //         }
-    //     })
-    // }
-
     function loadDevicesObservable(callback) {
         if(fixedScreenDevices) {
             loading = false;
@@ -42,7 +27,7 @@ window.$disc = window.$disc || {};
             loadObserverFns.push(callback);
             if(!loading) {
                 loading = true;
-                $disc.xhrHandler.loadJsonProperties($disc.constants.DEVICE_LIST_URL).then(data => {
+                $disc.xhrHandler.loadJsonProperties($disc.constants.DEVICE_LIST_URL, true).then(data => {
                     fixedScreenDevices = data['fixedScreenDevices'];
                     desktopImgDim = data['desktopImgDim'];
                     loading = false;
@@ -72,6 +57,10 @@ window.$disc = window.$disc || {};
                 }
             }
         })
+    };
+
+    self.isMobileDevice = () => {
+        return !!foundDevice;
     };
 
     self.estimate = (onFinished) => {

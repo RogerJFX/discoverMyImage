@@ -47,7 +47,7 @@ window.$disc = window.$disc || {};
     };
 
     function fetchLangProps(cb) {
-        $disc.xhrHandler.loadJsonProperties($disc.constants.LANGUAGE_URL).then(obj => {
+        $disc.xhrHandler.loadJsonProperties($disc.constants.LANGUAGE_URL, true).then(obj => {
             props = obj;
             cb(obj);
         });

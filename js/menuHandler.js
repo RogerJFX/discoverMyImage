@@ -80,6 +80,8 @@ window.$disc = window.$disc || {};
 
     self.hasCurrentImage = () => $disc.stageActions.hasCurrentImage();
 
+    self.isMobileDevice = () => $disc.deviceDetection.isMobileDevice();
+
     self.toggleShowButton = (nodeId, checkFn) => {
         document.getElementById(nodeId).style.display = checkFn() ? 'block': 'none';
     };
@@ -102,9 +104,27 @@ window.$disc = window.$disc || {};
         }
         const imageToSend = $disc.stageActions.getCurrentImage();
         if(imageToSend) {
-            window.$disc.xhrHandler.uploadImage(window.$disc.xhrHandler.createBean(imageToSend.src, myNameNode.value, hisNameNode.value, mailNode.value));
+            window.$disc.xhrHandler.putImage(window.$disc.xhrHandler.createBean(imageToSend.src, myNameNode.value, hisNameNode.value, mailNode.value));
             hisNameNode.value = '';
             mailNode.value = '';
+        }
+    };
+
+    self.uploadUsingWhatsApp = () => {
+        const imageToSend = $disc.stageActions.getCurrentImage();
+        if(imageToSend) {
+            window.$disc.xhrHandler.postImage(
+                window.$disc.xhrHandler.createBean(imageToSend.src, '', '', ''),
+                (uuidJsonStr) => {
+                    const obj = JSON.parse(uuidJsonStr);
+                    const uuid = obj['uuid'];
+                    $disc.settingsHandler.getSoftSettings().then(settings => {
+                        const link = `${settings['myServer']}${settings['myTaskUrl'].replace('__UUID__', uuid)}`;
+                        console.log(link);
+                        location.href = 'whatsapp://send/?text=%20' + link;
+                    })
+                }
+            );
         }
     };
 
@@ -124,7 +144,7 @@ window.$disc = window.$disc || {};
             });
             return;
         }
-        $disc.xhrHandler.loadJsonProperties($disc.constants.EXAMPLE_LIST_URL).then(list => {
+        $disc.xhrHandler.loadJsonProperties($disc.constants.EXAMPLE_LIST_URL, true).then(list => {
             exampleImageList = list;
             list.sort((a, b) => {
                 return  a.index - b.index;

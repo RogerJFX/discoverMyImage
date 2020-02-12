@@ -93,8 +93,15 @@
   {
     "id": "uploadButton",
     "lang": {
-      "en": "Submit",
-      "de": "Senden"
+      "en": "Send Email",
+      "de": "Email senden"
+    }
+  },
+  {
+    "id": "waUploadButton",
+    "lang": {
+      "en": "Or use WhatsApp",
+      "de": "Oder mit WhatsApp"
     }
   },
   {
@@ -130,6 +137,13 @@
     "lang": {
       "en": "This doesn't appear to be an image file.<br/>&#160;<br/>Valid formats are e.g. jpg or png.",
       "de": "Diese Datei scheint kein Bild zu sein.<br/>&#160;<br/>Gültige Formate sind z.B. jpg, png."
+    }
+  },
+  {
+    "id": "errorInsufficientStorage",
+    "lang": {
+      "en": "We are sorry we do not have sufficient storage yet.<br/>&#160;<br/>Sure we work hard on this.",
+      "de": "Tut uns leid, wir haben gerade nicht genug Speicher.<br/>&#160;<br/>Wir arbeiten hart daran, das zu beheben."
     }
   },
   {
