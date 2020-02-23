@@ -5,6 +5,10 @@ window.$disc = window.$disc || {};
 
     let currSettings = [3, 3, 2];
 
+    let grid = [3, 3];
+
+    let level = 2;
+
     let softSettings;
 
     // self.getSettings = () => {
@@ -13,14 +17,28 @@ window.$disc = window.$disc || {};
     // };
 
     self.getTileSettings = () => {
-        const storedSetting = $disc.storage.getSettings();
-        return storedSetting ? [storedSetting.wh, storedSetting.wh, storedSetting.level] : currSettings;
+        //const storedSetting = $disc.storage.getSettings();
+        const lvl = $disc.storage.getLevel() || level;
+        return [grid[0], grid[1], lvl];
+        // return storedSetting ? [storedSetting.wh, storedSetting.wh, storedSetting.level] : currSettings;
     };
 
-    self.setSettings = (wh, level) => {
-        $disc.storage.setSettings(wh, level);
-        currSettings = [wh, wh, level];
+    // self.setSettings = (wh, level) => {
+    //     $disc.storage.setSettings(wh, level);
+    //     currSettings = [wh, wh, level];
+    // };
+
+    self.setLevel = (_level) => {
+        level = _level;
     };
+
+    self.setGrid = (w, h) => {
+        grid = [w, h];
+    };
+
+    self.getGrid = () => grid;
+
+    self.getLevel = () => level;
 
     self.getSoftSettings = () => {
         return new Promise((resolve, reject) => {

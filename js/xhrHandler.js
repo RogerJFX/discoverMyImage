@@ -53,33 +53,6 @@ window.$disc = window.$disc || {};
         });
     }
 
-    // self.uploadImage = (bean) => {
-    //     // $disc.settingsHandler.getSoftSettings().then(settings => {
-    //     //     const xhr = new XMLHttpRequest();
-    //     //     const mH = $disc.menuHandler;
-    //     //     xhr.onerror = () => mH.alert("Connection refused. Please try again later.");
-    //     //     xhr.open('PUT', `${settings['imageServer']}${settings['storeURL']}`, true);
-    //     //     xhr.setRequestHeader('Content-Type', 'application/json');
-    //     //
-    //     //     xhr.onload = function(e) {
-    //     //         if (this.status === 200) {
-    //     //             $disc.lang.getTranslation('sendSuccess').then(t => mH.alert(t, 2000));
-    //     //         } else {
-    //     //             switch (this.status) {
-    //     //                 case 400:
-    //     //                     $disc.lang.getTranslation('errorBadRequest').then(t => mH.alert(t));
-    //     //                     break;
-    //     //                 case 403:
-    //     //                 default:
-    //     //                     $disc.lang.getTranslation('errorForbidden').then(t => mH.alert(t));
-    //     //                     break;
-    //     //             }
-    //     //         }
-    //     //     };
-    //     //     xhr.send(JSON.stringify(bean));
-    //     // });
-    // };
-
     self.getImage = (uuid) => {
         //const GET_URL = $disc.constants.IMAGE_GET_URL;
         return new Promise((resolve, reject) => {

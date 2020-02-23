@@ -39,10 +39,15 @@ window.$disc = window.$disc || {};
         return ok;
     }
 
-    self.setSettings = (wh, level) => {
-        $disc.settingsHandler.setSettings(wh, level);
-        $disc.stageActions.buildTiles([wh, wh, level]);
+    self.setLevel = (level) => {
+        $disc.settingsHandler.setLevel(level);
+        $disc.stageActions.buildTiles(level);
     };
+
+    // self.setSettings = (wh, level) => {
+    //     $disc.settingsHandler.setSettings(wh, level);
+    //     $disc.stageActions.buildTiles([wh, wh, level]);
+    // };
 
     self.saveCurrentTask = () => {
         const image = $disc.stageActions.getCurrentImage();

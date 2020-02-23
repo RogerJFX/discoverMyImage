@@ -210,45 +210,38 @@
     }
   },
   {
-    "id": "settingThreeKidding",
+    "id": "settingLevelKidding",
     "lang": {
-      "en": "3x3 kidding",
-      "de": "3 x 3 kinderleicht"
+      "en": "kidding",
+      "de": "kinderleicht"
     }
   },
   {
-    "id": "settingThreeEasy",
+    "id": "settingLevelEasy",
     "lang": {
-      "en": "3x3 easy",
-      "de": "3 x 3 einfach"
+      "en": "easy",
+      "de": "einfach"
     }
   },
   {
-    "id": "settingThreeMedium",
+    "id": "settingLevelMedium",
     "lang": {
-      "en": "3x3 medium",
-      "de": "3 x 3 mittel"
+      "en": "medium",
+      "de": "mittel"
     }
   },
   {
-    "id": "settingThreeHard",
+    "id": "settingLevelHard",
     "lang": {
-      "en": "3x3 hard",
-      "de": "3 x 3 schwer"
+      "en": "hard",
+      "de": "schwer"
     }
   },
   {
-    "id": "settingFour",
+    "id": "settingLevelExtreme",
     "lang": {
-      "en": "4x4 challenge",
-      "de": "4 x 4"
-    }
-  },
-  {
-    "id": "settingFive",
-    "lang": {
-      "en": "5x5 challenge",
-      "de": "5 x 5"
+      "en": "extreme",
+      "de": "extrem"
     }
   }
 

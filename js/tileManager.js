@@ -111,7 +111,9 @@ window.$disc = window.$disc || {};
         tiles.forEach(tile => {
             if(!tile.isOmitted()) {
                 const coords = tile.getCoords();
+                //console.log(coords);
                 board[coords[1]][coords[0]] = tile;
+                //console.log(board);
             }
         });
     }
@@ -208,16 +210,18 @@ window.$disc = window.$disc || {};
             commonIssues(image, numW, numH, winAction);
             const indices = numW * numH;
             $disc.ai.getTask(numW, numH, level).then(arr => {
+                console.log(arr);
                 const result = [];
                 for (let i = 0; i < indices; i++) {
                     result.push(new Tile(
                         i % numW,
-                        Math.floor(i / numW) % numH,
+                        Math.floor(i / numW) % numW,
                         arr[i] % numW,
-                        Math.floor(arr[i] / numW) % numH));
+                        Math.floor(arr[i] / numW) % numW));
                 }
                 result[indices - 1].setOmitted(); // right bottom
                 tiles = result;
+                // console.log(tiles);
                 fillBoard();
                 resolve(result);
             });

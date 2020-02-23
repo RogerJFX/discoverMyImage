@@ -4,38 +4,46 @@ window.$disc = window.$disc || {};
     const storage = localStorage;
 
     const KEY_LAST_LOADED = '__last_loaded__';
-    const KEY_SETTINGS = '__settings__';
+    // const KEY_SETTINGS = '__settings__';
     const KEY_LANG = '__lang__';
     const KEY_CURRENT_TASK = '__task__';
     const KEY_CURRENT_IMAGE = '__task_img__';
+    const KEY_PLAY_LEVEL = '__lvl__';
 
-    // MAX 5 tasks
-    function createTask (imageData, sender, storeDate, settings, tilePositions) {
-        return {
-            imageData: imageData,
-            sender: sender,
-            storeDate: new Date().getTime(),
-            settings: settings,
-            tilePositions: tilePositions
-        }
-    }
+    // // MAX 5 tasks
+    // function createTask (imageData, sender, storeDate, settings, tilePositions) {
+    //     return {
+    //         imageData: imageData,
+    //         sender: sender,
+    //         storeDate: new Date().getTime(),
+    //         settings: settings,
+    //         tilePositions: tilePositions
+    //     }
+    // }
+    //
+    // function createSettings(wh, level, allowDynIncreaseWorH) {
+    //     return {
+    //         wh: wh,
+    //         level: level,
+    //         allowDynIncreaseWorH: allowDynIncreaseWorH || false
+    //     }
+    // }
 
-    function createSettings(wh, level, allowDynIncreaseWorH) {
-        return {
-            wh: wh,
-            level: level,
-            allowDynIncreaseWorH: allowDynIncreaseWorH || false
-        }
-    }
+    self.setLevel = level => storage.setItem(KEY_PLAY_LEVEL, '' + level);
 
-    self.setSettings = (wh, level, allowDynIncrease) => {
-        storage.setItem(KEY_SETTINGS, JSON.stringify(createSettings(wh, level, allowDynIncrease)));
+    self.getLevel = () => {
+        const str = storage.getItem(KEY_PLAY_LEVEL);
+        return str ? Number(str) : null;
     };
 
-    self.getSettings = () => {
-        const str = storage.getItem(KEY_SETTINGS);
-        return str ? JSON.parse(str) : null;
-    };
+    // self.setSettings = (wh, level, allowDynIncrease) => {
+    //     storage.setItem(KEY_SETTINGS, JSON.stringify(createSettings(wh, level, allowDynIncrease)));
+    // };
+    //
+    // self.getSettings = () => {
+    //     const str = storage.getItem(KEY_SETTINGS);
+    //     return str ? JSON.parse(str) : null;
+    // };
 
     self.setLastLoadedImage = (imgData) => {
         storage.setItem(KEY_LAST_LOADED, imgData);

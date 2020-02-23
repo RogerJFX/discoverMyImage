@@ -48,7 +48,23 @@ window.$disc = window.$disc || {};
         });
     };
 
+    function calculateGrid(image) {
+        console.log('calculate grid');
+        const w = image.width;
+        const h = image.height;
+        const f = w / h;
+        if(f >= 1.25) {
+            return [4, 3];
+        } else if(f <= 0.75) {
+            return [3, 4];
+        } else {
+            return [3, 3];
+        }
+    }
+
     self.buildTiles = (settings, initFn) => {
+
+        const grid = calculateGrid(stageImage);
 
         if(won && stageImage) {
             const {convert2BW, modifyImage, simpleDarken} = window.$disc.imageHandler;
@@ -60,7 +76,7 @@ window.$disc = window.$disc || {};
         won = false;
 
         initFn = initFn || function () {
-            return window.$disc.tileManager.buildTiles(stageImage, settings[0], settings[1], settings[2], winAction); // is a promise
+            return window.$disc.tileManager.buildTiles(stageImage, grid[0], grid[1], settings[2], winAction); // is a promise
         };
 
         if(stageImage) {
@@ -68,8 +84,8 @@ window.$disc = window.$disc || {};
             initFn().then(tiles => {
                 stage.innerHTML = '';
                 const tD = tiles[0].getDimensions();
-                const stageWidth = tD[0] * settings[0];
-                const stageHeight = tD[1] * settings[1];
+                const stageWidth = tD[0] * grid[0];
+                const stageHeight = tD[1] * grid[1];
                 stage.style.height = `${stageHeight}px`;
                 stage.style.width = `${stageWidth}px`;
                 outerStage.style.height = `${stageHeight + 24}px`;
@@ -77,7 +93,7 @@ window.$disc = window.$disc || {};
                 tiles.forEach(tile => {
                     stage.appendChild(tile.toNode());
                 });
-                createLegend(settings, tD);
+                createLegend(grid, tD);
                 outerStage.appendChild(stage);
                 hideSpinner();
             });
