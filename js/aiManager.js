@@ -64,22 +64,21 @@ window.$disc = window.$disc || {};
         return result;
     }
 
-    function str2Data(str) {
+    function str2Data(str, w) {
         if (str.length === 20) { // 3 x 3, wie need 18 (9 tiles)
             str = str.substring(0, str.length - 2);
         }
-        const factor = str.length / 6;
         const arr = str.split('');
         const result = [];
         for (let i = 0; i < arr.length; i += 2) {
-            result.push(Number(arr[i]) + Number(arr[i + 1]) * factor);
+            result.push(Number(arr[i]) + Number(arr[i + 1]) * w);
         }
         return turnArray(result);
     }
 
-    //TODO: Das stimmt nicht. Mal 4 bei 12, mal 3 bei 9
-    function tiles2Task(tiles) { // Tile object from TileManager
-        const factor = tiles.length / 3;
+    function tiles2Task(tiles, radix) { // Tile object from TileManager
+        radix = radix || 3;
+        const factor = tiles.length / radix;
         const indexArray = [];
         tiles.forEach(tile => {
             const coords = tile.getCoords();
@@ -95,21 +94,64 @@ window.$disc = window.$disc || {};
         }
         let result = '';
         turnArray(indexArray).forEach(entry => {
-            result += entry % factor; // arr[i] % numW
-            result += Math.floor(entry / factor) % 3; // Math.floor(arr[i] / numW) % numH)
+            result += entry % factor;
+            result += Math.floor(entry / factor) % radix;
         });
-        return result;
+        return radix === 4 ? testTransString4Landscape2Portrait(result, 3) : result;
+    }
+
+    function listToMatrix(list, elementsPerSubArray) {
+        const matrix = [];
+        let i, k;
+        for (i = 0, k = -1; i < list.length; i++) {
+            if (i % elementsPerSubArray === 0) {
+                matrix[++k] = [];
+            }
+            matrix[k].push(list[i]);
+        }
+        return matrix;
+    }
+
+    function simpleConvertCoords(str) {
+        const arr = str.split('');
+        const tmp = [];
+        for (let i = 0; i < arr.length; i += 2) {
+            tmp.push(arr[i+1] + '' + arr[i]);
+        }
+        return tmp.join('');
+    }
+
+    function testTransString4Landscape2Portrait(str, radix) {
+        radix = radix || 4;
+        const arr = str.split('');
+        const tmp = [];
+        const result = [];
+        // Turn numbers, e.g. 32 => 23
+        for (let i = 0; i < arr.length; i += 2) {
+            tmp.push(arr[i+1] + '' + arr[i]);
+        }
+        const matrix = listToMatrix(tmp, radix);
+
+        for(let i = 0; i < matrix[0].length; i++) {
+            for(let j = 0; j < matrix.length; j++) {
+                result.push(matrix[j][i]);
+            }
+        }
+        return result.join('');
     }
 
     self.getTask = (numW, numH, level) => {
+        $disc.settingsHandler.setLastGrid(numW, numH);
         return new Promise((resolve, reject) => {
-
             level = level || $disc.settingsHandler.getTileSettings()[2] || 4; // random on ai server
             fetchDataAndDo((settings) => {
                 $disc.xhrHandler.loadJsonProperties(`${settings['aiServer']}${settings['taskURL'].replace('__LEVEL__', level).replace('__GRID__', numW + '' + numH)}`, false).then(data => {
-                    //resolve(str2Data(data.response));
-                    //resolve(str2Data("001020011121021222032313"));
-                    resolve(str2Data("001020320111213002122231"));
+                    const res = data.response;
+                    if(numH > numW) {
+                        resolve(str2Data(testTransString4Landscape2Portrait(res), numW));
+                    } else {
+                        resolve(str2Data(res, numW));
+                    }
                 }).catch(err => {
                     console.error(`Error ${err}, now shuffling randomly`);
                     resolve(randomShuffle(numW * numH));
@@ -120,11 +162,17 @@ window.$disc = window.$disc || {};
     };
 
     self.resolveTask = (tiles, onSuccessFn, onErrorFn) => {
-        const settings = $disc.settingsHandler.getTileSettings();
-        const gridString = tiles.length === 9 ? 33 : 43; //`${settings[0]}${settings[1]}`;
+        const grid = $disc.settingsHandler.getLastGrid();
+        const gridString = `${grid[0] * 10 + grid[1]}`;
+        const taskString = tiles2Task(tiles, grid[1]);
+        const portrait = grid[1] === 4;
         fetchDataAndDo((settings) => {
-            $disc.xhrHandler.loadJsonProperties(`${settings['aiServer']}${settings['resolveURL'].replace('__TASK__', tiles2Task(tiles)).replace('__GRID__', gridString)}`, false).then(data => {
-                onSuccessFn(resolveString2Array(data.response));
+            $disc.xhrHandler.loadJsonProperties(`${settings['aiServer']}${settings['resolveURL'].replace('__TASK__', taskString).replace('__GRID__', gridString)}`, false).then(data => {
+                if(portrait) {
+                    onSuccessFn(resolveString2Array(simpleConvertCoords(data.response)));
+                } else {
+                    onSuccessFn(resolveString2Array(data.response));
+                }
             }).catch(err => {
                 console.error(err);
                 onErrorFn();
@@ -141,4 +189,5 @@ window.$disc = window.$disc || {};
             })
         });
     };
+
 })(window.$disc.ai = window.$disc.ai || {});

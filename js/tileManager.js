@@ -210,7 +210,6 @@ window.$disc = window.$disc || {};
             commonIssues(image, numW, numH, winAction);
             const indices = numW * numH;
             $disc.ai.getTask(numW, numH, level).then(arr => {
-                console.log('from aiMananger:', arr);
                 const result = [];
                 for (let i = 0; i < indices; i++) {
                     result.push(new Tile(
@@ -221,7 +220,6 @@ window.$disc = window.$disc || {};
                 }
                 result[indices - 1].setOmitted(); // right bottom
                 tiles = result;
-                // console.log(tiles);
                 fillBoard();
                 resolve(result);
             });

@@ -7,7 +7,7 @@ window.$disc = window.$disc || {};
 
     let grid = [3, 3];
 
-    let level = 2;
+    let level = 1;
 
     let softSettings;
 
@@ -29,16 +29,17 @@ window.$disc = window.$disc || {};
     // };
 
     self.setLevel = (_level) => {
+        $disc.storage.setLevel(_level);
         level = _level;
     };
 
-    self.setGrid = (w, h) => {
+    self.setLastGrid = (w, h) => {
         grid = [w, h];
     };
 
-    self.getGrid = () => grid;
+    self.getLastGrid = () => grid;
 
-    self.getLevel = () => level;
+    self.getLevel = () => $disc.storage.getLevel() || level;
 
     self.getSoftSettings = () => {
         return new Promise((resolve, reject) => {

@@ -49,7 +49,6 @@ window.$disc = window.$disc || {};
     };
 
     function calculateGrid(image) {
-        console.log('calculate grid');
         const w = image.width;
         const h = image.height;
         const f = w / h;
