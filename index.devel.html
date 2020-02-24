@@ -62,7 +62,7 @@
 					});
 
 					toggleWelcomeLanguage(lang);
-				}), $disc.settingsHandler.getTileSettings());
+				}));
 			} else {
 				const lastLoadedImage = $disc.storage.getLastLoadedImage();
 				if(lastLoadedImage) {
@@ -72,7 +72,7 @@
 							resolve(img);
 						};
 						img.src = lastLoadedImage;
-					}), $disc.settingsHandler.getTileSettings());
+					}));
 				} else {
 					toggleWelcomeLanguage(lang);
 				}
@@ -81,7 +81,7 @@
 			function handleFileSelect(evt) {
 				// const event = evt || window.event;
 				window.$disc.menuHandler.handleMenuClick([], ['selectModal', 'modalLayer', 'modalBG']);
-				$disc.stageActions.processFile(window.$disc.imageHandler.getFile(evt), $disc.settingsHandler.getTileSettings());
+				$disc.stageActions.processFile(window.$disc.imageHandler.getFile(evt));
 			}
 
 			function handleDragOver(evt) {
@@ -124,7 +124,7 @@
 			}
 		}
 	</script>
-	<script data-ad-client="ca-pub-5386329083980702" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!--	<script data-ad-client="ca-pub-5386329083980702" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
 </head>
 <body>
 <div id="spinnerBG"><div class="spinner-wrapper">

@@ -188,7 +188,7 @@ window.$disc = window.$disc || {};
 
     self.fromStoredArray = (image, numW, numH, stored, winAction) => {
         commonIssues(image, numW, numH, winAction);
-
+        $disc.settingsHandler.setLastGrid(numW, numH);
         const result = [];
         for (let i = 0; i < stored.length; i++) {
             result.push(new Tile(
@@ -205,11 +205,11 @@ window.$disc = window.$disc || {};
         return result;
     };
 
-    self.buildTiles = (image, numW, numH, level, winAction) => {
+    self.buildTiles = (image, numW, numH, winAction) => {
         return new Promise(resolve => {
             commonIssues(image, numW, numH, winAction);
             const indices = numW * numH;
-            $disc.ai.getTask(numW, numH, level).then(arr => {
+            $disc.ai.getTask(numW, numH).then(arr => {
                 const result = [];
                 for (let i = 0; i < indices; i++) {
                     result.push(new Tile(

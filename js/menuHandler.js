@@ -41,20 +41,15 @@ window.$disc = window.$disc || {};
 
     self.setLevel = (level) => {
         $disc.settingsHandler.setLevel(level);
-        $disc.stageActions.buildTiles(level);
+        $disc.stageActions.buildTiles();
     };
-
-    // self.setSettings = (wh, level) => {
-    //     $disc.settingsHandler.setSettings(wh, level);
-    //     $disc.stageActions.buildTiles([wh, wh, level]);
-    // };
 
     self.saveCurrentTask = () => {
         const image = $disc.stageActions.getCurrentImage();
         if(image) {
             const tileStates = $disc.tileManager.getCurrentTilesState();
-            const settings = $disc.settingsHandler.getTileSettings();
-            $disc.storage.saveCurrentTask(image, tileStates, settings);
+            const grid = $disc.settingsHandler.getLastGrid();
+            $disc.storage.saveCurrentTask(image, tileStates, grid);
             return true;
         }
         return false;
@@ -159,7 +154,7 @@ window.$disc = window.$disc || {};
                 button.innerHTML = item.description[lang];
                 button.onclick = () => {
                     $disc.stageActions.processFile($disc.xhrHandler
-                        .simpleLoadImage($disc.constants.EXAMPLES_FOLDER_URL + item.filename), $disc.settingsHandler.getTileSettings());
+                        .simpleLoadImage($disc.constants.EXAMPLES_FOLDER_URL + item.filename));
                     onClickFn();
                 };
                 node.appendChild(button);

@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
+	<script>
+		if(!location.href.startsWith('https') && location.href.indexOf('crazything') === -1) { // :8
+			location.href = location.href.replace('http://', 'https://');
+		}
+	</script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<meta name="description" lang="de" content="Ein Bilder-Puzzle Spiel. Lade Bilder von deiner Festplatte und verschicke sie an Freunde. Mit verschiedenen Schwierigkeiten und intelligenter Hilfe.">
@@ -20,11 +25,6 @@
 	<link rel="stylesheet" href="css/common.css">
 	<script src="game.min.js?1_2_1"></script>
 	<script>
-
-		if(!location.href.startsWith("https")) {
-			location.href = location.href.replace('http://', 'https://');
-		}
-
 		function resizeListener(noTimeout) {
 			function estimate() {
 				$disc.deviceDetection.estimate(() => window.removeEventListener('resize', resizeListener));
@@ -68,25 +68,26 @@
 					});
 
 					toggleWelcomeLanguage(lang);
-				}), $disc.settingsHandler.getTileSettings());
+				}));
 			} else {
 				const lastLoadedImage = $disc.storage.getLastLoadedImage();
 				if(lastLoadedImage) {
 					$disc.stageActions.processFile(new Promise(resolve => {
 						const img = new Image();
-						img.src = lastLoadedImage;
 						img.onload = () => {
 							resolve(img);
 						};
-					}), $disc.settingsHandler.getTileSettings());
+						img.src = lastLoadedImage;
+					}));
 				} else {
 					toggleWelcomeLanguage(lang);
 				}
 			}
 
 			function handleFileSelect(evt) {
+				// const event = evt || window.event;
 				window.$disc.menuHandler.handleMenuClick([], ['selectModal', 'modalLayer', 'modalBG']);
-				$disc.stageActions.processFile(window.$disc.imageHandler.getFile(evt), $disc.settingsHandler.getTileSettings());
+				$disc.stageActions.processFile(window.$disc.imageHandler.getFile(evt));
 			}
 
 			function handleDragOver(evt) {
@@ -100,7 +101,7 @@
 			dropZone.addEventListener('drop', handleFileSelect, false);
 
 			document.getElementById('files').addEventListener('change', (evt) => {
-				handleFileSelect(evt); // Caution! Explicitly pass evt here!
+				handleFileSelect(evt);
 			}, true); // input or change
 			$disc.lang.switchLanguage(lang);
 		}, false);
@@ -128,7 +129,6 @@
 				$mH.handleMenuClick([], ['mainMenu', 'languageModal','modalLayer', 'modalBG']);
 			}
 		}
-
 	</script>
 <!--	<script data-ad-client="ca-pub-5386329083980702" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
 </head>
@@ -190,12 +190,11 @@
 				<div></div>
 			</div>
 		</div><div style="clear: both"></div>
-		<button id="settingThreeKidding" onclick="$mH.setSettings(3, 1);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">3 x 3</button>
-		<button id="settingThreeEasy" onclick="$mH.setSettings(3, 2);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">3 x 3</button>
-		<button id="settingThreeMedium" onclick="$mH.setSettings(3, 3);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">3 x 3</button>
-		<button id="settingThreeHard" onclick="$mH.setSettings(3, 4);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">3 x 3</button>
-		<button id="settingFour" onclick="$mH.setSettings(4, 4);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">4 x 4</button>
-		<button id="settingFive" onclick="$mH.setSettings(5, 4);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">5 x 5</button>
+		<button id="settingLevelKidding" onclick="$mH.setLevel(1);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">3 x 3</button>
+		<button id="settingLevelEasy" onclick="$mH.setLevel(2);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">3 x 3</button>
+		<button id="settingLevelMedium" onclick="$mH.setLevel(3);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">3 x 3</button>
+		<button id="settingLevelHard" onclick="$mH.setLevel(4);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">3 x 3</button>
+		<button id="settingLevelExtreme" onclick="$mH.setLevel(5);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">4 x 4</button>
 	</div>
 	<div class="innerModal" id="uploadModal">
 		<div style="float:right">

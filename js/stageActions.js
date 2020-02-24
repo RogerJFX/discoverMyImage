@@ -14,7 +14,7 @@ window.$disc = window.$disc || {};
     }
 
     // Workhorse. This will be called for any image.
-    self.processFile = (promise, settings, tileStates) => {
+    self.processFile = (promise, grid, tileStates) => {
         showSpinner();
         const {convert2BW, modifyImage, simpleDarken, resizeToStage} = window.$disc.imageHandler;
         promise.then(image => {
@@ -34,9 +34,9 @@ window.$disc = window.$disc || {};
                     stage.style.backgroundImage = `URL(${bgImg.src})`;
                 });
             // Tiles
-            self.buildTiles(settings, tileStates ? () => {
+            self.buildTiles(tileStates ? () => {
                 return new Promise(resolve => {
-                    resolve(window.$disc.tileManager.fromStoredArray(image, settings[0], settings[1], tileStates, winAction));
+                    resolve(window.$disc.tileManager.fromStoredArray(image, grid[0], grid[1], tileStates, winAction));
                 });
             } : null);
         }).catch(err => {
@@ -61,10 +61,8 @@ window.$disc = window.$disc || {};
         }
     }
 
-    self.buildTiles = (settings, initFn) => {
-
+    self.buildTiles = (initFn) => {
         const grid = calculateGrid(stageImage);
-
         if(won && stageImage) {
             const {convert2BW, modifyImage, simpleDarken} = window.$disc.imageHandler;
             modifyImage(stageImage, [convert2BW, simpleDarken])
@@ -73,9 +71,8 @@ window.$disc = window.$disc || {};
                 });
         }
         won = false;
-
         initFn = initFn || function () {
-            return window.$disc.tileManager.buildTiles(stageImage, grid[0], grid[1], settings[2], winAction); // is a promise
+            return window.$disc.tileManager.buildTiles(stageImage, grid[0], grid[1], winAction); // is a promise
         };
 
         if(stageImage) {

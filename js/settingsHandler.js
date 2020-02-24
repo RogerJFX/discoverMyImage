@@ -1,32 +1,11 @@
 window.$disc = window.$disc || {};
 (function SettingsHandler(self) {
 
-    //const supported = [3, 4, 5];
+    const grid = [3, 3];
 
-    let currSettings = [3, 3, 2];
-
-    let grid = [3, 3];
-
-    let level = 1;
+    let level = 2;
 
     let softSettings;
-
-    // self.getSettings = () => {
-    //     const storedSetting = $disc.storage.getSettings();
-    //     return storedSetting ? [storedSetting.wh, storedSetting.wh, storedSetting.level] : currSettings;
-    // };
-
-    self.getTileSettings = () => {
-        //const storedSetting = $disc.storage.getSettings();
-        const lvl = $disc.storage.getLevel() || level;
-        return [grid[0], grid[1], lvl];
-        // return storedSetting ? [storedSetting.wh, storedSetting.wh, storedSetting.level] : currSettings;
-    };
-
-    // self.setSettings = (wh, level) => {
-    //     $disc.storage.setSettings(wh, level);
-    //     currSettings = [wh, wh, level];
-    // };
 
     self.setLevel = (_level) => {
         $disc.storage.setLevel(_level);
@@ -34,12 +13,17 @@ window.$disc = window.$disc || {};
     };
 
     self.setLastGrid = (w, h) => {
-        grid = [w, h];
+        grid[0] = w;
+        grid[1] = h;
     };
 
-    self.getLastGrid = () => grid;
+    self.getLastGrid = () => {
+        return grid;
+    };
 
-    self.getLevel = () => $disc.storage.getLevel() || level;
+    self.getLevel = () => {
+        return $disc.storage.getLevel() || level;
+    };
 
     self.getSoftSettings = () => {
         return new Promise((resolve, reject) => {

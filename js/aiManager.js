@@ -143,7 +143,7 @@ window.$disc = window.$disc || {};
     self.getTask = (numW, numH, level) => {
         $disc.settingsHandler.setLastGrid(numW, numH);
         return new Promise((resolve, reject) => {
-            level = level || $disc.settingsHandler.getTileSettings()[2] || 4; // random on ai server
+            level = level || $disc.settingsHandler.getLevel() || 4; // random on ai server
             fetchDataAndDo((settings) => {
                 $disc.xhrHandler.loadJsonProperties(`${settings['aiServer']}${settings['taskURL'].replace('__LEVEL__', level).replace('__GRID__', numW + '' + numH)}`, false).then(data => {
                     const res = data.response;
