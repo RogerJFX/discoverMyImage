@@ -210,14 +210,14 @@ window.$disc = window.$disc || {};
             commonIssues(image, numW, numH, winAction);
             const indices = numW * numH;
             $disc.ai.getTask(numW, numH, level).then(arr => {
-                console.log(arr);
+                console.log('from aiMananger:', arr);
                 const result = [];
                 for (let i = 0; i < indices; i++) {
                     result.push(new Tile(
                         i % numW,
-                        Math.floor(i / numW) % numW,
+                        Math.floor(i / numW) % numH,
                         arr[i] % numW,
-                        Math.floor(arr[i] / numW) % numW));
+                        Math.floor(arr[i] / numW) % numH));
                 }
                 result[indices - 1].setOmitted(); // right bottom
                 tiles = result;
