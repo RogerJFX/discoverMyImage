@@ -8,6 +8,7 @@ window.$disc = window.$disc || {};
     const KEY_CURRENT_TASK = '__task__';
     const KEY_CURRENT_IMAGE = '__task_img__';
     const KEY_PLAY_LEVEL = '__lvl__';
+    const KEY_JWT = '__jwt__';
 
     self.setLevel = level => storage.setItem(KEY_PLAY_LEVEL, '' + level);
 
@@ -30,6 +31,14 @@ window.$disc = window.$disc || {};
 
     self.getLanguage = () => {
         return storage.getItem(KEY_LANG);
+    };
+
+    self.getJWT = () => {
+        return sessionStorage.getItem(KEY_JWT);
+    };
+
+    self.storeJWT = (jwt) => {
+        sessionStorage.setItem(KEY_JWT, jwt);
     };
 
     self.saveCurrentTask = (image, tileStates, settings) => {

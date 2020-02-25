@@ -179,7 +179,7 @@ window.$disc = window.$disc || {};
             nextAutoMove();
         }
         animationStoppedByUser = false;
-        $disc.ai.resolveTask(tiles, onSuccess, winningAction);
+        $disc.ai.resolveTask(tiles, 100, onSuccess, winningAction);
     };
 
     self.getCurrentTilesState = () => {

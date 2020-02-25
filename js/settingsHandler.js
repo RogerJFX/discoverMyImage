@@ -7,6 +7,10 @@ window.$disc = window.$disc || {};
 
     let softSettings;
 
+    let jwt;
+
+    let serverCapabilities = {}; // {solutionStepsLeft: 128, uploadsLeft: 20}
+
     self.setLevel = (_level) => {
         $disc.storage.setLevel(_level);
         level = _level;
@@ -25,6 +29,20 @@ window.$disc = window.$disc || {};
         return $disc.storage.getLevel() || level;
     };
 
+    self.setJwt = (_jwt) => {
+        jwt = _jwt;
+        parseJWT(_jwt);
+        $disc.storage.storeJWT(_jwt);
+    };
+
+    self.getJwt = () => {
+        return jwt || $disc.storage.getJWT();
+    };
+
+    self.getServerCapabilities = () => {
+        return serverCapabilities;
+    };
+
     self.getSoftSettings = () => {
         return new Promise((resolve, reject) => {
             if(softSettings) {
@@ -36,5 +54,15 @@ window.$disc = window.$disc || {};
             }).catch(err => reject(err));
         })
     };
+
+    function parseJWT(jwt) {
+        try {
+            const base64 = jwt.split('.')[1];
+            serverCapabilities = JSON.parse(JSON.parse(atob(base64))['sub']);
+        } catch (err) {
+            console.error(err);
+        }
+
+    }
 
 })(window.$disc.settingsHandler = window.$disc.settingsHandler || {});

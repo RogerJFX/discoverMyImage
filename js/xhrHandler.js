@@ -92,8 +92,16 @@ window.$disc = window.$disc || {};
             const xhr = new XMLHttpRequest();
             xhr.onerror = () => reject(-1);
             xhr.open('GET', url, true);
+            if(!once) {
+                xhr.setRequestHeader('jwt', $disc.settingsHandler.getJwt());
+            }
             xhr.onload = function(e) {
                 if (this.status === 200) {
+                    const jwtHeader = this.getResponseHeader('jwt');
+                    if(jwtHeader) {
+                        $disc.settingsHandler.setJwt(jwtHeader);
+                        console.log($disc.settingsHandler.getServerCapabilities());
+                    }
                     resolve(JSON.parse(this.responseText));
                 } else {
                     reject(this.status);

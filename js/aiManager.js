@@ -161,13 +161,18 @@ window.$disc = window.$disc || {};
         });
     };
 
-    self.resolveTask = (tiles, onSuccessFn, onErrorFn) => {
+    self.resolveTask = (tiles, stepsLimit, onSuccessFn, onErrorFn) => {
+        stepsLimit = stepsLimit || 100;
         const grid = $disc.settingsHandler.getLastGrid();
         const gridString = `${grid[0] * 10 + grid[1]}`;
         const taskString = tiles2Task(tiles, grid[1]);
         const portrait = grid[1] === 4;
         fetchDataAndDo((settings) => {
-            $disc.xhrHandler.loadJsonProperties(`${settings['aiServer']}${settings['resolveURL'].replace('__TASK__', taskString).replace('__GRID__', gridString)}`, false).then(data => {
+            $disc.xhrHandler.loadJsonProperties(`${settings['aiServer']}${settings['resolveURL']
+                .replace('__TASK__', taskString)
+                .replace('__STEPS_LIMIT__', stepsLimit)
+                .replace('__GRID__', gridString)}`, false)
+                .then(data => {
                 if(portrait) {
                     onSuccessFn(resolveString2Array(simpleConvertCoords(data.response)));
                 } else {
