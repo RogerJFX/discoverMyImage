@@ -100,7 +100,6 @@ window.$disc = window.$disc || {};
                     const jwtHeader = this.getResponseHeader('jwt');
                     if(jwtHeader) {
                         $disc.settingsHandler.setJwt(jwtHeader);
-                        console.log($disc.settingsHandler.getServerCapabilities());
                     }
                     resolve(JSON.parse(this.responseText));
                 } else {
@@ -121,7 +120,6 @@ window.$disc = window.$disc || {};
                     const jwtHeader = this.getResponseHeader('jwt');
                     if(jwtHeader) {
                         $disc.settingsHandler.setJwt(jwtHeader);
-                        console.log($disc.settingsHandler.getServerCapabilities());
                     }
                 } else {
                     onFailureFn();

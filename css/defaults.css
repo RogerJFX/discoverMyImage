@@ -173,7 +173,7 @@ div.hiddenDiv {
 }
 
 .innerModal button, input {
-    border: 1px solid #fff;
+    border: 1px solid rgba(255,255,255, 0.6);
     display: block;
     padding: 16px 12px;
     cursor: pointer;
