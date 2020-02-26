@@ -243,6 +243,20 @@
       "en": "extreme",
       "de": "extrem"
     }
+  },
+  {
+    "id": "promptSolutionLimit",
+    "lang": {
+      "en": "You have __num__ steps left within your session.<br/>&#160;<br/>Type in a limit for next steps and press OK",
+      "de": "Du hast noch __num__ Lösungsschritte übrig.<br/>&#160;<br/>Gib eine Zahl für die gewünschten Schritte ein und klicke OK."
+    }
+  },
+  {
+    "id": "alertSolutionSteps",
+    "lang": {
+      "en": "Steps to solve this puzzle: __n1__.<br/>Steps performed: __n2__.<br/>Remaining help steps: __n3__.",
+      "de": "Lösungsschritte für dieses Puzzle: __n1__.<br/>Schritte angewendet: __n2__.<br />Verbleibende Hilfe: __n3__."
+    }
   }
 
 ]

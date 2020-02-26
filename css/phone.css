@@ -2,6 +2,10 @@ div.innerModal button, input {
     margin: 14px auto;
 }
 
+.menu-icon {
+    text-align: right !important;
+}
+
 @media screen and (orientation : landscape) {
     /*body, html,* {*/
     /*    background: red;*/

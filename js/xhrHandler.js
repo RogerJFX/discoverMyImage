@@ -111,4 +111,24 @@ window.$disc = window.$disc || {};
         });
     };
 
+    self.login = (entity, onFailureFn) => {
+        $disc.settingsHandler.getSoftSettings().then(settings => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', `${settings['aiServer']}${settings['loginURL']}`, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function(e) {
+                if (this.status === 200) {
+                    const jwtHeader = this.getResponseHeader('jwt');
+                    if(jwtHeader) {
+                        $disc.settingsHandler.setJwt(jwtHeader);
+                        console.log($disc.settingsHandler.getServerCapabilities());
+                    }
+                } else {
+                    onFailureFn();
+                }
+            };
+            xhr.send(JSON.stringify(entity));
+        });
+    };
+
 })(window.$disc.xhrHandler = window.$disc.xhrHandler || {});

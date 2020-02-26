@@ -9,13 +9,31 @@ window.$disc = window.$disc || {};
         mailTo: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,4})+$/
     };
 
-    function Alert(message, timeout) {
-        document.getElementById('commonMessage').innerHTML = message;
+    function Alert(message, timeout, cb) {
+        document.getElementById('commonAlertMessage').innerHTML = message;
         self.handleMenuClick(['alertModalLayer', 'commonAlertModal'], []);
         if(timeout) {
             setTimeout(() => {
                 self.handleMenuClick([],['alertModalLayer', 'commonAlertModal']);
             }, timeout);
+        }
+        if(cb) {
+            function action() {
+                self.handleMenuClick([],['alertModalLayer', 'commonAlertModal', 'modalBG', 'mainMenu', 'modalLayer']);
+                cb();
+            }
+            document.getElementById('alertOk').onclick = action;
+            document.getElementById('alertCloseButton').onclick = action;
+        }
+    }
+
+    function Prompt(message, cb) {
+        document.getElementById('commonPromptMessage').innerHTML = message;
+        self.handleMenuClick(['promptModalLayer', 'commonPromptModal'], ['modalBG', 'mainMenu', 'modalLayer']);
+        document.getElementById('promptInput').focus();
+        document.getElementById('promptOk').onclick = () => {
+            cb(document.getElementById('promptInput').value);
+            self.handleMenuClick([], ['commonPromptModal', 'promptModalLayer']);
         }
     }
 
@@ -86,8 +104,8 @@ window.$disc = window.$disc || {};
         document.getElementById(nodeId).style.display = checkFn() ? 'block': 'none';
     };
 
-    self.alert = (message, timeout) => {
-        return new Alert(message, timeout);
+    self.alert = (message, timeout, callback) => {
+        return new Alert(message, timeout, callback);
     };
 
     self.handleMenuClick = (showNodes, hideNodes) => {
@@ -129,8 +147,22 @@ window.$disc = window.$disc || {};
     };
 
     self.solveCurrentTask = () => {
-        $disc.tileManager.solve();
-        return true;
+        $disc.lang.getTranslation('promptSolutionLimit').then(result => {
+            const numLeft = $disc.settingsHandler.getServerCapabilities()['solutionStepsLeft'];
+            new Prompt(result.replace('__num__', numLeft), (inp) => {
+                self.handleMenuClick([], ['modalBG', 'mainMenu', 'modalLayer']);
+                if(isNaN(inp)) {
+                    $disc.tileManager.solve(100);
+                } else {
+                    $disc.tileManager.solve(Number(inp));
+                }
+            });
+        });
+
+    };
+
+    self.login = (user, pass) => {
+        $disc.xhrHandler.login({user: user, pass: pass}, () => {})
     };
 
     self.listExampleImages = (nodeId, onClickFn) => {

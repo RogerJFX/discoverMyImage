@@ -154,11 +154,11 @@ div.hiddenDiv {
 
 }
 
-.commonAlertModal .nav-icon:after,
-.commonAlertModal .nav-icon:before,
-.commonAlertModal .nav-icon div {
-    background-color: #c00 !important;
-}
+/*.commonAlertModal .nav-icon:after,*/
+/*.commonAlertModal .nav-icon:before,*/
+/*.commonAlertModal .nav-icon div {*/
+/*    background-color: #c00 !important;*/
+/*}*/
 
 .commonAlertModal #commonMessage {
     text-align: center;
@@ -187,9 +187,9 @@ input::placeholder {
     color: #a1c3d5;
 }
 
-input.wrongInput, .commonAlertModal {
-    border-color: #c00;
-}
+/*input.wrongInput, .commonAlertModal {*/
+/*    border-color: #c00;*/
+/*}*/
 
 input[type="file"] {
     display: none;

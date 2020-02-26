@@ -102,6 +102,8 @@
 
 		const $mH = window.$disc.menuHandler;
 
+		$mH.login('John', 'Doe');
+
 		function toggleShowButtons() {
 			$mH.toggleShowButton('storeGameButton', $mH.hasCurrentImage);
 			$mH.toggleShowButton('uploadMenuButton', $mH.hasCurrentImage);
@@ -127,6 +129,7 @@
 <!--	<script data-ad-client="ca-pub-5386329083980702" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
 </head>
 <body>
+<div class="key-icon"></div>
 <div id="spinnerBG"><div class="spinner-wrapper">
 	<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 </div></div>
@@ -140,14 +143,16 @@
 					<div></div>
 				</div>
 			</div><div style="clear: both"></div>
-			<button id="switchLangButton" onclick="$mH.handleMenuClick(['languageModal','modalLayer', 'modalBG'], ['mainMenu']);"></button>
-			<button id="exampleImageSelect" onclick="$mH.handleMenuClick(['exampleModal','modalLayer', 'modalBG'], ['mainMenu']);$mH.listExampleImages('exampleModal',() => {$mH.handleMenuClick([], ['exampleModal','modalLayer','modalBG']);});"></button>
-			<button id="ownImageSelect" onclick="$mH.handleMenuClick(['selectModal'], ['mainMenu']);"></button>
-			<button id="uploadMenuButton" onclick="if($mH.checkImageLoaded()){$mH.handleMenuClick(['uploadModal'], ['mainMenu']);}"></button>
-			<button id="storeGameButton" onclick="if($mH.saveCurrentTask()){$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);}"></button>
-			<button id="loadGameButton" onclick="$mH.loadCurrentTask();$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);"></button>
-			<button id="changeSettingsButton" onclick="$mH.handleMenuClick(['settingsModal'], ['mainMenu']);"></button>
-			<button id="solveButton" onclick="if($mH.solveCurrentTask()){$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);}"></button>
+
+			<button class="menu-icon key-icon" id="solveButton" onclick="$mH.solveCurrentTask()"></button>
+
+			<button class="menu-icon image-icon" id="ownImageSelect" onclick="$mH.handleMenuClick(['selectModal'], ['mainMenu']);"></button>
+			<button class="menu-icon send-icon" id="uploadMenuButton" onclick="if($mH.checkImageLoaded()){$mH.handleMenuClick(['uploadModal'], ['mainMenu']);}"></button>
+			<button class="menu-icon save-icon" id="storeGameButton" onclick="if($mH.saveCurrentTask()){$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);}"></button>
+			<button class="menu-icon load-icon" id="loadGameButton" onclick="$mH.loadCurrentTask();$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);"></button>
+			<button class="menu-icon example-icon" id="exampleImageSelect" onclick="$mH.handleMenuClick(['exampleModal','modalLayer', 'modalBG'], ['mainMenu']);$mH.listExampleImages('exampleModal',() => {$mH.handleMenuClick([], ['exampleModal','modalLayer','modalBG']);});"></button>
+			<button class="menu-icon settings-icon" id="changeSettingsButton" onclick="$mH.handleMenuClick(['settingsModal'], ['mainMenu']);"></button>
+			<button class="menu-icon lang-icon" id="switchLangButton" onclick="$mH.handleMenuClick(['languageModal','modalLayer', 'modalBG'], ['mainMenu']);"></button>
 			<button id="aboutButton" onclick="$mH.handleMenuClick(['aboutModal'], ['mainMenu']);"></button>
 		</div>
 		<div class="innerModal" id="languageModal">
@@ -217,14 +222,26 @@
 	<div class="modalLayer alertModalLayer" id="alertModalLayer">
 		<div class="innerModal commonAlertModal" id="commonAlertModal">
 			<div style="float:right">
-				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['commonAlertModal', 'alertModalLayer']);">
+				<div id="alertCloseButton" class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['commonAlertModal', 'alertModalLayer']);">
 					<div></div>
 				</div>
 			</div><div style="clear: both"></div>
-			<div id="commonMessage"></div>
+			<div id="commonAlertMessage"></div>
+			<button id="alertOk">OK</button>
 		</div>
 	</div>
-
+<div class="modalLayer alertModalLayer" id="promptModalLayer">
+	<div class="innerModal commonAlertModal" id="commonPromptModal">
+		<div style="float:right">
+			<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['commonPromptModal', 'promptModalLayer', 'modalBG', 'mainMenu', 'modalLayer']);">
+				<div></div>
+			</div>
+		</div><div style="clear: both"></div>
+		<div id="commonPromptMessage"></div>
+		<input id="promptInput"/>
+		<button id="promptOk">OK</button>
+	</div>
+</div>
 	<div class="header">
 		<div class="nav-icon" style="float:left;" onclick="toggleShowButtons();$mH.handleMenuClick(['mainMenu', 'modalLayer', 'modalBG'], []);">
 			<div></div>

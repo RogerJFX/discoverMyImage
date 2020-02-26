@@ -58,7 +58,7 @@ window.$disc = window.$disc || {};
         for (let i = 0; i < arr.length; i += 2) {
             result.push([Number(arr[i]), Number(arr[i + 1])]);
         }
-        if (result[result.length - 1][0] === 0 && result[result.length - 1][1] === 0) {
+        if (result.length > 0 && result[result.length - 1][0] === 0 && result[result.length - 1][1] === 0) {
             result.pop();
         }
         return result;
@@ -174,9 +174,9 @@ window.$disc = window.$disc || {};
                 .replace('__GRID__', gridString)}`, false)
                 .then(data => {
                 if(portrait) {
-                    onSuccessFn(resolveString2Array(simpleConvertCoords(data.response)));
+                    onSuccessFn(resolveString2Array(simpleConvertCoords(data.response)), data['toWin']);
                 } else {
-                    onSuccessFn(resolveString2Array(data.response));
+                    onSuccessFn(resolveString2Array(data.response), data['toWin']);
                 }
             }).catch(err => {
                 console.error(err);

@@ -158,7 +158,7 @@ window.$disc = window.$disc || {};
         setTileStyle(image);
     }
 
-    self.solve = () => {
+    self.solve = (stepsLimit) => {
         function onSuccess(data) {
             let counter = 0;
             function nextAutoMove() {
@@ -179,7 +179,15 @@ window.$disc = window.$disc || {};
             nextAutoMove();
         }
         animationStoppedByUser = false;
-        $disc.ai.resolveTask(tiles, 100, onSuccess, winningAction);
+        $disc.ai.resolveTask(tiles, stepsLimit, (data, toWin) => {
+            console.log(toWin);
+            const numLeft = $disc.settingsHandler.getServerCapabilities()['solutionStepsLeft'];
+            $disc.lang.getTranslation('alertSolutionSteps').then(result => {
+                const msg = result.replace('__n1__', toWin).replace('__n2__', data.length).replace('__n3__', numLeft);
+                $disc.menuHandler.alert(msg, null, () => onSuccess(data));
+            });
+
+        }, winningAction);
     };
 
     self.getCurrentTilesState = () => {

@@ -13,3 +13,31 @@
 
 @import "desktop.css" only screen and (min-device-width: 1025px) and (orientation : landscape);
 
+.menu-icon {
+    background-repeat: no-repeat;
+    background-position: 12px center;
+}
+.key-icon {
+    background-image: url("../svg/sos.svg");
+}
+.image-icon {
+    background-image: url("../svg/images.svg");
+}
+.settings-icon {
+    background-image: url("../svg/settings.svg");
+}
+.lang-icon {
+    background-image: url("../svg/language.svg");
+}
+.example-icon {
+    background-image: url("../svg/list.svg");
+}
+.send-icon {
+     background-image: url("../svg/letter.svg");
+ }
+.save-icon {
+      background-image: url("../svg/save.svg");
+  }
+.load-icon {
+       background-image: url("../svg/open.svg");
+   }

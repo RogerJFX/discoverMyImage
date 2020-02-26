@@ -1,3 +1,6 @@
+https://visualpharm.com/free-icons/set/explorer
+
+
 whatsapp://send/?phone=+491721420329&text=Hi+Karin&source&data
 
 // das %20 am Anfang der NAchricht scheint wichtig zu sein. Außerdem alle space durch %20 ersetzen.

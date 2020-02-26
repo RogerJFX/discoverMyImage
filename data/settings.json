@@ -4,11 +4,13 @@
   "storeURL": "store.php",
   "getURL": "get.php?uuid=__UUID__",
 
+
   "aiServerX": "https://7fx.de:9443/",
   "aiServer": "http://localhost:9000/",
   "taskURL": "task.php?level=__LEVEL__&grid=__GRID__",
   "resolveURL": "resolve.php?task=__TASK__&grid=__GRID__&stepsLimit=__STEPS_LIMIT__",
   "checkURL": "check.php?task=__TASK__",
+  "loginURL": "login.php",
 
   "myServer": "https://discover-my-image.com/",
   "myTaskUrl": "?uuid=__UUID__"
