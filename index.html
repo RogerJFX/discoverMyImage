@@ -64,7 +64,7 @@
 					})
 				}).catch(_ => {
 					$disc.lang.getTranslation('errorWrongOrExpiredImage').then(msg => {
-						$disc.menuHandler.alert(msg, 3000);
+						$disc.menuHandler.alert(msg, 'Error', 3000);
 					});
 
 					toggleWelcomeLanguage(lang);

@@ -183,7 +183,7 @@ window.$disc = window.$disc || {};
             const numLeft = $disc.settingsHandler.getServerCapabilities()['solutionStepsLeft'];
             $disc.lang.getTranslation('alertSolutionSteps').then(result => {
                 const msg = result.replace('__n1__', toWin).replace('__n2__', data.length).replace('__n3__', numLeft);
-                $disc.menuHandler.alert(msg, null, () => onSuccess(data));
+                $disc.menuHandler.alert(msg, 'Info', null, () => onSuccess(data));
             });
 
         }, winningAction);

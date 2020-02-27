@@ -16,6 +16,11 @@
     background-position: 12px center;
 }
 
+.hamburger-icon {
+    background-image: url("../svg/hamburger.svg");
+    background-position: 9px center;
+}
+
 .key-icon {
     background-image: url("../svg/sos.svg");
 }
@@ -50,4 +55,17 @@
 
 .lang-icon {
     background-image: url("../svg/language.svg");
+}
+
+.me-icon {
+    background-image: url("../svg/me.svg");
+    background-position: 9px center;
+}
+
+.alert-icon {
+    background-image: url("../svg/exclamation.svg");
+}
+
+.prompt-icon {
+    background-image: url("../svg/question.svg");
 }

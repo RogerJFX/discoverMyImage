@@ -54,8 +54,7 @@ window.$disc = window.$disc || {};
     }
 
     function callObservers(props, lang) {
-        props.forEach(prop => {
-            const candidate = document.getElementById(prop.id);
+        function handleCandidate(candidate, prop) {
             if (candidate) {
                 if (candidate.getAttribute('placeholder')) {
                     candidate.setAttribute('placeholder', prop.lang[lang]);
@@ -63,6 +62,12 @@ window.$disc = window.$disc || {};
                     candidate.innerHTML = prop.lang[lang];
                 }
             }
+        }
+        props.forEach(prop => {
+            const candidate = document.getElementById(prop.id);
+            handleCandidate(candidate, prop);
+            const headerCandidate = document.getElementById('_' + prop.id);
+            handleCandidate(headerCandidate, prop);
         });
 
     }

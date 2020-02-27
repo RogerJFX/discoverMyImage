@@ -243,3 +243,32 @@ input[type="file"] {
     margin: 6px 2px;
     transform: scale(0);
 }
+
+.innerModal > .header {
+    display: table;
+    width: 100%;
+}
+
+.innerModal > .header > div {
+    display: table-row;
+}
+
+.innerModal > .header > div > div{
+    display: table-cell;
+}
+
+.innerModal > .header > div > .menu-category {
+    background-position: 0 center !important;
+    vertical-align: middle;
+    font-weight:bold;
+    padding-left:50px;
+    opacity:0.7;
+}
+
+.innerModal > .header > div > .close {
+    text-align:right;
+}
+
+.textModalText {
+    margin-top: 12px;
+}

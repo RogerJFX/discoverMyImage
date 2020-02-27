@@ -15,7 +15,7 @@ window.$disc = window.$disc || {};
 
     self.putImage = (bean) => {
         doUpload('PUT', bean, () => {
-            $disc.lang.getTranslation('sendSuccess').then(t => $disc.menuHandler.alert(t, 2000));
+            $disc.lang.getTranslation('sendSuccess').then(t => $disc.menuHandler.alert(t, 'Info', 2000));
         });
     };
 
@@ -27,7 +27,7 @@ window.$disc = window.$disc || {};
         $disc.settingsHandler.getSoftSettings().then(settings => {
             const xhr = new XMLHttpRequest();
             const mH = $disc.menuHandler;
-            xhr.onerror = () => mH.alert("Connection refused. Please try again later.");
+            xhr.onerror = () => mH.alert('Connection refused. Please try again later.', 'Error');
             xhr.open(method, `${settings['imageServer']}${settings['storeURL']}`, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
 
@@ -37,14 +37,14 @@ window.$disc = window.$disc || {};
                 } else {
                     switch (this.status) {
                         case 507:
-                            $disc.lang.getTranslation('errorInsufficientStorage').then(t => mH.alert(t));
+                            $disc.lang.getTranslation('errorInsufficientStorage').then(t => mH.alert(t, 'Error'));
                             break;
                         case 400:
-                            $disc.lang.getTranslation('errorBadRequest').then(t => mH.alert(t));
+                            $disc.lang.getTranslation('errorBadRequest').then(t => mH.alert(t, 'Error'));
                             break;
                         case 403:
                         default:
-                            $disc.lang.getTranslation('errorForbidden').then(t => mH.alert(t));
+                            $disc.lang.getTranslation('errorForbidden').then(t => mH.alert(t, 'Error'));
                             break;
                     }
                 }

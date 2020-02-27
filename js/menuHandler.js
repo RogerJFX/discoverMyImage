@@ -9,8 +9,9 @@ window.$disc = window.$disc || {};
         mailTo: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,4})+$/
     };
 
-    function doAlert(message, timeout, cb) {
+    function doAlert(message, headline, timeout, cb) {
         document.getElementById('commonAlertMessage').innerHTML = message;
+        document.getElementById('alertHeadline').innerHTML = headline || '';
         self.handleMenuClick(['alertModalLayer', 'commonAlertModal', 'alertBG'], []);
         if(timeout) {
             setTimeout(() => {
@@ -28,8 +29,9 @@ window.$disc = window.$disc || {};
 
     }
 
-    function Prompt(message, cb) {
+    function Prompt(message, headline, cb) {
         document.getElementById('commonPromptMessage').innerHTML = message;
+        document.getElementById('promptHeadline').innerHTML = headline || '';
         self.handleMenuClick(['promptModalLayer', 'commonPromptModal', 'modalBG'], ['mainMenu', 'modalLayer']);
         document.getElementById('promptInput').focus();
         document.getElementById('promptOk').onclick = () => {
@@ -88,7 +90,7 @@ window.$disc = window.$disc || {};
     self.checkImageLoaded = () => {
         if(!$disc.stageActions.getCurrentImage()) {
             $disc.lang.getTranslation('noImageLoaded')
-                .then(t => doAlert(t, 4000))
+                .then(t => doAlert(t, 'Error', 4000))
                 .catch(reason => doAlert('No translation found'));
             return false;
         }
@@ -105,8 +107,8 @@ window.$disc = window.$disc || {};
         document.getElementById(nodeId).style.display = checkFn() ? 'block': 'none';
     };
 
-    self.alert = (message, timeout, callback) => {
-        doAlert(message, timeout, callback);
+    self.alert = (message, headline, timeout, callback) => {
+        doAlert(message, headline, timeout, callback);
     };
 
     self.handleMenuClick = (showNodes, hideNodes) => {
@@ -186,7 +188,7 @@ window.$disc = window.$disc || {};
     self.solveCurrentTask = () => {
         $disc.lang.getTranslation('promptSolutionLimit').then(result => {
             const numLeft = $disc.settingsHandler.getServerCapabilities()['solutionStepsLeft'];
-            new Prompt(result.replace('__num__', numLeft), (inp) => {
+            new Prompt(result.replace('__num__', numLeft), 'Limit?',(inp) => {
                 self.handleMenuClick([], ['modalBG', 'mainMenu', 'modalLayer']);
                 if(isNaN(inp)) {
                     $disc.tileManager.solve(100);

@@ -1,5 +1,12 @@
 [
   {
+    "id": "mainMenuHeader",
+    "lang": {
+      "en": "Main menu",
+      "de": "Hauptmenü"
+    }
+  },
+  {
     "id": "switchLangButton",
     "lang": {
       "en": "Switch language",
@@ -37,22 +44,22 @@
   {
     "id": "uploadMenuButton",
     "lang": {
-      "en": "Send current task",
-      "de": "Diese Aufgabe verschicken"
+      "en": "Send puzzle",
+      "de": "Puzzle verschicken"
     }
   },
   {
     "id": "storeGameButton",
     "lang": {
-      "en": "Store current task",
-      "de": "Diese Aufgabe speichern"
+      "en": "Store puzzle",
+      "de": "Puzzle speichern"
     }
   },
   {
     "id": "loadGameButton",
     "lang": {
-      "en": "Load current task",
-      "de": "Letzte Aufgabe laden"
+      "en": "Load stored puzzle",
+      "de": "Letztes Puzzle laden"
     }
   },
   {

@@ -6,11 +6,13 @@ window.$disc = window.$disc || {};
     let won = false;
 
     function showSpinner() {
-        document.getElementById('spinnerBG').style.display = 'block';
+        $disc.menuHandler.handleMenuClick(['spinnerBG'], []);
+        //document.getElementById('spinnerBG').style.display = 'block';
     }
 
     function hideSpinner() {
-        document.getElementById('spinnerBG').style.display = 'none';
+        $disc.menuHandler.handleMenuClick([], ['spinnerBG']);
+        //document.getElementById('spinnerBG').style.display = 'none';
     }
 
     // Workhorse. This will be called for any image.
@@ -42,7 +44,7 @@ window.$disc = window.$disc || {};
         }).catch(err => {
             hideSpinner();
             $disc.lang.getTranslation(err).then(t => {
-                $disc.menuHandler.alert(t);
+                $disc.menuHandler.alert(t, 'Error');
             }).catch(_ => console.error(`No translation for "${err}"`));
         });
     };
