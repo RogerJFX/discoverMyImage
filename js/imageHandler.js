@@ -262,7 +262,7 @@ window.$disc = window.$disc || {};
                     };
                 });
             } else {
-                reject('No image');
+                reject('wrongImageFormat');
             }
         });
     }

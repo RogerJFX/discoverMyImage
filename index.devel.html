@@ -48,6 +48,7 @@
 
 			if(uuid) {
 				$disc.stageActions.processFile(window.$disc.xhrHandler.getImage(uuid).then(bean => {
+					console.log(bean);
 					return new Promise(resolve => {
 						const img = new Image();
 						img.src = bean.imgSrc;
@@ -57,11 +58,8 @@
 						};
 					})
 				}).catch(_ => {
-					$disc.lang.getTranslation('errorWrongOrExpiredImage').then(msg => {
-						$disc.menuHandler.alert(msg, 3000);
-					});
-
 					toggleWelcomeLanguage(lang);
+					return Promise.reject("errorWrongOrExpiredImage");
 				}));
 			} else {
 				const lastLoadedImage = $disc.storage.getLastLoadedImage();
@@ -134,11 +132,13 @@
 	<div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 </div></div>
 	<dynStylecontainer></dynStylecontainer>
-	<div class="modalBG" id="modalBG"></div>
-
-	<div class="modalLayer" id="modalLayer">
-		<div class="innerModal" id="mainMenu">
+	<div class="modalBG transitionable" id="modalBG"></div>
+	<div class="alertBG transitionable" id="alertBG"></div>
+	<div class="modalLayer transitionable" id="modalLayer">
+		<div class="innerModal transitionable" id="mainMenu">
+			<div>asdasd</div>
 			<div style="float:right">
+
 				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['mainMenu','modalLayer', 'modalBG']);">
 					<div></div>
 				</div>
@@ -155,7 +155,7 @@
 			<button class="menu-icon lang-icon" id="switchLangButton" onclick="$mH.handleMenuClick(['languageModal','modalLayer', 'modalBG'], ['mainMenu']);"></button>
 			<button id="aboutButton" onclick="$mH.handleMenuClick(['aboutModal'], ['mainMenu']);"></button>
 		</div>
-		<div class="innerModal" id="languageModal">
+		<div class="innerModal transitionable" id="languageModal">
 			<div style="float:right">
 				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['languageModal']);">
 					<div></div>
@@ -164,16 +164,16 @@
 			<button id="langDe" onclick="$disc.lang.switchLanguage('de');$mH.handleMenuClick(['mainMenu'], ['languageModal']);toggleWelcomeLanguage()"></button>
 			<button id="langEn" onclick="$disc.lang.switchLanguage('en');$mH.handleMenuClick(['mainMenu'], ['languageModal']);toggleWelcomeLanguage()"></button>
 		</div>
-		<div class="innerModal" id="exampleModal">
+		<div class="innerModal transitionable" id="exampleModal">
 			<div style="float:right">
-				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['exampleModal', 'modalLayer', 'modalBG']);">
+				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['exampleModal']);">
 					<div></div>
 				</div>
 			</div><div style="clear: both"></div>
 		</div>
-		<div class="innerModal" id="selectModal">
+		<div class="innerModal transitionable" id="selectModal">
 			<div style="float:right">
-				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['selectModal', 'modalLayer', 'modalBG']);">
+				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['selectModal']);">
 					<div></div>
 				</div>
 			</div><div style="clear: both"></div>
@@ -183,7 +183,7 @@
 				<span id="selectImgFile"></span>
 			</label>
 		</div>
-		<div class="innerModal" id="settingsModal">
+		<div class="innerModal transitionable" id="settingsModal">
 			<div style="float:right">
 				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['settingsModal']);">
 					<div></div>
@@ -195,9 +195,9 @@
 			<button id="settingLevelHard" onclick="$mH.setLevel(4);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">3 x 3</button>
 			<button id="settingLevelExtreme" onclick="$mH.setLevel(5);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">4 x 4</button>
 		</div>
-		<div class="innerModal" id="uploadModal">
+		<div class="innerModal transitionable" id="uploadModal">
 			<div style="float:right">
-				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['uploadModal', 'modalLayer', 'modalBG']);">
+				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['uploadModal']);">
 					<div></div>
 				</div>
 			</div><div style="clear: both"></div>
@@ -209,7 +209,7 @@
 			<div>&#160;</div>
 			<button id="waUploadButton" onclick="$mH.uploadUsingWhatsApp();"></button>
 		</div>
-		<div class="innerModal" id="aboutModal">
+		<div class="innerModal transitionable" id="aboutModal">
 			<div style="float:right">
 				<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['aboutModal', 'modalLayer', 'modalBG']);">
 					<div></div>
@@ -219,19 +219,19 @@
 		</div>
 
 	</div>
-	<div class="modalLayer alertModalLayer" id="alertModalLayer">
-		<div class="innerModal commonAlertModal" id="commonAlertModal">
+	<div class="modalLayer alertModalLayer transitionable" id="alertModalLayer">
+		<div class="innerModal commonAlertModal transitionable" id="commonAlertModal">
 			<div style="float:right">
-				<div id="alertCloseButton" class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['commonAlertModal', 'alertModalLayer']);">
+				<div id="alertCloseButton" class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['commonAlertModal', 'alertModalLayer', 'alertBG']);">
 					<div></div>
 				</div>
 			</div><div style="clear: both"></div>
 			<div id="commonAlertMessage"></div>
-			<button id="alertOk">OK</button>
+			<button id="alertOk" onclick="$mH.handleMenuClick([], ['commonAlertModal', 'alertModalLayer', 'alertBG']);">OK</button>
 		</div>
 	</div>
-<div class="modalLayer alertModalLayer" id="promptModalLayer">
-	<div class="innerModal commonAlertModal" id="commonPromptModal">
+<div class="modalLayer alertModalLayer transitionable" id="promptModalLayer">
+	<div class="innerModal commonAlertModal transitionable" id="commonPromptModal">
 		<div style="float:right">
 			<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['commonPromptModal', 'promptModalLayer', 'modalBG', 'mainMenu', 'modalLayer']);">
 				<div></div>

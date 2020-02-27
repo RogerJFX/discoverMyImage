@@ -10,7 +10,7 @@ window.$disc = window.$disc || {};
     }
 
     function hideSpinner() {
-       document.getElementById('spinnerBG').style.display = 'none';
+        document.getElementById('spinnerBG').style.display = 'none';
     }
 
     // Workhorse. This will be called for any image.
@@ -19,10 +19,10 @@ window.$disc = window.$disc || {};
         const {convert2BW, modifyImage, simpleDarken, resizeToStage} = window.$disc.imageHandler;
         promise.then(image => {
             originalImage = image;
-            return image;
-        }).catch(_ => {
-            return Promise.reject('wrongImageFormat');
-        }).then(image => {
+            if (!image) {
+                return Promise.reject('no image defined');
+            } else return image;
+        }).then((image, reject) => {
             return resizeToStage(image).then(stImage => {
                 stageImage = stImage;
                 return stImage;
@@ -41,10 +41,9 @@ window.$disc = window.$disc || {};
             } : null);
         }).catch(err => {
             hideSpinner();
-            console.error(err);
             $disc.lang.getTranslation(err).then(t => {
                 $disc.menuHandler.alert(t);
-            }).catch(err => console.error(`No translation for "${err}"`));
+            }).catch(_ => console.error(`No translation for "${err}"`));
         });
     };
 
@@ -52,9 +51,9 @@ window.$disc = window.$disc || {};
         const w = image.width;
         const h = image.height;
         const f = w / h;
-        if(f >= 1.25) {
+        if (f >= 1.25) {
             return [4, 3];
-        } else if(f <= 0.75) {
+        } else if (f <= 0.75) {
             return [3, 4];
         } else {
             return [3, 3];
@@ -63,7 +62,7 @@ window.$disc = window.$disc || {};
 
     self.buildTiles = (initFn) => {
         const grid = calculateGrid(stageImage);
-        if(won && stageImage) {
+        if (won && stageImage) {
             const {convert2BW, modifyImage, simpleDarken} = window.$disc.imageHandler;
             modifyImage(stageImage, [convert2BW, simpleDarken])
                 .then(bgImg => {
@@ -75,7 +74,7 @@ window.$disc = window.$disc || {};
             return window.$disc.tileManager.buildTiles(stageImage, grid[0], grid[1], winAction); // is a promise
         };
 
-        if(stageImage) {
+        if (stageImage) {
             outerStage.innerHTML = '';
             initFn().then(tiles => {
                 stage.innerHTML = '';
@@ -102,8 +101,8 @@ window.$disc = window.$disc || {};
             const node = document.createElement('DIV');
             node.addClass('board-letter');
             node.innerHTML = String.fromCharCode(65 + i);
-            node.style.width=`${tD[0]}px`;
-            node.style.right = `${(settings[0] - i -1) * tD[0]}px`;
+            node.style.width = `${tD[0]}px`;
+            node.style.right = `${(settings[0] - i - 1) * tD[0]}px`;
             outerStage.appendChild(node);
         }
         for (let i = 0; i < settings[1]; i++) {
@@ -111,8 +110,8 @@ window.$disc = window.$disc || {};
             const inode = document.createElement('DIV');
             node.appendChild(inode);
             node.addClass('board-num');
-            inode.innerHTML = `${i+1}`;
-            node.style.height=`${tD[1]}px`;
+            inode.innerHTML = `${i + 1}`;
+            node.style.height = `${tD[1]}px`;
             node.style.top = `${i * tD[1]}px`;
             outerStage.appendChild(node);
         }
@@ -120,7 +119,7 @@ window.$disc = window.$disc || {};
     }
 
     self.getCurrentImage = () => {
-      return originalImage;
+        return originalImage;
     };
 
     self.hasCurrentImage = () => {
@@ -132,16 +131,16 @@ window.$disc = window.$disc || {};
         outerStage = _outerStage;
     };
 
-    function winAction () {
+    function winAction() {
         won = true;
         stage.innerHTML = '';
-        stage.style.backgroundImage=`URL(${stageImage.src})`;
+        stage.style.backgroundImage = `URL(${stageImage.src})`;
         (function flicker(c) {
             setTimeout(() => {
                 stage.style.opacity = '0.4';
                 setTimeout(() => {
                     stage.style.opacity = '1';
-                    if(--c > 0) {
+                    if (--c > 0) {
                         flicker(c);
                     }
                 }, 80);

@@ -25,18 +25,6 @@
     background-position: 9px center;
 }
 
-.settings-icon {
-    background-image: url("../svg/settings.svg");
-}
-
-.lang-icon {
-    background-image: url("../svg/language.svg");
-}
-
-.example-icon {
-    background-image: url("../svg/list.svg");
-}
-
 .send-icon {
     background-image: url("../svg/sendmail.svg");
     background-position: 9px center;
@@ -44,9 +32,22 @@
 
 .save-icon {
     background-image: url("../svg/save.svg");
+    background-position: 13px center;
 }
 
 .load-icon {
     background-image: url("../svg/open.svg");
-    background-position: 10px center;
+    background-position: 11px center;
+}
+
+.example-icon {
+    background-image: url("../svg/list.svg");
+}
+
+.settings-icon {
+    background-image: url("../svg/settings.svg");
+}
+
+.lang-icon {
+    background-image: url("../svg/language.svg");
 }

@@ -102,6 +102,11 @@ div.hiddenDiv {
     border-radius: 11px;
 }
 
+.transitionable {
+    opacity: 0;
+    transition: opacity .25s ease-in-out;
+}
+
 .modalLayer {
     position: absolute;
     top:0;
@@ -114,7 +119,7 @@ div.hiddenDiv {
     z-index:10001;
 }
 
-.modalBG {
+.modalBG, .alertBG{
     position: fixed;
     top:0;
     left:0;
@@ -127,6 +132,9 @@ div.hiddenDiv {
 
 .alertModalLayer {
     z-index:10004;
+}
+.alertBG{
+    z-index:10003;
 }
 
 .innerModal {

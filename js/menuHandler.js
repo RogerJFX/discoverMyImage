@@ -9,31 +9,32 @@ window.$disc = window.$disc || {};
         mailTo: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,4})+$/
     };
 
-    function Alert(message, timeout, cb) {
+    function doAlert(message, timeout, cb) {
         document.getElementById('commonAlertMessage').innerHTML = message;
-        self.handleMenuClick(['alertModalLayer', 'commonAlertModal'], []);
+        self.handleMenuClick(['alertModalLayer', 'commonAlertModal', 'alertBG'], []);
         if(timeout) {
             setTimeout(() => {
-                self.handleMenuClick([],['alertModalLayer', 'commonAlertModal']);
+                self.handleMenuClick([],['alertModalLayer', 'commonAlertModal', 'alertBG']);
             }, timeout);
         }
-        if(cb) {
-            function action() {
-                self.handleMenuClick([],['alertModalLayer', 'commonAlertModal', 'modalBG', 'mainMenu', 'modalLayer']);
+        function action() {
+            self.handleMenuClick([],['alertModalLayer', 'commonAlertModal', 'modalBG', 'mainMenu', 'modalLayer', 'alertBG']);
+            if(cb) {
                 cb();
             }
-            document.getElementById('alertOk').onclick = action;
-            document.getElementById('alertCloseButton').onclick = action;
         }
+        document.getElementById('alertOk').onclick = action;
+        document.getElementById('alertCloseButton').onclick = action;
+
     }
 
     function Prompt(message, cb) {
         document.getElementById('commonPromptMessage').innerHTML = message;
-        self.handleMenuClick(['promptModalLayer', 'commonPromptModal'], ['modalBG', 'mainMenu', 'modalLayer']);
+        self.handleMenuClick(['promptModalLayer', 'commonPromptModal', 'modalBG'], ['mainMenu', 'modalLayer']);
         document.getElementById('promptInput').focus();
         document.getElementById('promptOk').onclick = () => {
             cb(document.getElementById('promptInput').value);
-            self.handleMenuClick([], ['commonPromptModal', 'promptModalLayer']);
+            self.handleMenuClick([], ['commonPromptModal', 'promptModalLayer', 'modalBG']);
         }
     }
 
@@ -87,8 +88,8 @@ window.$disc = window.$disc || {};
     self.checkImageLoaded = () => {
         if(!$disc.stageActions.getCurrentImage()) {
             $disc.lang.getTranslation('noImageLoaded')
-                .then(t => new Alert(t, 4000))
-                .catch(reason => new Alert('No translation found'));
+                .then(t => doAlert(t, 4000))
+                .catch(reason => doAlert('No translation found'));
             return false;
         }
         return true;
@@ -105,12 +106,48 @@ window.$disc = window.$disc || {};
     };
 
     self.alert = (message, timeout, callback) => {
-        return new Alert(message, timeout, callback);
+        doAlert(message, timeout, callback);
     };
 
     self.handleMenuClick = (showNodes, hideNodes) => {
-        hideNodes.forEach(node => document.getElementById(node).style.display = 'none');
-        showNodes.forEach(node => document.getElementById(node).style.display = 'block');
+        function showAllNodes() {
+            showNodes.forEach(n => {
+                const node = document.getElementById(n);
+                if(node.hasClass('transitionable')) {
+                    node.style.display = 'block';
+                    setTimeout(() => {
+                        node.style.opacity = '1';
+                    }, 25)
+                } else {
+                    node.style.display = 'block';
+                }
+            });
+        }
+        if(hideNodes.length === 0) {
+            showAllNodes();
+        } else {
+            let counter = 0;
+            hideNodes.forEach(n => {
+                const node = document.getElementById(n);
+                if(node.hasClass('transitionable') && node.style.display === 'block') {
+                    node.style.opacity = '0';
+                    const listener = node.addEventListener('transitionend', () => {
+                        node.style.display = 'none';
+                        if(++counter === hideNodes.length) {
+                            showAllNodes();
+                        }
+                        //  node.removeEventListener('transitionend', listener, true);
+                    }, {
+                        capture: false,
+                        once: true,
+                        passive: false
+                    });
+                } else {
+                    node.style.display = 'none';
+                    showAllNodes();
+                }
+            });
+        }
     };
 
     self.upload = (props) => {
