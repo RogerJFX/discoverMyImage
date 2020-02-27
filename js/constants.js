@@ -37,7 +37,8 @@ window.$disc = window.$disc || {};
     self.ANI_STEPS_APPENDCARD = 3;
     self.ANI_APPENDCARD_RESOLVE_AFTER = 1;
 
-    self.MILLIS_PER_STEP = 25;
+    self.MILLIS_PER_STEP = 30;
+    self.AUTOSOLVE_NEXT_STEP_MILLIS = 2666;
 
 
 })(window.$disc.constants = window.$disc.constants || {});

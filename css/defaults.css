@@ -74,32 +74,59 @@ div.hiddenDiv {
     width:24px;
     left: 0;
     padding:4px;
-    display:flex;
-    align-items:center;
+}
+
+.board-num > div {
+    position: absolute;
+    border: 2px solid rgba(255,255,255,0.35);
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width:26px;
+    max-height:26px;
+    text-align: center;
+    left: -10px;
+    border-radius: 6px;
+}
+
+.board-letter > .iLegend {
+    /*!*display: block;*!*/
+    position: absolute;
+    text-align: center;
+    width:26px;
+    max-height:26px;
+    top: 21px;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(255,255,255,0.35);
+    border-radius: 6px;
 }
 
 
 .tile {
     position:absolute;
-    border: 2px solid #888;
-    border-bottom-color: #666;
-    border-right-color: #666;
+    border: 2px solid #888f98;
+    border-bottom-color: #666e73;
+    border-right-color: #666e73;
     border-radius: 16px;
 }
 
 .tile-ident {
     position:absolute;
     display: inline-block;
-    background: radial-gradient(#333333, #cccccc);
+    background: radial-gradient(rgba(34,85,119,1),rgba(34,85,119,0.8), rgba(51,102,136,0.5));
+    /*background: black;*/
     color:white;
-    bottom: 4px;
-    right: 4px;
+    bottom: 2px;
+    right: 2px;
     font-size:10pt;
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     padding: 3px 0;
     text-align: center;
-    border-radius: 11px;
+    border: 2px solid rgba(255,255,255,0.6);
+    border-radius: 6px 6px 12px 6px;
 }
 
 .transitionable {
@@ -162,12 +189,6 @@ div.hiddenDiv {
 
 }
 
-/*.commonAlertModal .nav-icon:after,*/
-/*.commonAlertModal .nav-icon:before,*/
-/*.commonAlertModal .nav-icon div {*/
-/*    background-color: #c00 !important;*/
-/*}*/
-
 .commonAlertModal #commonMessage {
     text-align: center;
     margin: 12px 0 12px 0;
@@ -216,6 +237,7 @@ input[type="file"] {
 .nav-icon {
     position:relative;
     display:inline-block;
+    left: 6px;
     margin: 6px;
     width: 40px;
     cursor: pointer;

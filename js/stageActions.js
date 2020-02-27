@@ -99,10 +99,17 @@ window.$disc = window.$disc || {};
 
     function createLegend(settings, tD) {
 
+        function wrap(txt) {
+            const node = document.createElement('DIV');
+            node.innerHTML = txt;
+            node.addClass('iLegend');
+            return node;
+        }
+
         for (let i = settings[0] - 1; i >= 0; i--) {
             const node = document.createElement('DIV');
             node.addClass('board-letter');
-            node.innerHTML = String.fromCharCode(65 + i);
+            node.appendChild(wrap(String.fromCharCode(65 + i)));
             node.style.width = `${tD[0]}px`;
             node.style.right = `${(settings[0] - i - 1) * tD[0]}px`;
             outerStage.appendChild(node);
@@ -112,7 +119,8 @@ window.$disc = window.$disc || {};
             const inode = document.createElement('DIV');
             node.appendChild(inode);
             node.addClass('board-num');
-            inode.innerHTML = `${i + 1}`;
+            // inode.innerHTML = `${i + 1}`;
+            inode.appendChild(wrap(`${i + 1}`));
             node.style.height = `${tD[1]}px`;
             node.style.top = `${i * tD[1]}px`;
             outerStage.appendChild(node);

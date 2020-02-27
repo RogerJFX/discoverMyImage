@@ -1,6 +1,6 @@
 div.contentContainer {
     position: relative;
-    margin: 0 auto;
+    margin: 8px auto;
     display: table;
     empty-cells: hide;
     border-collapse:separate;

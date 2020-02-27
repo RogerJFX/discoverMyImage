@@ -173,7 +173,7 @@ window.$disc = window.$disc || {};
                             found.move();
                             nextAutoMove();
                         }
-                    }, 1234);
+                    }, $disc.constants.AUTOSOLVE_NEXT_STEP_MILLIS);
                 }
             }
             nextAutoMove();

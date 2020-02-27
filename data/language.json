@@ -51,15 +51,15 @@
   {
     "id": "storeGameButton",
     "lang": {
-      "en": "Store puzzle",
+      "en": "Save puzzle",
       "de": "Puzzle speichern"
     }
   },
   {
     "id": "loadGameButton",
     "lang": {
-      "en": "Load stored puzzle",
-      "de": "Letztes Puzzle laden"
+      "en": "Load saved puzzle",
+      "de": "Gespeichertes Puzzle laden"
     }
   },
   {
@@ -79,8 +79,8 @@
   {
     "id": "changeSettingsButton",
     "lang": {
-      "en": "Change settings",
-      "de": "Einstellungen ändern"
+      "en": "Change level",
+      "de": "Schwierigkeit ändern"
     }
   },
   {
