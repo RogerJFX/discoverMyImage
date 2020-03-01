@@ -201,7 +201,7 @@ window.$disc = window.$disc || {};
     };
 
     self.login = (user, pass) => {
-        $disc.xhrHandler.login({user: user, pass: pass}, () => {})
+        $disc.xhrHandler.login({email: user, pass: pass}, () => {})
     };
 
     self.listExampleImages = (nodeId, onClickFn) => {

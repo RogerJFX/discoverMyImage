@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/common.css?1_2_4">
     <script>
         const tokenCapture = location.href.match(/token=(.*?)(&|$)/i);
-        const token = tokenCapture;
+        const token = tokenCapture[1];
         const langCapture = location.href.match(/lang=(.*?)(&|$)/i);
 
         const lang = langCapture && langCapture[1] === 'de' ? 'de' : 'en';
@@ -15,6 +15,7 @@
             const nPass = document.getElementById(id).value;
             const xhr = new XMLHttpRequest();
             xhr.open('PUT', 'https://7fx.de:9443/newpass.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onload = function () {
                 if (this.status === 200) {
                     document.getElementById(`welcome-${lang}`).style.display = 'block';
@@ -24,7 +25,7 @@
                 }
             };
             xhr.send(JSON.stringify({
-                token: token,
+                uuidJwt: token,
                 password: nPass
             }));
         }

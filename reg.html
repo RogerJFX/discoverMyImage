@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/common.css?1_2_4">
     <script>
         const tokenCapture = location.href.match(/token=(.*?)(&|$)/i);
-        const token = tokenCapture;
+        const token = tokenCapture[1];
         const langCapture = location.href.match(/lang=(.*?)(&|$)/i);
 
         const lang = langCapture && langCapture[1] === 'de' ? 'de' : 'en';
