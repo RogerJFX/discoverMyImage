@@ -69,3 +69,15 @@
 .prompt-icon {
     background-image: url("../svg/question.svg");
 }
+
+.login-icon {
+    background-image: url("../svg/login.svg");
+}
+
+.scores-icon {
+    background-image: url("../svg/graduation.svg");
+}
+
+.register-icon {
+    background-image: url("../svg/register.svg");
+}

@@ -30,7 +30,7 @@ window.$disc = window.$disc || {};
             xhr.onerror = () => mH.alert('Connection refused. Please try again later.', 'Error');
             xhr.open(method, `${settings['imageServer']}${settings['storeURL']}`, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-
+            xhr.setRequestHeader('jwt', $disc.settingsHandler.getJwt());
             xhr.onload = function(e) {
                 if (this.status === 200) {
                     onSuccessFn(this.responseText);

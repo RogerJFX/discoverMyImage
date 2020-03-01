@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Password</title>
+    <link rel="stylesheet" href="css/common.css?1_2_4">
+    <script>
+        const tokenCapture = location.href.match(/token=(.*?)(&|$)/i);
+        const token = tokenCapture;
+        const langCapture = location.href.match(/lang=(.*?)(&|$)/i);
+
+        const lang = langCapture && langCapture[1] === 'de' ? 'de' : 'en';
+
+        function submit(id) {
+            const nPass = document.getElementById(id).value;
+            const xhr = new XMLHttpRequest();
+            xhr.open('PUT', 'https://7fx.de:9443/newpass.php', true);
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    document.getElementById(`welcome-${lang}`).style.display = 'block';
+                    document.getElementById('form').style.display = 'none';
+                } else {
+                    alert('Oh no! Something went wrong.');
+                }
+            };
+            xhr.send(JSON.stringify({
+                token: token,
+                password: nPass
+            }));
+        }
+
+    </script>
+</head>
+<body>
+<div>
+    <div class="no-nav-icon" style="float:left;">
+        <div></div>
+    </div>
+    <div class="logoImage"><img alt="logo" src="img/assets/logo.png" height="70"/></div>
+</div>
+<div class="contentContainer">
+    <div class="myDivRow">
+        <div id="outerStage">
+            <div id="stage">
+                <div id="welcome">
+                    <div id="form" style="display:block">
+
+                        <div class="innerModal" style="display: block;width:360px;">
+                            <h1 id="h-en" style="display:none">Choose your new password!</h1>
+                            <h1 id="h-de" style="display:none">Wähle ein neues Passwort!</h1>
+                            <input id="pw" type="password" />
+                            <button class="button" onclick="submit('pw')">Send</button>
+                        </div>
+                    </div>
+                    <div id="welcome-de" style="display:none">
+                        <h1>Erfolg!</h1>
+                        <p>Du kannst Dich jetzt auf <a href="/">Discover My Image</a> mit dem neuen Passwort einloggen.
+                        </p>
+                    </div>
+                    <div id="welcome-en" style="display:none">
+                        <h1>Success!</h1>
+                        <p>You may now login at <a href="/">Discover My Image</a> using your new password.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="myDivRow">
+        <div class="myDivCell myBottom"></div>
+    </div>
+
+</div>
+</body>
+<script>
+    document.getElementById('pw').setAttribute('placeholder', lang==='de' ? 'Passwort': 'Password');
+    document.getElementById('pw').focus();
+    document.getElementById(`h-${lang}`).style.display='block';
+</script>
+</html>

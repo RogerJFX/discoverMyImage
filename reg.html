@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" href="css/common.css?1_2_4">
+    <script>
+        const tokenCapture = location.href.match(/token=(.*?)(&|$)/i);
+        const token = tokenCapture;
+        const langCapture = location.href.match(/lang=(.*?)(&|$)/i);
+
+        const lang = langCapture && langCapture[1] === 'de' ? 'de' : 'en';
+
+        // Let's roll
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', `https://7fx.de:9443/confirm.php?t=${token}`, true);
+        xhr.onload = function() {
+            if (this.status === 200) {
+                document.getElementById(`welcome-${lang}`).style.display='block';
+            } else {
+                alert('Oh no! Something went wrong.');
+            }
+        };
+        xhr.send();
+    </script>
+</head>
+<body>
+<div>
+    <div class="no-nav-icon" style="float:left;">
+        <div></div>
+    </div>
+    <div class="logoImage"><img alt="logo" src="img/assets/logo.png" height="70" /></div>
+</div>
+<div class="contentContainer">
+    <div class="myDivRow">
+        <div id="outerStage">
+            <div id="stage">
+                <div id="welcome">
+                    <div id="welcome-de" style="display:none">
+                        <h1>Erfolg!</h1>
+                        <p>Du kannst Dich jetzt auf <a href="/">Discover My Image</a> einloggen.</p>
+                    </div>
+                    <div id="welcome-en" style="display:none">
+                        <h1>Success!</h1>
+                        <p>You may now login at <a href="/">Discover My Image</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="myDivRow">
+        <div class="myDivCell myBottom"></div>
+    </div>
+
+</div>
+</body>
+</html>
