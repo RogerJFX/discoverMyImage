@@ -12,6 +12,7 @@ uglifyjs --compress --mangle --output game.min.js -- \
     js/storage.js \
     js/stageActions.js \
     js/deviceDetection.js \
+    js/history.js \
     js/aiManager.js
 
 # python correctMin.py

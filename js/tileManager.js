@@ -22,6 +22,7 @@ window.$disc = window.$disc || {};
             const targetTile = findMove(me);
             if(targetTile !== null) {
                 locked = true;
+                $disc.history.add([xPos, yPos]);
                 updateBoard({tile: me, xPos: xPos, yPos: yPos}, targetTile);
                 xPos = targetTile.xPos;
                 yPos = targetTile.yPos;
@@ -179,6 +180,7 @@ window.$disc = window.$disc || {};
             nextAutoMove();
         }
         animationStoppedByUser = false;
+        $disc.history.clear();
         $disc.ai.resolveTask(tiles, stepsLimit, (data, toWin) => {
             const numLeft = $disc.settingsHandler.getServerCapabilities()['solutionStepsLeft'];
             $disc.lang.getTranslation('alertSolutionSteps').then(result => {
@@ -227,6 +229,7 @@ window.$disc = window.$disc || {};
                 }
                 result[indices - 1].setOmitted(); // right bottom
                 tiles = result;
+                $disc.history.clear();
                 fillBoard();
                 resolve(result);
             });
