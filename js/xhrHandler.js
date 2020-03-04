@@ -110,6 +110,28 @@ window.$disc = window.$disc || {};
         });
     };
 
+    self.postJsonProperties = (_url, method, entity) => {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onerror = () => reject(-1);
+            xhr.open(method, _url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('jwt', $disc.settingsHandler.getJwt());
+            xhr.onload = function (e) {
+                if (this.status === 200) {
+                    const jwtHeader = this.getResponseHeader('jwt');
+                    if (jwtHeader) {
+                        $disc.settingsHandler.setJwt(jwtHeader);
+                    }
+                    resolve(this.responseText);
+                } else {
+                    reject(this.status);
+                }
+            };
+            xhr.send(JSON.stringify(entity));
+        });
+    };
+
     self.login = (entity, onFailureFn) => {
         $disc.settingsHandler.getSoftSettings().then(settings => {
             const xhr = new XMLHttpRequest();

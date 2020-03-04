@@ -121,6 +121,14 @@ window.$disc = window.$disc || {};
         return tmp.join('');
     }
 
+    function simpleConvertCoordsArr(arr) {
+        const result = [];
+        for (let i = 0; i < arr.length; i += 2) {
+            result.push(arr[i+1] + '' + arr[i]);
+        }
+        return result;
+    }
+
     function testTransString4Landscape2Portrait(str, radix) {
         radix = radix || 4;
         const arr = str.split('');
@@ -183,6 +191,24 @@ window.$disc = window.$disc || {};
                 onErrorFn();
             });
         })
+    };
+
+    self.sendSuccess = (onSuccessFn, onErrorFn) => {
+        const grid = $disc.settingsHandler.getLastGrid();
+        const portrait = grid[1] === 4;
+        const tmpHistory = $disc.history.getHistory();
+        const history = portrait ? simpleConvertCoordsArr(tmpHistory) : tmpHistory;
+        fetchDataAndDo(settings => {
+            $disc.xhrHandler.postJsonProperties(`${settings['aiServer']}${settings['successURL']}`, 'POST', {moves: history})
+                .then(_ => {
+                    onSuccessFn();
+                })
+                .catch(err => {
+                    console.error(err);
+                    onErrorFn();
+                })
+        });
+
     };
 
     self.checkTask = (task) => {

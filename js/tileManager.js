@@ -95,6 +95,7 @@ window.$disc = window.$disc || {};
         const firstWrongPlaced = tiles.find(tile => !tile.isCorrectPlaced());
         if(!firstWrongPlaced) {
             winningAction();
+            $disc.ai.sendSuccess(() => {console.log('success')}, () => {console.log('error')});
         }
     }
 
