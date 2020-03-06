@@ -266,16 +266,20 @@ input[type="file"] {
     transform: scale(0);
 }
 
-.innerModal > .header {
+.innerModal > .header, .innerModal > .table {
     display: table;
     width: 100%;
 }
 
-.innerModal > .header > div {
+.innerModal > .header > div, .innerModal > .table > div {
     display: table-row;
 }
 
-.innerModal > .header > div > div{
+.innerModal > .table > div > div {
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+}
+
+.innerModal > .header > div > div, .innerModal > .table > div > div {
     display: table-cell;
 }
 
@@ -287,10 +291,10 @@ input[type="file"] {
     opacity:0.7;
 }
 
-.innerModal > .header > div > .close {
+.innerModal > .header > div > .close, .innerModal > .table > div > .score {
     text-align:right;
 }
 
-.textModalText {
+.textModalText, .innerModal > .table {
     margin-top: 12px;
 }

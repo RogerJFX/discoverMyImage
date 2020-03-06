@@ -1,5 +1,89 @@
 [
   {
+    "id": "loginEmail",
+    "lang": {
+      "en": "Your mail address",
+      "de": "Deine Email-Adresse"
+    }
+  },
+  {
+    "id": "loginPassword",
+    "lang": {
+      "en": "Your password",
+      "de": "Dein Passwort"
+    }
+  },
+  {
+    "id": "loginButton",
+    "lang": {
+      "en": "Login",
+      "de": "Login"
+    }
+  },
+  {
+    "id": "loginSubmit",
+    "lang": {
+      "en": "Login",
+      "de": "Login"
+    }
+  },
+  {
+    "id": "registerButton",
+    "lang": {
+      "en": "Register",
+      "de": "Registrieren"
+    }
+  },
+  {
+    "id": "registerEmail",
+    "lang": {
+      "en": "Your mail address",
+      "de": "Deine Email-Adresse"
+    }
+  },
+  {
+    "id": "registerNickname",
+    "lang": {
+      "en": "Your nickname",
+      "de": "Dein Nickname"
+    }
+  },
+  {
+    "id": "registerPassword",
+    "lang": {
+      "en": "Your password",
+      "de": "Dein Passwort"
+    }
+  },
+  {
+    "id": "registerSubmit",
+    "lang": {
+      "en": "Register now",
+      "de": "Jetzt registrieren"
+    }
+  },
+  {
+    "id": "resetPassButton",
+    "lang": {
+      "en": "Forgot password",
+      "de": "Passwort vergessen"
+    }
+  },
+  {
+    "id": "resetEmail",
+    "lang": {
+      "en": "Your email address",
+      "de": "Deine Email-Adresse"
+    }
+  },
+  {
+    "id": "resetSubmit",
+    "lang": {
+      "en": "Request mail",
+      "de": "Email anfordern"
+    }
+  },
+  {
     "id": "mainMenuHeader",
     "lang": {
       "en": "Main menu",
@@ -63,6 +147,34 @@
     }
   },
   {
+    "id": "puzzleButton",
+    "lang": {
+      "en": "My puzzle",
+      "de": "Mein Puzzle"
+    }
+  },
+  {
+    "id": "highscoresButton",
+    "lang": {
+      "en": "High scores",
+      "de": "Bestenliste"
+    }
+  },
+  {
+    "id": "solvedButton",
+    "lang": {
+      "en": "By points",
+      "de": "Nach Punkten"
+    }
+  },
+  {
+    "id": "uploadedButton",
+    "lang": {
+      "en": "By uploads",
+      "de": "Nach Uploads"
+    }
+  },
+  {
     "id": "solveButton",
     "lang": {
       "en": "Please help!",
@@ -74,6 +186,20 @@
     "lang": {
       "en": "Imprint",
       "de": "Impressum"
+    }
+  },
+  {
+    "id": "myPointsL",
+    "lang": {
+      "en": "My points",
+      "de": "Meine Punkte"
+    }
+  },
+  {
+    "id": "myUploadsL",
+    "lang": {
+      "en": "My uploads",
+      "de": "Meine Uploads"
     }
   },
   {

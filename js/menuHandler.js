@@ -233,4 +233,31 @@ window.$disc = window.$disc || {};
         });
     };
 
+    self.listScores = (nodeId, myNodeId, boolSolved) => {
+        $disc.settingsHandler.getSoftSettings().then(settings => {
+            const table = document.getElementById(nodeId);
+            table.innerHTML = '';
+            const url = `${settings['aiServer']}${boolSolved ? settings['highScoresURL'] : settings['upScoresURL']}`;
+            $disc.xhrHandler.loadJsonProperties(url, false).then(entity => {
+                const scores = entity['scores'];
+                document.getElementById(myNodeId).innerHTML = entity['mine'];
+                scores.forEach(score => {
+                    appendRow(table, score[0], score[1]);
+                })
+            });
+        })
+    };
+
+    function appendRow(tableNode, name, points) {
+        const row = document.createElement("DIV");
+        const nameCell = document.createElement("DIV");
+        const pointCell = document.createElement("DIV");
+        pointCell.addClass('score');
+        nameCell.innerHTML = name;
+        pointCell.innerHTML = points;
+        row.appendChild(nameCell);
+        row.appendChild(pointCell);
+        tableNode.appendChild(row);
+    }
+
 })(window.$disc.menuHandler = window.$disc.menuHandler || {});

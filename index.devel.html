@@ -101,8 +101,7 @@
 
 		const $mH = window.$disc.menuHandler;
 
-		// $mH.login('John', 'Doe');
-		$mH.login('roger@crazything.de', 'RhEQQpzF23');
+		$mH.login('John', 'Doe');
 
 		function toggleShowButtons() {
 			$mH.toggleShowButton('storeGameButton', $mH.hasCurrentImage);
@@ -147,16 +146,123 @@
 					</div>
 				</div>
 			</div>
-
+			<button class="menu-icon login-icon" id="loginButton" onclick="$mH.handleMenuClick(['loginModal'], ['mainMenu']);">Login</button>
 			<button class="menu-icon key-icon" id="solveButton" onclick="$mH.solveCurrentTask()"></button>
+			<button class="menu-icon puzzle-icon" id="puzzleButton" onclick="$mH.handleMenuClick(['puzzleModal','modalLayer', 'modalBG'], ['mainMenu']);"></button>
+			<button class="menu-icon scores-icon" id="highscoresButton" onclick="$mH.handleMenuClick(['highScoresModal','modalLayer', 'modalBG'], ['mainMenu']);"></button>
+			<button class="menu-icon example-icon" id="exampleImageSelect" onclick="$mH.handleMenuClick(['exampleModal','modalLayer', 'modalBG'], ['mainMenu']);
+				$mH.listExampleImages('exampleModal',() => {$mH.handleMenuClick([], ['exampleModal','modalLayer','modalBG']);});"></button>
+			<button class="menu-icon settings-icon" id="changeSettingsButton" onclick="$mH.handleMenuClick(['settingsModal'], ['mainMenu']);"></button>
+
+			<button class="menu-icon lang-icon" id="switchLangButton" onclick="$mH.handleMenuClick(['languageModal','modalLayer', 'modalBG'], ['mainMenu']);"></button>
+			<button class="menu-icon me-icon" id="aboutButton" onclick="$mH.handleMenuClick(['aboutModal'], ['mainMenu']);"></button>
+		</div>
+		<div class="innerModal transitionable" id="puzzleModal">
+			<div class="header">
+				<div>
+					<div id="_puzzleButton" class="menu-category menu-icon puzzle-icon"></div>
+					<div class="close">
+						<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['puzzleModal']);">
+							<div></div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<button class="menu-icon image-icon" id="ownImageSelect" onclick="$mH.handleMenuClick(['selectModal'], ['mainMenu']);"></button>
 			<button class="menu-icon send-icon" id="uploadMenuButton" onclick="if($mH.checkImageLoaded()){$mH.handleMenuClick(['uploadModal'], ['mainMenu']);}"></button>
 			<button class="menu-icon save-icon" id="storeGameButton" onclick="if($mH.saveCurrentTask()){$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);}"></button>
 			<button class="menu-icon load-icon" id="loadGameButton" onclick="$mH.loadCurrentTask();$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);"></button>
-			<button class="menu-icon example-icon" id="exampleImageSelect" onclick="$mH.handleMenuClick(['exampleModal','modalLayer', 'modalBG'], ['mainMenu']);$mH.listExampleImages('exampleModal',() => {$mH.handleMenuClick([], ['exampleModal','modalLayer','modalBG']);});"></button>
-			<button class="menu-icon settings-icon" id="changeSettingsButton" onclick="$mH.handleMenuClick(['settingsModal'], ['mainMenu']);"></button>
-			<button class="menu-icon lang-icon" id="switchLangButton" onclick="$mH.handleMenuClick(['languageModal','modalLayer', 'modalBG'], ['mainMenu']);"></button>
-			<button class="menu-icon me-icon" id="aboutButton" onclick="$mH.handleMenuClick(['aboutModal'], ['mainMenu']);"></button>
+		</div>
+		<div class="innerModal transitionable" id="highScoresModal">
+			<div class="header">
+				<div>
+					<div id="_highscoresButton" class="menu-category menu-icon scores-icon"></div>
+					<div class="close">
+						<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['highScoresModal']);">
+							<div></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button class="menu-icon scores-icon" id="solvedButton" onclick="$mH.listScores('solvedTable', 'myPoints', true);$mH.handleMenuClick(['solvedModal'], ['highScoresModal']);"></button>
+			<button class="menu-icon send-icon" id="uploadedButton" onclick="$mH.listScores('uploadedTable', 'myUploads', false);$mH.handleMenuClick(['uploadedModal'], ['highScoresModal']);"></button>
+		</div>
+		<div class="innerModal transitionable" id="solvedModal">
+			<div class="header">
+				<div>
+					<div id="_solvedButton" class="menu-category menu-icon scores-icon"></div>
+					<div class="close">
+						<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['highScoresModal'], ['solvedModal']);">
+							<div></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="table"><div><div id="myPointsL"></div><div id="myPoints" class="score"></div></div></div>
+			<div id="solvedTable" class="table"></div>
+		</div>
+		<div class="innerModal transitionable" id="uploadedModal">
+			<div class="header">
+				<div>
+					<div id="_uploadedButton" class="menu-category menu-icon send-icon"></div>
+					<div class="close">
+						<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['highScoresModal'], ['uploadedModal']);">
+							<div></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="table"><div><div id="myUploadsL"></div><div id="myUploads" class="score"></div></div></div>
+			<div id="uploadedTable" class="table"></div>
+		</div>
+		<div class="innerModal transitionable" id="loginModal">
+			<div class="header">
+				<div>
+					<div id="_loginButton" class="menu-category menu-icon login-icon"></div>
+					<div class="close">
+						<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['uploadModal']);">
+							<div></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<input placeholder="Email" id="loginEmail" maxlength="128"/>
+			<input placeholder="Password" id="loginPassword" type="password" maxlength="128"/>
+			<button id="loginSubmit" onclick="$mH.login(document.getElementById('loginEmail').value, document.getElementById('loginPassword').value);"></button>
+			<div>&#160;</div>
+			<button id="registerButton" onclick="$mH.handleMenuClick(['registerModal'], ['loginModal']);"></button>
+			<button id="resetPassButton" onclick="$mH.handleMenuClick(['resetPassModal'], ['loginModal']);"></button>
+		</div>
+		<div class="innerModal transitionable" id="registerModal">
+			<div class="header">
+				<div>
+					<div id="_registerButton" class="menu-category menu-icon login-icon"></div>
+					<div class="close">
+						<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['registerModal']);">
+							<div></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<input placeholder="Email" id="registerEmail" maxlength="128"/>
+			<input placeholder="Nickname" id="registerNickname" maxlength="128"/>
+			<input placeholder="Password" id="registerPassword" type="password" maxlength="128"/>
+			<button id="registerSubmit" onclick="$mH.upload({myName: 'sendMyName', hisName: 'sendHisName', mailTo: 'sendToEmail'});"></button>
+		</div>
+		<div class="innerModal transitionable" id="resetPassModal">
+			<div class="header">
+				<div>
+					<div id="_resetPassButton" class="menu-category menu-icon login-icon"></div>
+					<div class="close">
+						<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['resetPassModal']);">
+							<div></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<input placeholder="Email" id="resetEmail" maxlength="128"/>
+			<button id="resetSubmit" onclick="$mH.upload({myName: 'sendMyName', hisName: 'sendHisName', mailTo: 'sendToEmail'});"></button>
+
 		</div>
 		<div class="innerModal transitionable" id="languageModal">
 			<div class="header">
@@ -213,8 +319,6 @@
 					</div>
 				</div>
 			</div>
-
-
 			<button id="settingLevelKidding" onclick="$mH.setLevel(1);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">3 x 3</button>
 			<button id="settingLevelEasy" onclick="$mH.setLevel(2);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">3 x 3</button>
 			<button id="settingLevelMedium" onclick="$mH.setLevel(3);$mH.handleMenuClick([], ['settingsModal', 'mainMenu', 'modalLayer', 'modalBG']);">3 x 3</button>

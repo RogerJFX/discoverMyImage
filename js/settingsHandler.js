@@ -11,6 +11,8 @@ window.$disc = window.$disc || {};
 
     let serverCapabilities = {}; // {solutionStepsLeft: 128, uploadsLeft: 20}
 
+    let identity = null;
+
     self.setLevel = (_level) => {
         $disc.storage.setLevel(_level);
         level = _level;
@@ -47,6 +49,7 @@ window.$disc = window.$disc || {};
         return new Promise((resolve, reject) => {
             if(softSettings) {
                 resolve(softSettings);
+                return;
             }
             $disc.xhrHandler.loadJsonProperties($disc.constants.SETTINGS_URL, true).then(settings => {
                 softSettings = settings;
@@ -58,7 +61,11 @@ window.$disc = window.$disc || {};
     function parseJWT(jwt) {
         try {
             const base64 = jwt.split('.')[1];
-            serverCapabilities = JSON.parse(JSON.parse(atob(base64))['sub']);
+            const entity = JSON.parse(atob(base64));
+            serverCapabilities = entity['sub'];
+            identity = entity['jti'];
+            console.log(identity);
+            console.log(serverCapabilities);
         } catch (err) {
             console.error(err);
         }

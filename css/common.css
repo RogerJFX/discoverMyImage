@@ -76,8 +76,13 @@
 
 .scores-icon {
     background-image: url("../svg/graduation.svg");
+    background-position: 9px center;
 }
 
 .register-icon {
     background-image: url("../svg/register.svg");
+}
+.puzzle-icon {
+    background-image: url("../svg/puzzle.svg");
+    background-position: 9px center;
 }
