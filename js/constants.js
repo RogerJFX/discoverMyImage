@@ -20,6 +20,30 @@ window.$disc = window.$disc || {};
         return this.getAttribute('class') && this.getAttribute('class').split(' ').find(item => item === clazz) === clazz;
     };
 
+    String.prototype.makeSingularOrPlural = function(n) {
+        const rawTokens = this.split("'''");
+        const tokens = rawTokens.map(token => token.substring(0, token.indexOf("''")));
+        let result = this;
+        if(n === 1) {
+            tokens.forEach(token => {
+                if(token.startsWith('!')) {
+                    result = result.replace(`'''${token}''`, token.substring(1));
+                } else {
+                    result = result.replace(`'''${token}''`, '');
+                }
+            });
+        } else {
+            tokens.forEach(token => {
+                if (token.startsWith('!')) {
+                    result = result.replace(`'''${token}''`, '');
+                } else {
+                    result = result.replace(`'''${token}''`, token);
+                }
+            });
+        }
+        return result;
+    };
+
     self.DEVICE_LIST_URL = './data/devices.json';
     self.EXAMPLE_LIST_URL = './data/examples.json';
     self.LANGUAGE_URL = './data/language.json';

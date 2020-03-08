@@ -123,8 +123,8 @@ window.$disc = window.$disc || {};
 
     function simpleConvertCoordsArr(arr) {
         const result = [];
-        for (let i = 0; i < arr.length; i += 2) {
-            result.push(arr[i+1] + '' + arr[i]);
+        for (let i = 0; i < arr.length; i++) {
+            result.push([arr[i][1], arr[i][0]]);
         }
         return result;
     }
@@ -200,8 +200,8 @@ window.$disc = window.$disc || {};
         const history = portrait ? simpleConvertCoordsArr(tmpHistory) : tmpHistory;
         fetchDataAndDo(settings => {
             $disc.xhrHandler.postJsonProperties(`${settings['aiServer']}${settings['successURL']}`, 'POST', {moves: history})
-                .then(_ => {
-                    onSuccessFn();
+                .then(res => {
+                    onSuccessFn(res);
                 })
                 .catch(err => {
                     console.error(err);

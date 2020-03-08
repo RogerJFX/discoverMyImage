@@ -30,7 +30,7 @@ window.$disc = window.$disc || {};
             xhr.onerror = () => mH.alert('Connection refused. Please try again later.', 'Error');
             xhr.open(method, `${settings['imageServer']}${settings['storeURL']}`, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader('jwt', $disc.settingsHandler.getJwt());
+            setJwtHeader(xhr);
             xhr.onload = function(e) {
                 if (this.status === 200) {
                     onSuccessFn(this.responseText);
@@ -93,7 +93,7 @@ window.$disc = window.$disc || {};
             xhr.onerror = () => reject(-1);
             xhr.open('GET', url, true);
             if(!once) {
-                xhr.setRequestHeader('jwt', $disc.settingsHandler.getJwt());
+                setJwtHeader(xhr);
             }
             xhr.onload = function(e) {
                 if (this.status === 200) {
@@ -116,7 +116,7 @@ window.$disc = window.$disc || {};
             xhr.onerror = () => reject(-1);
             xhr.open(method, _url, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader('jwt', $disc.settingsHandler.getJwt());
+            setJwtHeader(xhr);
             xhr.onload = function (e) {
                 if (this.status === 200) {
                     const jwtHeader = this.getResponseHeader('jwt');
@@ -132,10 +132,10 @@ window.$disc = window.$disc || {};
         });
     };
 
-    self.login = (entity, onFailureFn) => {
+    self.login = (entity, onSuccessFn, onFailureFn) => {
         $disc.settingsHandler.getSoftSettings().then(settings => {
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', `${settings['aiServer']}${settings['loginURL']}`, true);
+            xhr.open('POST', `${settings['userServer']}${settings['loginURL']}`, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onload = function(e) {
                 if (this.status === 200) {
@@ -143,6 +143,7 @@ window.$disc = window.$disc || {};
                     if(jwtHeader) {
                         $disc.settingsHandler.setJwt(jwtHeader);
                     }
+                    onSuccessFn(this.responseText);
                 } else {
                     onFailureFn();
                 }
@@ -150,5 +151,12 @@ window.$disc = window.$disc || {};
             xhr.send(JSON.stringify(entity));
         });
     };
+
+    function setJwtHeader(xhr) { // Never send "null"
+        const jwt = $disc.settingsHandler.getJwt();
+        if(jwt) {
+            xhr.setRequestHeader('jwt', jwt);
+        }
+    }
 
 })(window.$disc.xhrHandler = window.$disc.xhrHandler || {});

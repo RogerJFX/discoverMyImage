@@ -216,9 +216,9 @@ input::placeholder {
     color: #a1c3d5;
 }
 
-/*input.wrongInput, .commonAlertModal {*/
-/*    border-color: #c00;*/
-/*}*/
+input.wrongInput {
+    border-color: #c00;
+}
 
 input[type="file"] {
     display: none;

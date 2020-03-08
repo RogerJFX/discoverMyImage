@@ -141,6 +141,8 @@ window.$disc = window.$disc || {};
         outerStage = _outerStage;
     };
 
+    self.isPlaying = () => !won;
+
     function winAction() {
         won = true;
         stage.innerHTML = '';
@@ -156,7 +158,6 @@ window.$disc = window.$disc || {};
                 }, 80);
             }, 80);
         })(3);
-
     }
 
 })(window.$disc.stageActions = window.$disc.stageActions || {});

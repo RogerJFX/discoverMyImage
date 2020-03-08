@@ -49,7 +49,6 @@
 
 			if(uuid) {
 				$disc.stageActions.processFile(window.$disc.xhrHandler.getImage(uuid).then(bean => {
-					console.log(bean);
 					return new Promise(resolve => {
 						const img = new Image();
 						img.src = bean.imgSrc;
@@ -101,8 +100,6 @@
 
 		const $mH = window.$disc.menuHandler;
 
-		$mH.login('John', 'Doe');
-
 		function toggleShowButtons() {
 			$mH.toggleShowButton('storeGameButton', $mH.hasCurrentImage);
 			$mH.toggleShowButton('uploadMenuButton', $mH.hasCurrentImage);
@@ -110,6 +107,8 @@
 			$mH.toggleShowButton('loadGameButton', $mH.hasCurrentTask);
 			$mH.toggleShowButton('solveButton', $mH.hasCurrentImage);
 			$mH.toggleShowButton('waUploadButton', $mH.isMobileDevice);
+			$mH.toggleShowButton('loginButton', () => !$disc.settingsHandler.isQualifiedLoggedIn());
+			$mH.toggleShowButton('solveButton', $disc.stageActions.isPlaying);
 		}
 
 		function toggleWelcomeLanguage(lang) {
@@ -168,10 +167,10 @@
 					</div>
 				</div>
 			</div>
-			<button class="menu-icon image-icon" id="ownImageSelect" onclick="$mH.handleMenuClick(['selectModal'], ['mainMenu']);"></button>
-			<button class="menu-icon send-icon" id="uploadMenuButton" onclick="if($mH.checkImageLoaded()){$mH.handleMenuClick(['uploadModal'], ['mainMenu']);}"></button>
-			<button class="menu-icon save-icon" id="storeGameButton" onclick="if($mH.saveCurrentTask()){$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);}"></button>
-			<button class="menu-icon load-icon" id="loadGameButton" onclick="$mH.loadCurrentTask();$mH.handleMenuClick([], ['mainMenu', 'modalLayer', 'modalBG']);"></button>
+			<button class="menu-icon image-icon" id="ownImageSelect" onclick="$mH.handleMenuClick(['selectModal'], ['puzzleModal']);"></button>
+			<button class="menu-icon send-icon" id="uploadMenuButton" onclick="if($mH.checkImageLoaded()){$mH.handleMenuClick(['uploadModal'], ['puzzleModal']);}"></button>
+			<button class="menu-icon save-icon" id="storeGameButton" onclick="if($mH.saveCurrentTask()){$mH.handleMenuClick([], ['puzzleModal', 'modalLayer', 'modalBG']);}"></button>
+			<button class="menu-icon load-icon" id="loadGameButton" onclick="$mH.loadCurrentTask();$mH.handleMenuClick([], ['puzzleModal', 'modalLayer', 'modalBG']);"></button>
 		</div>
 		<div class="innerModal transitionable" id="highScoresModal">
 			<div class="header">
@@ -220,7 +219,7 @@
 				<div>
 					<div id="_loginButton" class="menu-category menu-icon login-icon"></div>
 					<div class="close">
-						<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['uploadModal']);">
+						<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['loginModal']);">
 							<div></div>
 						</div>
 					</div>
@@ -228,7 +227,7 @@
 			</div>
 			<input placeholder="Email" id="loginEmail" maxlength="128"/>
 			<input placeholder="Password" id="loginPassword" type="password" maxlength="128"/>
-			<button id="loginSubmit" onclick="$mH.login(document.getElementById('loginEmail').value, document.getElementById('loginPassword').value);"></button>
+			<button id="loginSubmit" onclick="$mH.login(document.getElementById('loginEmail').value, document.getElementById('loginPassword').value);$mH.handleMenuClick([], ['loginModal', 'mainMenu', 'modalLayer', 'modalBG']);"></button>
 			<div>&#160;</div>
 			<button id="registerButton" onclick="$mH.handleMenuClick(['registerModal'], ['loginModal']);"></button>
 			<button id="resetPassButton" onclick="$mH.handleMenuClick(['resetPassModal'], ['loginModal']);"></button>
@@ -247,7 +246,7 @@
 			<input placeholder="Email" id="registerEmail" maxlength="128"/>
 			<input placeholder="Nickname" id="registerNickname" maxlength="128"/>
 			<input placeholder="Password" id="registerPassword" type="password" maxlength="128"/>
-			<button id="registerSubmit" onclick="$mH.upload({myName: 'sendMyName', hisName: 'sendHisName', mailTo: 'sendToEmail'});"></button>
+			<button id="registerSubmit" onclick="$mH.register({pass: 'registerPassword', nick: 'registerNickname', email: 'registerEmail'}, () => $mH.handleMenuClick(['mainMenu'], ['registerModal']));"></button>
 		</div>
 		<div class="innerModal transitionable" id="resetPassModal">
 			<div class="header">
@@ -261,7 +260,7 @@
 				</div>
 			</div>
 			<input placeholder="Email" id="resetEmail" maxlength="128"/>
-			<button id="resetSubmit" onclick="$mH.upload({myName: 'sendMyName', hisName: 'sendHisName', mailTo: 'sendToEmail'});"></button>
+			<button id="resetSubmit" onclick="$mH.resetPass({email: 'resetEmail'}, () => $mH.handleMenuClick([], ['resetPassModal','mainMenu','modalLayer', 'modalBG']));"></button>
 
 		</div>
 		<div class="innerModal transitionable" id="languageModal">
@@ -376,23 +375,23 @@
 			<button id="alertOk" onclick="$mH.handleMenuClick([], ['commonAlertModal', 'alertModalLayer', 'alertBG']);">OK</button>
 		</div>
 	</div>
-<div class="modalLayer alertModalLayer transitionable" id="promptModalLayer">
-	<div class="innerModal commonAlertModal transitionable" id="commonPromptModal">
-		<div class="header">
-			<div>
-				<div id="promptHeadline" class="menu-category menu-icon prompt-icon"></div>
-				<div class="close">
-					<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['commonPromptModal', 'promptModalLayer', 'modalBG', 'mainMenu', 'modalLayer']);">
-						<div></div>
+	<div class="modalLayer alertModalLayer transitionable" id="promptModalLayer">
+		<div class="innerModal commonAlertModal transitionable" id="commonPromptModal">
+			<div class="header">
+				<div>
+					<div id="promptHeadline" class="menu-category menu-icon prompt-icon"></div>
+					<div class="close">
+						<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['commonPromptModal', 'promptModalLayer', 'modalBG', 'mainMenu', 'modalLayer']);">
+							<div></div>
+						</div>
 					</div>
 				</div>
 			</div>
+			<div id="commonPromptMessage" class="textModalText"></div>
+			<input id="promptInput"/>
+			<button id="promptOk">OK</button>
 		</div>
-		<div id="commonPromptMessage" class="textModalText"></div>
-		<input id="promptInput"/>
-		<button id="promptOk">OK</button>
 	</div>
-</div>
 	<div>
 		<div class="nav-icon" style="float:left;" onclick="toggleShowButtons();$mH.handleMenuClick(['mainMenu', 'modalLayer', 'modalBG'], []);">
 			<div></div>

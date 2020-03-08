@@ -11,7 +11,6 @@ window.$disc = window.$disc || {};
 
     self.add = (move) => {
         history.push(move);
-        console.log(history);
     };
 
     self.getHistory = () => {

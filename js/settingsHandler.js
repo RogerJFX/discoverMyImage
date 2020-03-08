@@ -9,9 +9,20 @@ window.$disc = window.$disc || {};
 
     let jwt;
 
+    let nick;
+
     let serverCapabilities = {}; // {solutionStepsLeft: 128, uploadsLeft: 20}
 
     let identity = null;
+
+    self.setNickname = (_nick) => {
+        nick = _nick;
+        $disc.storage.storeNick(_nick);
+    };
+
+    self.getNickname = () => {
+        return nick || $disc.storage.getNick();
+    };
 
     self.setLevel = (_level) => {
         $disc.storage.setLevel(_level);
@@ -41,6 +52,17 @@ window.$disc = window.$disc || {};
         return jwt || $disc.storage.getJWT();
     };
 
+    self.isQualifiedLoggedIn = () => {
+        const jwt = self.getJwt();
+        if(jwt) {
+            if(!identity) {
+                parseJWT(jwt);
+            }
+            return isQualifiedUser();
+        }
+        return false;
+    };
+
     self.getServerCapabilities = () => {
         return serverCapabilities;
     };
@@ -58,14 +80,16 @@ window.$disc = window.$disc || {};
         })
     };
 
+    function isQualifiedUser() {
+        return identity && identity.indexOf('@') !== -1;
+    }
+
     function parseJWT(jwt) {
         try {
             const base64 = jwt.split('.')[1];
             const entity = JSON.parse(atob(base64));
-            serverCapabilities = entity['sub'];
+            serverCapabilities = JSON.parse(entity['sub']);
             identity = entity['jti'];
-            console.log(identity);
-            console.log(serverCapabilities);
         } catch (err) {
             console.error(err);
         }

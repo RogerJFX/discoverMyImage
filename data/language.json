@@ -84,6 +84,55 @@
     }
   },
   {
+    "id": "alertErrorHeadline",
+    "lang": {
+      "en": "Error",
+      "de": "Fehler"
+    }
+  },
+  {
+    "id": "alertSuccessHeadline",
+    "lang": {
+      "en": "Success!",
+      "de": "Erfolg!"
+    }
+  },
+  {
+    "id": "loginFailedMsg",
+    "lang": {
+      "en": "Sorry, no match",
+      "de": "Keine Übereinstimmung gefunden."
+    }
+  },
+  {
+    "id": "loginSuccessMsg",
+    "lang": {
+      "en": "You are logged in as __NICK__",
+      "de": "Du bist angemeldet als __NICK__"
+    }
+  },
+  {
+    "id": "registerFailedMsg",
+    "lang": {
+      "en": "Are you already registered?",
+      "de": "Bist Du schon registriert?."
+    }
+  },
+  {
+    "id": "registerSuccessMsg",
+    "lang": {
+      "en": "You should have mail within a couple of seconds.",
+      "de": "Eine Email ist unterwegs."
+    }
+  },
+  {
+    "id": "resetPassFailedMsg",
+    "lang": {
+      "en": "Are you registered?",
+      "de": "Bist Du registriert?."
+    }
+  },
+  {
     "id": "mainMenuHeader",
     "lang": {
       "en": "Main menu",
@@ -189,17 +238,38 @@
     }
   },
   {
+    "id": "guest",
+    "lang": {
+      "en": "Guest",
+      "de": "Gast"
+    }
+  },
+  {
     "id": "myPointsL",
     "lang": {
-      "en": "My points",
-      "de": "Meine Punkte"
+      "en": "My points (__NICK__)",
+      "de": "Meine Punkte (__NICK__)"
     }
   },
   {
     "id": "myUploadsL",
     "lang": {
-      "en": "My uploads",
-      "de": "Meine Uploads"
+      "en": "My uploads (__NICK__)",
+      "de": "Meine Uploads (__NICK__)"
+    }
+  },
+  {
+    "id": "congratsHeadline",
+    "lang": {
+      "en": "Congratulations",
+      "de": "Glückwunsch!"
+    }
+  },
+  {
+    "id": "congratsMsg",
+    "lang": {
+      "en": "You gained:<br/>&#160;<br/>__REWARD_POINTS__ score point'''s''<br/>__FREE_STEPS__ free solution step'''s''",
+      "de": "Deine Belohnung:<br/>&#160;<br/>__REWARD_POINTS__ Punkt'''e''<br/>__FREE_STEPS__ freie'''!r'' Lösungsschritt'''e''"
     }
   },
   {
@@ -310,36 +380,8 @@
   {
     "id": "txtImprint",
     "lang": {
-      "en": "This service is brought to you by Roger Francis Hösl, Frankfurt, Germany.<br/>&#160;<br/>We are aware of potential abuse of this site and will do everything against it.<br/>&#160;<br/>This site is still in beta state.",
-      "de": "Verantwortlich für diese Seite ist Roger Francis Hösl, Frankfurt, Deutschland.<br/>&#160;<br/>Die potentielle Gefahr dieser Anwendung ist uns bewusst. Wir werden alles tun, um dieser Gefahr zu begegnen.<br/>&#160;<br/>Die Seite befindet sich noch in einem Status 'BETA'"
-    }
-  },
-  {
-    "id": "settingExplain",
-    "lang": {
-      "en": "",
-      "de": ""
-    }
-  },
-  {
-    "id": "settingExplain",
-    "lang": {
-      "en": "",
-      "de": ""
-    }
-  },
-  {
-    "id": "settingExplain",
-    "lang": {
-      "en": "",
-      "de": ""
-    }
-  },
-  {
-    "id": "settingExplain",
-    "lang": {
-      "en": "",
-      "de": ""
+      "en": "This service is brought to you by Roger Francis, Frankfurt, Germany.<br/>&#160;<br/>We are aware of potential abuse of this site and will do everything against it.<br/>&#160;<br/>This site is still in beta state.",
+      "de": "Verantwortlich für diese Seite ist Roger Francis, Frankfurt, Deutschland.<br/>&#160;<br/>Die potentielle Gefahr dieser Anwendung ist uns bewusst. Wir werden alles tun, um dieser Gefahr zu begegnen.<br/>&#160;<br/>Die Seite befindet sich noch in einem Status 'BETA'"
     }
   },
   {
