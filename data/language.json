@@ -380,8 +380,8 @@
   {
     "id": "txtImprint",
     "lang": {
-      "en": "This service is brought to you by Roger Francis, Frankfurt, Germany.<br/>&#160;<br/>We are aware of potential abuse of this site and will do everything against it.<br/>&#160;<br/>This site is still in beta state.",
-      "de": "Verantwortlich für diese Seite ist Roger Francis, Frankfurt, Deutschland.<br/>&#160;<br/>Die potentielle Gefahr dieser Anwendung ist uns bewusst. Wir werden alles tun, um dieser Gefahr zu begegnen.<br/>&#160;<br/>Die Seite befindet sich noch in einem Status 'BETA'"
+      "en": "This service is brought to you by Roger Francis, Frankfurt, Germany.<br/>&#160;<br/>We are aware of potential abuse of this site and will do everything against it.<br/>&#160;<br/>Feel free to send us an email to 'service at [this.domain]'.",
+      "de": "Verantwortlich für diese Seite ist Roger Francis, Frankfurt, Deutschland.<br/>&#160;<br/>Die potentielle Gefahr dieser Anwendung ist uns bewusst. Wir werden alles tun, um dieser Gefahr zu begegnen.<br/>&#160;<br/>Die Seite befindet sich noch in einem Status 'BETA'. Emails bitte an 'service at [diese Domaine]'."
     }
   },
   {
@@ -431,6 +431,13 @@
     "lang": {
       "en": "Steps to solve this puzzle: __n1__.<br/>Steps performed: __n2__.<br/>Remaining help steps: __n3__.",
       "de": "Lösungsschritte für dieses Puzzle: __n1__.<br/>Schritte angewendet: __n2__.<br />Verbleibende Hilfe: __n3__."
+    }
+  },
+  {
+    "id": "sessionExpWarningAlert",
+    "lang": {
+      "en": "Your session has either expired or will expire in a couple of minutes. Please login again.",
+      "de": "Deine Sitzung ist abgelaufen oder läuft demnächst ab. Bitte melde Dich erneut an."
     }
   }
 

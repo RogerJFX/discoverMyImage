@@ -33,6 +33,7 @@ window.$disc = window.$disc || {};
         }
 
         document.getElementById('alertOk').onclick = action;
+        document.getElementById('alertOk').focus();
         document.getElementById('alertCloseButton').onclick = action;
 
     }
@@ -400,5 +401,21 @@ window.$disc = window.$disc || {};
         row.appendChild(pointCell);
         tableNode.appendChild(row);
     }
+
+    (function formInputEnter() {
+        window.onload = () => {
+            [... document.querySelectorAll('.innerModal')].filter(form => form.getElementsByTagName('input').length !== 0).forEach(form => {
+                const inputs = [... form.getElementsByTagName('input')];
+                const buttons = [... form.getElementsByTagName('button')];
+                if(inputs.length !== 0 && buttons.length !== 0) {
+                    inputs[inputs.length - 1].addEventListener('keyup', (evt) => {
+                        if(evt.key === 'Enter') {
+                            buttons[0].click();
+                        }
+                    });
+                }
+            })
+        };
+    })();
 
 })(window.$disc.menuHandler = window.$disc.menuHandler || {});

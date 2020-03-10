@@ -96,6 +96,7 @@
 				handleFileSelect(evt);
 			}, true); // input or change
 			$disc.lang.switchLanguage(lang);
+			$disc.settingsHandler.guardToken();
 		}, false);
 
 		const $mH = window.$disc.menuHandler;
@@ -123,6 +124,7 @@
 				$mH.handleMenuClick([], ['mainMenu', 'languageModal','modalLayer', 'modalBG']);
 			}
 		}
+
 	</script>
 <!--	<script data-ad-client="ca-pub-5386329083980702" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
 </head>
@@ -219,7 +221,7 @@
 				<div>
 					<div id="_loginButton" class="menu-category menu-icon login-icon"></div>
 					<div class="close">
-						<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick(['mainMenu'], ['loginModal']);">
+						<div class="nav-icon cancel-icon" onclick="$mH.handleMenuClick([], ['loginModal', 'mainMenu' ,'modalLayer', 'modalBG']);">
 							<div></div>
 						</div>
 					</div>

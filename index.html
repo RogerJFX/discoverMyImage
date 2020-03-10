@@ -102,6 +102,7 @@
 				handleFileSelect(evt);
 			}, true); // input or change
 			$disc.lang.switchLanguage(lang);
+			$disc.settingsHandler.guardToken();
 		}, false);
 
 		const $mH = window.$disc.menuHandler;

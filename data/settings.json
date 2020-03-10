@@ -1,17 +1,17 @@
 {
-  "imageServerXX": "https://7fx.de:9443/",
-  "imageServer": "http://localhost:9000/",
+  "imageServer": "https://7fx.de/",
+  "imageServerX": "http://localhost:9000/",
   "storeURL": "store.php",
   "getURL": "get.php?uuid=__UUID__",
 
-  "aiServer": "https://7fx.de:9443/",
+  "aiServer": "https://7fx.de/",
   "aiServerX": "http://localhost:9000/",
   "taskURL": "task.php?level=__LEVEL__&grid=__GRID__",
   "resolveURL": "resolve.php?task=__TASK__&grid=__GRID__&stepsLimit=__STEPS_LIMIT__",
   "checkURL": "check.php?task=__TASK__",
   "successURL": "success.php",
 
-  "userServer": "https://7fx.de:9443/",
+  "userServer": "https://7fx.de/",
   "userServerX": "http://localhost:9000/",
   "loginURL": "login.php",
   "registerURL": "register.php",

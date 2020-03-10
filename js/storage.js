@@ -10,6 +10,7 @@ window.$disc = window.$disc || {};
     const KEY_PLAY_LEVEL = '__lvl__';
     const KEY_JWT = '__jwt__';
     const KEY_NICK = '__nick__';
+    const KEY_TOKEN_EXP = '__texp__';
 
     self.setLevel = level => storage.setItem(KEY_PLAY_LEVEL, '' + level);
 
@@ -48,6 +49,18 @@ window.$disc = window.$disc || {};
 
     self.storeNick = (nick) => {
         sessionStorage.setItem(KEY_NICK, nick);
+    };
+
+    self.storeTokenExp = (millis) => {
+        sessionStorage.setItem(KEY_TOKEN_EXP, millis + '');
+    };
+
+    self.getTokenExp = () => {
+        return sessionStorage.getItem(KEY_TOKEN_EXP);
+    };
+
+    self.clearSession = () => {
+        sessionStorage.clear();
     };
 
     self.saveCurrentTask = (image, tileStates, settings) => {

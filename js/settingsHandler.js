@@ -80,8 +80,51 @@ window.$disc = window.$disc || {};
         })
     };
 
+    self.guardToken = () => {
+        const TEN_MINUTES = 1000 * 60 * 10;
+        const ONE_HOUR = TEN_MINUTES * 6;
+        function checkExpiration() {
+            const exp = Number($disc.storage.getTokenExp());
+            const diff = exp - new Date().getTime();
+            if(diff < ONE_HOUR) {
+                if(self.isQualifiedLoggedIn()) {
+                    $disc.lang.getTranslation('sessionExpWarningAlert').then(t => {
+                        $disc.menuHandler.alert(t, '!!!', null, () => {
+                            $disc.menuHandler.handleMenuClick(['loginModal', 'modalLayer', 'modalBG'], []);
+                        }, false);
+                    });
+                } else {
+                    clearSession();
+                    $disc.storage.clearSession();
+                    $disc.xhrHandler.login({email: 'John', pass: 'Doe'}, () => {}, () => {});
+                }
+            }
+        }
+        function checkToken() {
+            const token = self.getJwt();
+            if(token) {
+                checkExpiration();
+            }
+        }
+        checkToken();
+        window.setInterval(checkToken, TEN_MINUTES);
+    };
+
+    function clearSession() {
+        jwt = null;
+        nick = null;
+        serverCapabilities = {};
+        identity = null;
+    }
+
     function isQualifiedUser() {
         return identity && identity.indexOf('@') !== -1;
+    }
+
+    function setTokenExpirationDate(iat, exp) {
+        const localNow = new Date().getTime();
+        const expireTimeMillis = localNow + (exp - iat) * 1000;
+        $disc.storage.storeTokenExp(expireTimeMillis);
     }
 
     function parseJWT(jwt) {
@@ -90,10 +133,10 @@ window.$disc = window.$disc || {};
             const entity = JSON.parse(atob(base64));
             serverCapabilities = JSON.parse(entity['sub']);
             identity = entity['jti'];
+            setTokenExpirationDate(entity['iat'], entity['exp'])
         } catch (err) {
             console.error(err);
         }
-
     }
 
 })(window.$disc.settingsHandler = window.$disc.settingsHandler || {});
