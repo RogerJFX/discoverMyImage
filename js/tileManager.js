@@ -14,11 +14,13 @@ window.$disc = window.$disc || {};
         let omitted = false;
         let htmlElement;
         const me = this;
+        let moved = false;
         function tryMove() {
-            if(locked) {
+            cancelEvents();
+            if(locked || moved) {
+                moved = false;
                 return;
             }
-
             const targetTile = findMove(me);
             if(targetTile !== null) {
                 locked = true;
@@ -33,6 +35,86 @@ window.$disc = window.$disc || {};
                     });
             }
         }
+
+        function cancelEvents() {
+            document.onmousemove = null;
+            document.onmouseup = null;
+            document.ontouchend = null;
+            document.ontouchmove = null;
+        }
+
+        function startDrag(evt) {
+            evt.preventDefault();
+            function goBack() {
+                window.$disc.animator.translateCard(htmlElement, xPos * tileWidth, yPos * tileHeight);
+            }
+
+            function checkRange(range, diff) {
+                if(range === 0) {
+                    return false;
+                } else if(range > 0) {
+                    return diff > 0 && diff < range;
+                } else {
+                    return diff < 0 && diff > range;
+                }
+            }
+
+            function movedSufficient(ranges, xMoved, yMoved) {
+                return (ranges[0] !== 0 && Math.abs(xMoved) > Math.abs(ranges[0] / 2)) ||
+                    (ranges[1] !== 0 && Math.abs(yMoved) > Math.abs(ranges[1] / 2));
+            }
+
+            function getEvtCoords(e) {
+                if(e.type === 'touchstart' || e.type === 'touchmove'){
+                    const touch = e.touches[0] || e.changedTouches[0];
+                    return [touch.pageX, touch.pageY];
+                } else if (e.type === 'mousedown' || e.type === 'mousemove') {
+                    return [e.clientX, e.clientY];
+                }
+            }
+
+            const targetTile = findMove(me);
+            if(targetTile === null) {
+                return;
+            }
+            const range = [(targetTile.xPos - xPos) * tileWidth, (targetTile.yPos - yPos) * tileHeight];
+            const coords = getEvtCoords(evt);
+            const startX = coords[0];
+            const startY = coords[1];
+            const oT = htmlElement.offsetTop;
+            const oL = htmlElement.offsetLeft;
+            function mouseMove(evtM) {
+                const coords = getEvtCoords(evtM);
+                const diffX = coords[0] - startX;
+                const diffY = coords[1] - startY;
+                if(checkRange(range[0], diffX)) {
+                    moved = true;
+                    htmlElement.style.left = oL + diffX + 'px';
+                } else if(checkRange(range[1], diffY)) {
+                    moved = true;
+                    htmlElement.style.top = oT + diffY + 'px';
+                }
+                document.onmouseup = mouseUp;
+                document.ontouchend = mouseUp;
+                function mouseUp() {
+                    const enough = movedSufficient(range, diffX, diffY);
+                    if(enough) {
+                        moved = false;
+                        tryMove();
+                    } else {
+                        goBack();
+                    }
+                    cancelEvents();
+                }
+            }
+            document.onmousemove = (evtM) => {
+                mouseMove(evtM);
+            };
+            document.ontouchmove = (evtM) => {
+                mouseMove(evtM);
+            };
+        }
+
         this.toNode = () => {
             htmlElement = document.createElement('DIV');
             htmlElement.setAttribute('style', `
@@ -48,11 +130,14 @@ window.$disc = window.$disc || {};
             identDiv.addClass('tile-ident');
             identDiv.innerHTML = `${String.fromCharCode(65 + oX)}${oY + 1}`; //String.fromCharCode(65);
             htmlElement.appendChild(identDiv);
+            // addDoubleClick(htmlElement, tryMove);
             htmlElement.onclick = tryMove;
-            htmlElement.onmousedown = () => {
+            htmlElement.onmousedown = (evt) => {
+                startDrag(evt);
                 animationStoppedByUser = true;
             };
-            htmlElement.ontouchstart = () => {
+            htmlElement.ontouchstart = (evt) => {
+                startDrag(evt);
                 animationStoppedByUser = true;
             };
             return htmlElement;
