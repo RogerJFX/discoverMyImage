@@ -14,11 +14,11 @@ window.$disc = window.$disc || {};
         let omitted = false;
         let htmlElement;
         const me = this;
-        let moved = false;
+        let dragged = false;
         function tryMove() {
             cancelEvents();
-            if(locked || moved) {
-                moved = false;
+            if(locked || dragged) {
+                dragged = false;
                 return;
             }
             const targetTile = findMove(me);
@@ -88,18 +88,17 @@ window.$disc = window.$disc || {};
                 const diffX = coords[0] - startX;
                 const diffY = coords[1] - startY;
                 if(checkRange(range[0], diffX)) {
-                    moved = true;
+                    dragged = true;
                     htmlElement.style.left = oL + diffX + 'px';
                 } else if(checkRange(range[1], diffY)) {
-                    moved = true;
+                    dragged = true;
                     htmlElement.style.top = oT + diffY + 'px';
                 }
                 document.onmouseup = mouseUp;
                 document.ontouchend = mouseUp;
                 function mouseUp() {
-                    const enough = movedSufficient(range, diffX, diffY);
-                    if(enough) {
-                        moved = false;
+                    if(movedSufficient(range, diffX, diffY)) {
+                        dragged = false;
                         tryMove();
                     } else {
                         goBack();
