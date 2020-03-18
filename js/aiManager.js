@@ -188,7 +188,7 @@ window.$disc = window.$disc || {};
                 }
             }).catch(err => {
                 console.error(err);
-                onErrorFn();
+                onErrorFn(err);
             });
         })
     };

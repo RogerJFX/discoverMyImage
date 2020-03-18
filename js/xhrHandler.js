@@ -1,8 +1,9 @@
 window.$disc = window.$disc || {};
 (function XhrHandler(self) {
 
-    function EnterpriseBean(imgSrc, myName, herName, email, lang) {
+    function EnterpriseBean(imgSrc, lvl, myName, herName, email, lang) {
         this.imgSrc = imgSrc;
+        this.lvl = lvl;
         this.email = email;
         this.myName = myName;
         this.herName = herName;
@@ -10,7 +11,7 @@ window.$disc = window.$disc || {};
     }
 
     self.createBean = (imgSrc, myName, herName, email) => {
-        return new EnterpriseBean(imgSrc, myName, herName, email, $disc.lang.getCurrLang());
+        return new EnterpriseBean(imgSrc, $disc.settingsHandler.getLevel(), myName, herName, email, $disc.lang.getCurrLang());
     };
 
     self.putImage = (bean) => {
@@ -61,8 +62,13 @@ window.$disc = window.$disc || {};
                 xhr.onerror = () => reject(-1);
                 const URL = settings['getURL'].replace('__UUID__', uuid);
                 xhr.open('GET', `${settings['imageServer']}${URL}`, true);
+                setJwtHeader(xhr);
                 xhr.onload = function(e) {
                     if (this.status === 200) {
+                        const jwtHeader = this.getResponseHeader('jwt');
+                        if(jwtHeader) {
+                            $disc.settingsHandler.setJwt(jwtHeader);
+                        }
                         resolve(JSON.parse(this.responseText));
                     } else {
                         reject(this.status);
@@ -136,6 +142,7 @@ window.$disc = window.$disc || {};
         $disc.settingsHandler.getSoftSettings().then(settings => {
             const xhr = new XMLHttpRequest();
             xhr.open('POST', `${settings['userServer']}${settings['loginURL']}`, true);
+            setJwtHeader(xhr);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onload = function(e) {
                 if (this.status === 200) {

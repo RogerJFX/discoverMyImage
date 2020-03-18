@@ -371,6 +371,20 @@
     }
   },
   {
+    "id": "errorNoSolutionFound",
+    "lang": {
+      "en": "Sorry, the server could not figure out any solution for this.<br/>&#160;<br/>It must have been randomly shuffled.",
+      "de": "Sorry, da gibt es keine Lösung.<br/>&#160;<br/>Die Aufgabe wurde offenbar einfach so zusammengewürfelt."
+    }
+  },
+  {
+    "id": "unknownError",
+    "lang": {
+      "en": "Sorry, an unknown error has occurred.<br/>&#160;<br/>We will fix this soon.",
+      "de": "Unbekannter Fehler.<br/>&#160;<br/>Das werden wir bald behoben haben."
+    }
+  },
+  {
     "id": "sendSuccess",
     "lang": {
       "en": "It worked!",

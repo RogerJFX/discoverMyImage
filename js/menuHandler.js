@@ -227,7 +227,7 @@ window.$disc = window.$disc || {};
 
     self.solveCurrentTask = () => {
         $disc.lang.getTranslation('promptSolutionLimit').then(result => {
-            const numLeft = $disc.settingsHandler.getServerCapabilities()['solutionStepsLeft'];
+            const numLeft = $disc.settingsHandler.getServerCapabilities()['ssl'];
             new Prompt(result.replace('__num__', numLeft), 'Limit?', (inp) => {
                 self.handleMenuClick([], ['modalBG', 'mainMenu', 'modalLayer']);
                 if (isNaN(inp)) {

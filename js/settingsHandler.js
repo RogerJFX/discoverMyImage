@@ -11,7 +11,7 @@ window.$disc = window.$disc || {};
 
     let nick;
 
-    let serverCapabilities = {}; // {solutionStepsLeft: 128, uploadsLeft: 20}
+    let serverCapabilities = {}; // {ssl: 128, ul: 20}
 
     let identity = null;
 

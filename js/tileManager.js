@@ -269,13 +269,16 @@ window.$disc = window.$disc || {};
         animationStoppedByUser = false;
         $disc.history.clear();
         $disc.ai.resolveTask(tiles, stepsLimit, (data, toWin) => {
-            const numLeft = $disc.settingsHandler.getServerCapabilities()['solutionStepsLeft'];
+            const numLeft = $disc.settingsHandler.getServerCapabilities()['ssl'];
             $disc.lang.getTranslation('alertSolutionSteps').then(result => {
                 const msg = result.replace('__n1__', toWin).replace('__n2__', data.length).replace('__n3__', numLeft);
                 $disc.menuHandler.alert(msg, 'Info', null, () => onSuccess(data));
             });
-
-        }, winningAction);
+        }, status => {
+            $disc.lang.getTranslation(status === 404 ? 'errorNoSolutionFound': 'unknownError').then(result => {
+                $disc.menuHandler.alertError(result, null, null, true);
+            });
+        });
     };
 
     self.getCurrentTilesState = () => {

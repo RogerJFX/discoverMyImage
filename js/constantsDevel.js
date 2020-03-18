@@ -57,7 +57,7 @@ window.$disc = window.$disc || {};
     self.DEVICE_LIST_URL = './data/devices.json';
     self.EXAMPLE_LIST_URL = './data/examples.json';
     self.LANGUAGE_URL = './data/language.json';
-    self.SETTINGS_URL = './data/settings.json';
+    self.SETTINGS_URL = './data/settingsDevel.json';
     self.EXAMPLES_FOLDER_URL = './img/examples/';
 
     self.REFERENCE_IMAGE_MAX_EDGE = 1000;
