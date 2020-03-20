@@ -11,6 +11,7 @@ window.$disc = window.$disc || {};
     const KEY_JWT = '__jwt__';
     const KEY_NICK = '__nick__';
     const KEY_TOKEN_EXP = '__texp__';
+    const KEY_REMOTE_UUID_LOADED = '__rud__';
 
     self.setLevel = level => storage.setItem(KEY_PLAY_LEVEL, '' + level);
 
@@ -22,6 +23,12 @@ window.$disc = window.$disc || {};
     self.setLastLoadedImage = (imgData) => {
         storage.setItem(KEY_LAST_LOADED, imgData);
     };
+
+    self.setRemoteImageLoaded = (uuidLoaded) => {
+        storage.setItem(KEY_REMOTE_UUID_LOADED, uuidLoaded + '');
+    };
+
+    self.isRemoteImageLoaded = () => storage.getItem(KEY_REMOTE_UUID_LOADED) === 'true';
 
     self.getLastLoadedImage = () => {
         return storage.getItem(KEY_LAST_LOADED);

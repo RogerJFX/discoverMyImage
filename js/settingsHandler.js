@@ -52,6 +52,16 @@ window.$disc = window.$disc || {};
         return jwt || $disc.storage.getJWT();
     };
 
+    self.getMinLevel = () => {
+        if($disc.storage.isRemoteImageLoaded()) {
+            const sub = parseJWT(self.getJwt());
+            return sub['it']['lv'];
+        } else {
+            return 0;
+        }
+
+    };
+
     self.isQualifiedLoggedIn = () => {
         const jwt = self.getJwt();
         if(jwt) {
@@ -133,7 +143,8 @@ window.$disc = window.$disc || {};
             const entity = JSON.parse(atob(base64));
             serverCapabilities = JSON.parse(entity['sub']);
             identity = entity['jti'];
-            setTokenExpirationDate(entity['iat'], entity['exp'])
+            setTokenExpirationDate(entity['iat'], entity['exp']);
+            return serverCapabilities;
         } catch (err) {
             console.error(err);
         }

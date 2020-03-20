@@ -448,6 +448,13 @@
     }
   },
   {
+    "id": "alertFriendlyTask",
+    "lang": {
+      "en": "__senderName__ decided to send you this puzzle at min level '__level__'.",
+      "de": "__senderName__ wählte für dieses Puzzle die minimale Schwierigkeit '__level__'."
+    }
+  },
+  {
     "id": "sessionExpWarningAlert",
     "lang": {
       "en": "Your session has either expired or will expire in a couple of minutes. Please login again.",

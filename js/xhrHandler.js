@@ -66,10 +66,16 @@ window.$disc = window.$disc || {};
                 xhr.onload = function(e) {
                     if (this.status === 200) {
                         const jwtHeader = this.getResponseHeader('jwt');
+                        console.log(jwtHeader);
                         if(jwtHeader) {
                             $disc.settingsHandler.setJwt(jwtHeader);
                         }
-                        resolve(JSON.parse(this.responseText));
+
+                        const obj = JSON.parse(this.responseText);
+                        $disc.storage.setRemoteImageLoaded(true);
+                        console.log(obj.imgSrc.hashCode());
+                        console.log(obj.imgSrc.length);
+                        resolve(obj);
                     } else {
                         reject(this.status);
                     }
@@ -86,6 +92,7 @@ window.$disc = window.$disc || {};
             img.src = url;
             img.onload = () => {
                 $disc.imageHandler.resizeToReference(img).then(image => {
+                    $disc.storage.setRemoteImageLoaded(false);
                     resolve(image);
                 }).catch(err => console.log(err));
             }
@@ -100,6 +107,7 @@ window.$disc = window.$disc || {};
             xhr.open('GET', url, true);
             if(!once) {
                 setJwtHeader(xhr);
+                setPrpHeader(xhr);
             }
             xhr.onload = function(e) {
                 if (this.status === 200) {
@@ -123,6 +131,7 @@ window.$disc = window.$disc || {};
             xhr.open(method, _url, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             setJwtHeader(xhr);
+            setPrpHeader(xhr);
             xhr.onload = function (e) {
                 if (this.status === 200) {
                     const jwtHeader = this.getResponseHeader('jwt');
@@ -163,6 +172,13 @@ window.$disc = window.$disc || {};
         const jwt = $disc.settingsHandler.getJwt();
         if(jwt) {
             xhr.setRequestHeader('jwt', jwt);
+        }
+    }
+
+    function setPrpHeader(xhr) {
+        const lastLoadedImage = $disc.storage.getLastLoadedImage();
+        if(lastLoadedImage) {
+            xhr.setRequestHeader('prp', `${lastLoadedImage.hashCode()}/${lastLoadedImage.length}`);
         }
     }
 

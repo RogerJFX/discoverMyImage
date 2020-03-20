@@ -54,6 +54,11 @@
 						img.src = bean.imgSrc;
 						$disc.storage.setLastLoadedImage(bean.imgSrc);
 						img.onload = () => {
+							$disc.lang.getTranslation($disc.constants.SETTINGS_BUTTONS[bean.lvl - 1]).then(lvlString => {
+								$disc.lang.getTranslation('alertFriendlyTask').then(tr => {
+									$disc.menuHandler.alert(tr.replace('__senderName__', bean.myName).replace('__level__', lvlString), 'Puzzle', null, null, true);
+								});
+							});
 							resolve(img);
 						};
 					})
@@ -110,6 +115,7 @@
 			$mH.toggleShowButton('waUploadButton', $mH.isMobileDevice);
 			$mH.toggleShowButton('loginButton', () => !$disc.settingsHandler.isQualifiedLoggedIn());
 			$mH.toggleShowButton('solveButton', $disc.stageActions.isPlaying);
+			$mH.toggleSettings();
 		}
 
 		function toggleWelcomeLanguage(lang) {

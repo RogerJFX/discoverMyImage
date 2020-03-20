@@ -112,24 +112,6 @@ window.$disc = window.$disc || {};
                 const result = doResize(image.width / factor, image.height / factor);
                 result.onload = () => rotateImage(result, orientation).then(r => resolve(r));
             }
-            //////
-            // if (iW <= maxW && iH <= maxH) {
-            //     rotateImage(image, orientation).then(r => resolve(r));
-            //     return;
-            // }
-            // let factor = 0;
-            // if (iW >= maxW) {
-            //     factor = iW / maxW;
-            // }
-            // if (iH >= maxH) {
-            //     const nFactor = iH / maxH;
-            //     if (nFactor > factor) {
-            //         factor = nFactor;
-            //     }
-            // }
-            /////
-            //const result = doResize(iW / factor, iH / factor);
-
         });
 
     }
@@ -255,6 +237,7 @@ window.$disc = window.$disc || {};
                             return self.modifyImage(image, []);
                         }).then(image => {
                             $disc.storage.setLastLoadedImage(image.src);
+                            $disc.storage.setRemoteImageLoaded(false);
                             resolve(image);
                         }).catch(err => {
                             console.log(err);

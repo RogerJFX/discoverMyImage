@@ -116,6 +116,18 @@ window.$disc = window.$disc || {};
         document.getElementById(nodeId).style.display = checkFn() ? 'block' : 'none';
     };
 
+    self.toggleSettings = () => {
+        const minLevel = $disc.settingsHandler.getMinLevel();
+        const levelButtons = $disc.constants.SETTINGS_BUTTONS;
+        for (let i = 0; i < levelButtons.length; i++) {
+            if(i < minLevel - 1) {
+                document.getElementById(levelButtons[i]).style.display = 'none';
+            } else {
+                document.getElementById(levelButtons[i]).style.display = 'block';
+            }
+        }
+    };
+
     self.alert = (message, headline, timeout, callback, onlyCloseAlert) => {
         doAlert(message, headline, timeout, callback, onlyCloseAlert);
     };

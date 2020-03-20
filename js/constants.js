@@ -74,5 +74,7 @@ window.$disc = window.$disc || {};
     self.MILLIS_PER_STEP = 30;
     self.AUTOSOLVE_NEXT_STEP_MILLIS = 2666;
 
+    self.SETTINGS_BUTTONS = ['settingLevelKidding', 'settingLevelEasy', 'settingLevelMedium', 'settingLevelHard', 'settingLevelExtreme'];
+
 
 })(window.$disc.constants = window.$disc.constants || {});
