@@ -66,7 +66,7 @@ window.$disc = window.$disc || {};
             if (iW >= mW) {
                 factor = iW / mW;
             }
-            if (iW >= mH) {
+            if (iH >= mH) {
                 const nFactor = iH / mH;
                 if (nFactor > factor) {
                     factor = nFactor;
