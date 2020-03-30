@@ -60,6 +60,11 @@ window.$disc = window.$disc || {};
     self.SETTINGS_URL = './data/settings.json';
     self.EXAMPLES_FOLDER_URL = './img/examples/';
 
+    self.SCALE_REF_IMAGE_TO_FIT = true;
+    self.SCALE_REF_IMAGE_PORTRAIT = [900, 1200];
+    self.SCALE_REF_IMAGE_LANDSCAPE = [1200, 900];
+    self.SCALE_REF_IMAGE_SQUARE = [900, 900];
+
     self.REFERENCE_IMAGE_MAX_EDGE = 1000;
     self.MAX_IMAGE_WIDTH = 840;
     self.MAX_IMAGE_HEIGHT = 720;

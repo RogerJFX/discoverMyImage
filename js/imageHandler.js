@@ -47,9 +47,49 @@ window.$disc = window.$disc || {};
     }
 
     self.resizeToReference = (image, orientation) => {
-        orientation = orientation || 1;
-        const edgeLen = $disc.constants.REFERENCE_IMAGE_MAX_EDGE;
-        return resizeImage(image, [edgeLen, edgeLen], orientation, true);
+        orientation = orientation || ROTA_0;
+        if(!$disc.constants.SCALE_REF_IMAGE_TO_FIT) {
+            const edgeLen = $disc.constants.REFERENCE_IMAGE_MAX_EDGE;
+            return resizeImage(image, [edgeLen, edgeLen], orientation, true);
+        } else {
+            function recommendImageSize() {
+                const w = image.width;
+                const h = image.height;
+                const q = w / h; // (orientation === ROTA_90 || orientation === ROTA_270) ? h / w : w / h;
+                if (q <= 0.85) {
+                    return $disc.constants.SCALE_REF_IMAGE_PORTRAIT;
+                } else if (q >= 1.23) {
+                    return $disc.constants.SCALE_REF_IMAGE_LANDSCAPE;
+                } else {
+                    return $disc.constants.SCALE_REF_IMAGE_SQUARE;
+                }
+            }
+
+            function doCalculate(rW, rH) {
+                const factor = image.width / rW;
+                const nFactor = image.height / rH;
+                return (nFactor > factor) ? factor : nFactor;
+            }
+
+            function doResize(dimensions) {
+                const factor = doCalculate(dimensions[0], dimensions[1]);
+                const canvas = createCanvas(dimensions[0], dimensions[1]);
+                const ctx = canvas.getContext('2d');
+                const nW = image.width / factor;
+                const nH = image.height / factor;
+                const x = (dimensions[0] - Math.round(nW)) / 2;
+                const y = (dimensions[1] - Math.round(nH)) / 2;
+                ctx.drawImage(image, x, y, nW, nH);
+                const result = new Image();
+                result.src = canvas.toDataURL("image/jpeg");
+                return result;
+            }
+            const dimensions = recommendImageSize();
+            return new Promise(resolve => {
+                const result = doResize(dimensions);
+                result.onload = () => rotateImage(result, orientation).then(r => resolve(r));
+            })
+        }
     };
 
     self.resizeToStage = (image) => {
@@ -57,7 +97,7 @@ window.$disc = window.$disc || {};
             .then(recommended => resizeImage(image, recommended.dim, null, recommended.rotatable));
     };
 
-    function calculateResizeFactor(imgW, imgH, maxW, maxH, deviceR) {
+    function calculateResizeFactor(imgW, imgH, maxW, maxH, deviceRotatable) {
         function doCalculate(iW, iH, mW, mH) {
             let factor = 0;
             if (iW <= mW && iH <= mH) {
@@ -75,7 +115,7 @@ window.$disc = window.$disc || {};
             return factor;
         }
 
-        if (!deviceR) {
+        if (!deviceRotatable) {
             return doCalculate(imgW, imgH, maxW, maxH);
         }
         const imagePortrait = imgH > imgW;
