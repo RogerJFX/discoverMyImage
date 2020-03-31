@@ -15,27 +15,32 @@
     {
       "name": "iPhone5",
       "dimensions": [320, 568],
-      "imgDim": [270, 480]
+      "imgDim": [280, 480]
     },
     {
       "name": "iPhone678",
       "dimensions": [375, 667],
-      "imgDim": [300, 550]
+      "imgDim": [340, 550]
     },
     {
       "name": "iPhone678+",
       "dimensions": [414, 736],
-      "imgDim": [330, 580]
+      "imgDim": [380, 630]
     },
     {
       "name": "iPhoneX",
       "dimensions": [375, 812],
-      "imgDim": [800, 600]
+      "imgDim": [680, 340]
     },
     {
       "name": "GalaxyS5",
       "dimensions": [360, 640],
-      "imgDim": [520, 280]
+      "imgDim": [586, 322]
+    },
+    {
+      "name": "Pixel2",
+      "dimensions": [411, 731],
+      "imgDim": [666, 372]
     },
     {
       "name": "Some1",
@@ -65,7 +70,7 @@
     {
       "name": "SomeFHD",
       "dimensions": [720, 405],
-      "imgDim": [800, 600]
+      "imgDim": [680, 360]
     }
   ]
 }

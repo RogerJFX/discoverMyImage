@@ -53,9 +53,10 @@ window.$disc = window.$disc || {};
         const w = image.width;
         const h = image.height;
         const f = w / h;
-        if (f >= 1.25) {
+        console.log(f);
+        if (f >= 1.25) { // 4 / 3 = 1.3333
             return [4, 3];
-        } else if (f <= 0.75) {
+        } else if (f <= 0.85) { // 3 / 4 = 0.75
             return [3, 4];
         } else {
             return [3, 3];

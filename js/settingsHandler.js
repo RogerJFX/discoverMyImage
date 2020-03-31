@@ -55,7 +55,7 @@ window.$disc = window.$disc || {};
     self.getMinLevel = () => {
         if($disc.storage.isRemoteImageLoaded()) {
             const sub = parseJWT(self.getJwt());
-            return sub['it']['lv'];
+            return sub['it'] && sub['it']['lv'] ? sub['it']['lv'] : 0;
         } else {
             return 0;
         }

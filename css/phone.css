@@ -1,3 +1,6 @@
+body {
+    margin: 2px;
+}
 div.innerModal button, input {
     margin: 14px auto;
 }
@@ -6,25 +9,64 @@ div.innerModal button, input {
     text-align: right !important;
 }
 
+.board-num > * > *, .board-letter > * {
+    font-size: 12pt;
+}
+
+.board-num > div {
+    width:20px;
+    max-height:20px;
+    text-align: center;
+    left: 0;
+}
+
+.board-letter > .iLegend {
+    width:20px;
+    max-height:20px;
+    top: 13px;
+}
+
+div.modalLayer::after {
+    content: " ";
+    white-space: pre;
+    font-size:6px;
+}
+
 @media screen and (orientation : landscape) {
-    /*body, html,* {*/
-    /*    background: red;*/
-    /*}*/
     div.myBottom {
         display:none;
+    }
+
+    body > div.body-header {
+        padding: 0;
+    }
+    div.logoImage {
+        padding: 4px 4px;
+    }
+    div.logoImage > img {
+        max-width: 320px;
+        max-height: 62px;
+    }
+
+    div.contentContainer {
+        padding: 2px;
+        margin-top:4px;
+        border-spacing: 2px;
+    }
+    div.modalLayer {
+        padding-top: 12px;
     }
 }
 
 @media screen and (orientation : portrait) {
-    /*body, html,* {*/
-    /*    background: red;*/
-    /*}*/
-
-    div.logoImage {
-        padding: 6px 4px;
+    body > div.body-header {
+        padding: 0;
     }
-    div.logoImage img {
-        max-width: 220px;
+    div.logoImage {
+        padding: 4px 4px;
+    }
+    div.logoImage > img {
+        max-width: 260px;
         max-height: 52px;
     }
     div.modalLayer {
@@ -41,5 +83,12 @@ div.innerModal button, input {
     }
     div.myRight {
         display:none;
+    }
+}
+
+@media screen and (orientation : portrait) and (max-device-width: 320px) {
+    div.logoImage > img {
+        max-width: 240px;
+        max-height: 52px;
     }
 }
