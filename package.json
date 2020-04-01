@@ -1,0 +1,19 @@
+{
+  "name": "discover",
+  "version": "1.0.0",
+  "description": "Puzzle",
+  "main": "game.min.js",
+  "dependencies": {
+    "cypress": "^4.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "npx cypress open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://roger@debian:/home/roger/git/disc"
+  },
+  "author": "",
+  "license": "ISC"
+}

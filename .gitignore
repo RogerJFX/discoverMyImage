@@ -5,3 +5,7 @@
 empty.js
 
 game.min.js
+
+node_modules
+
+cypress.json
