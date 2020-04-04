@@ -1,25 +1,32 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+import {UserCredentials} from "./utils";
+
+Cypress.Commands.add('menuVisible', (selector) => {
+    return cy.get(selector).parent()
+        .should('have.class', 'transitionable')
+        .should('be.visible')
+        .should('have.css', 'opacity', '1');
+});
+
+Cypress.Commands.add('menuClickWhenVisible', (selector) => {
+    cy.get(selector).parent()
+        .should('have.class', 'transitionable')
+        .should('be.visible')
+        .should('have.css', 'opacity', '1');
+    return cy.get(selector).should('be.visible').click();
+});
+
+Cypress.Commands.add('login', (wrong) => {
+    const startPage = '/index.devel.html';
+    const email = UserCredentials.email;
+    const pass = wrong ? 'Hund123' : UserCredentials.pass;
+    window.sessionStorage.clear();
+    window.localStorage.clear();
+    cy.visit(startPage);
+    cy.get('.body-header > .nav-icon').click();
+    cy.get('#loginButton').click();
+    cy.get('#loginModal').should('be.visible').should('contain', 'Login');
+    cy.menuVisible('#loginModal');
+    cy.get('#loginEmail').type(email);
+    cy.get('#loginPassword').type(pass);
+    return cy.get('#loginSubmit').click();
+});

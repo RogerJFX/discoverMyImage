@@ -191,7 +191,7 @@ window.$disc = window.$disc || {};
                         if (++counter === hideNodes.length) {
                             showAllNodes();
                         }
-                        //  node.removeEventListener('transitionend', listener, true);
+                        node.removeEventListener('transitionend', listener, true);
                     }, {
                         capture: false,
                         once: true,
