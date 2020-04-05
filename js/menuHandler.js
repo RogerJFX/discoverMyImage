@@ -171,7 +171,7 @@ window.$disc = window.$disc || {};
                     node.style.display = 'block';
                     setTimeout(() => {
                         node.style.opacity = '1';
-                    }, 25)
+                    }, 12)
                 } else {
                     node.style.display = 'block';
                 }

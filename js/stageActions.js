@@ -7,16 +7,15 @@ window.$disc = window.$disc || {};
 
     function showSpinner() {
         $disc.menuHandler.handleMenuClick(['spinnerBG'], []);
-        //document.getElementById('spinnerBG').style.display = 'block';
     }
 
     function hideSpinner() {
         $disc.menuHandler.handleMenuClick([], ['spinnerBG']);
-        //document.getElementById('spinnerBG').style.display = 'none';
     }
 
     // Workhorse. This will be called for any image.
     self.processFile = (promise, grid, tileStates) => {
+        $disc.tileManager.stopAnimations();
         showSpinner();
         const {convert2BW, modifyImage, simpleDarken, resizeToStage} = window.$disc.imageHandler;
         promise.then(image => {
@@ -53,7 +52,6 @@ window.$disc = window.$disc || {};
         const w = image.width;
         const h = image.height;
         const f = w / h;
-        console.log(f);
         if (f >= 1.25) { // 4 / 3 = 1.3333
             return [4, 3];
         } else if (f <= 0.85) { // 3 / 4 = 0.75
@@ -96,6 +94,7 @@ window.$disc = window.$disc || {};
                 hideSpinner();
             });
         }
+        setTimeout(hideSpinner, 2000);
     };
 
     function createLegend(settings, tD) {

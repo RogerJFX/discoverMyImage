@@ -9,3 +9,7 @@ game.min.js
 node_modules
 
 cypress.json
+
+cypress/videos/
+
+.nyc_output

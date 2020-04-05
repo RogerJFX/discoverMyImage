@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "Puzzle",
   "main": "game.min.js",
-  "dependencies": {
-    "cypress": "^4.3.0"
+  "dependencies": {},
+  "devDependencies": {
+    "@cypress/code-coverage": "^2.0.1",
+    "cypress": "^4.3.0",
+    "cypress-intellij-reporter": "0.0.4",
+    "istanbul-lib-coverage": "^3.0.0",
+    "nyc": "^15.0.1"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "npx cypress open"
   },

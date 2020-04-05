@@ -66,15 +66,12 @@ window.$disc = window.$disc || {};
                 xhr.onload = function(e) {
                     if (this.status === 200) {
                         const jwtHeader = this.getResponseHeader('jwt');
-                        console.log(jwtHeader);
                         if(jwtHeader) {
                             $disc.settingsHandler.setJwt(jwtHeader);
                         }
 
                         const obj = JSON.parse(this.responseText);
                         $disc.storage.setRemoteImageLoaded(true);
-                        console.log(obj.imgSrc.hashCode());
-                        console.log(obj.imgSrc.length);
                         resolve(obj);
                     } else {
                         reject(this.status);

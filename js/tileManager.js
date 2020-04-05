@@ -5,7 +5,7 @@ window.$disc = window.$disc || {};
     let tileWidth;
     let tileHeight;
     let tiles;
-    let animationStoppedByUser = false;
+    let animationStoppedByUser = true;
     let board = [];
     let locked = false;
     let winningAction;
@@ -249,6 +249,7 @@ window.$disc = window.$disc || {};
     self.solve = (stepsLimit) => {
         function onSuccess(data) {
             let counter = 0;
+            animationStoppedByUser = false;
             function nextAutoMove() {
                 if(counter++ < data.length) {
                     setTimeout(() => {
@@ -266,7 +267,7 @@ window.$disc = window.$disc || {};
             }
             nextAutoMove();
         }
-        animationStoppedByUser = false;
+
         $disc.history.clear();
         $disc.ai.resolveTask(tiles, stepsLimit, (data, toWin) => {
             const numLeft = $disc.settingsHandler.getServerCapabilities()['ssl'];
@@ -325,6 +326,9 @@ window.$disc = window.$disc || {};
             });
 
         });
+    };
 
+    self.stopAnimations = () => {
+        animationStoppedByUser = true;
     }
 })(window.$disc.tileManager = window.$disc.tileManager || {});
