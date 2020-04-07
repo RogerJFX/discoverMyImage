@@ -2,7 +2,7 @@ import '../../../js/empty.js';
 
 describe('Unit', () => {
 
-    it('successfully switches language', () => {
+    it('should simply work', () => {
         cy.log($disc.empty.foo());
     });
 

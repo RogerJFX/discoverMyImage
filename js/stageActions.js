@@ -91,10 +91,11 @@ window.$disc = window.$disc || {};
                 });
                 createLegend(grid, tD);
                 outerStage.appendChild(stage);
+                console.log('hiding spinner');
                 hideSpinner();
             });
         }
-        setTimeout(hideSpinner, 2000);
+        // setTimeout(hideSpinner, 2000);
     };
 
     function createLegend(settings, tD) {

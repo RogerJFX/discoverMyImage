@@ -1,5 +1,3 @@
-import {parseJWT} from "../support/utils";
-
 describe('A remote image', () => {
 
     const startPage = '/index.devel.html';
@@ -26,11 +24,12 @@ describe('A remote image', () => {
         });
     });
 
-    it('should be loaded from server with correct task', () => {
+    it('should be loaded from server with bound level', () => {
         loadImageAndExamineTaskLevel(() => {
             cy.server();
             cy.route('GET', resolveRequestUrl).as('resolve');
-            cy.menuClickWhenVisible('#promptOk');
+            checkSettingsRestrictions(2);
+            requestSolve();
             cy.wait('@resolve').then(xhr => {
                 cy.wrap(xhr).its('status').should('eq', 200);
                 cy.wrap(xhr).its('request.headers.prp').then(header => {
@@ -44,11 +43,12 @@ describe('A remote image', () => {
         });
     });
 
-    it('should be loaded from server with correct task though faked header', () => {
+    it('should afterwards unbind level after loading example image', () => {
         loadExampleImage(() => {
             cy.server();
             cy.route('GET', resolveRequestUrl).as('resolve');
-            cy.menuClickWhenVisible('#promptOk');
+            checkSettingsRestrictions(5);
+            requestSolve();
             cy.wait('@resolve').then(xhr => {
                 cy.wrap(xhr).its('status').should('eq', 200);
                 cy.wrap(xhr).its('request.headers.prp').should('not.exist');
@@ -60,9 +60,29 @@ describe('A remote image', () => {
         });
     });
 
+    function requestSolve() {
+        cy.get('#commonAlertModal').should('not.be.visible');
+        cy.noOverlays('.body-header > .nav-icon').click();
+        cy.get('#solveButton').click();
+        cy.menuClickWhenVisible('#promptOk');
+    }
+
+    function checkSettingsRestrictions(levels) {
+        cy.get('#commonAlertModal').should('not.be.visible');
+        cy.noOverlays('.body-header > .nav-icon').click();
+        //cy.get('#changeSettingsButton').click();
+        cy.menuClickWhenVisible('#changeSettingsButton');
+        cy.menuVisible('#settingsModal')
+            .children('button')
+            .filter(':visible')
+            .should('have.length', levels);
+        cy.closeMenuView('#settingsModal');
+        cy.closeMenuView('#mainMenu');
+    }
+
     function loadExampleImage(assertFn) {
         cy.get('#alertOk').click();
-        cy.get('.body-header > .nav-icon').click();
+        cy.noOverlays('.body-header > .nav-icon').click();
         cy.get('#exampleImageSelect').click();
         cy.server();
         cy.route('GET', taskRequestUrl).as('task');
@@ -73,10 +93,6 @@ describe('A remote image', () => {
             cy.wrap(xhr).its('status').should('eq', 200);
             cy.get('#stage').find('.tile').should('have.length', 9);
         });
-        // cy.get('#alertOk').click();
-        cy.get('#commonAlertModal').should('not.be.visible');
-        cy.get('.body-header > .nav-icon').click();
-        cy.get('#solveButton').click();
         assertFn();
     }
 
@@ -102,9 +118,6 @@ describe('A remote image', () => {
             cy.wrap(xhr).its('status').should('eq', 200);
         });
         cy.get('#alertOk').click();
-        cy.get('#commonAlertModal').should('not.be.visible');
-        cy.get('.body-header > .nav-icon').click();
-        cy.get('#solveButton').click();
         assertFn();
     }
 

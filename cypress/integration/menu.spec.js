@@ -4,12 +4,14 @@ describe('Menu', () => {
 
     it('successfully switches language', () => {
         cy.visit(startPage);
-        cy.get('.body-header > .nav-icon').click();
+        cy.noOverlays('.body-header > .nav-icon').click();
         cy.get('#puzzleButton').click();
-        cy.get('#modalLayer').should('be.visible').should('contain', 'Mein Puzzle');
-        cy.menuVisible('#puzzleModal');
-        cy.get('#puzzleModal').should('be.visible');
-        cy.get('#puzzleModal > .header > div > .close > div').should('be.visible').click();
+        // cy.menuVisible('#modalLayer').should('contain', 'Mein Puzzle');
+        cy.menuVisible('#puzzleModal').should('contain', 'Mein Puzzle');
+        //cy.get('#puzzleModal').should('be.visible');
+        // cy.get('#puzzleModal > .header > div > .close > div').should('be.visible').click();
+        cy.closeMenuView('#puzzleModal');
+        // cy.wait(299);
         cy.menuClickWhenVisible('#switchLangButton');
         cy.menuClickWhenVisible('#langEn');
         cy.get('.body-header > .nav-icon').should('be.visible').click();

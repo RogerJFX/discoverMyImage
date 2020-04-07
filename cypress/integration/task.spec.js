@@ -14,7 +14,7 @@ describe('Example image', () => {
     it('should be loaded with square dims', () => {
 
         cy.visit(startPage);
-        cy.get('.body-header > .nav-icon').click();
+        cy.noOverlays('.body-header > .nav-icon').click();
         cy.get('#exampleImageSelect').click();
         cy.server();
         cy.route('GET', taskRequestUrl).as('task');
@@ -33,7 +33,7 @@ describe('Example image', () => {
             cy.get('#stage').find('.tile').should('have.length', 9);
         });
 
-        cy.get('.body-header > .nav-icon').click();
+        cy.noOverlays('.body-header > .nav-icon').click();
         cy.get('#solveButton').click();
         cy.menuClickWhenVisible('#promptOk');
         cy.wait('@resolve').then(xhr => {

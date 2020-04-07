@@ -49,21 +49,23 @@ window.$disc = window.$disc || {};
         }
     }
 
+    function doValidate(rx, node, ok) {
+        if(!rx.test(node.value)) {
+            node.addClass('wrongInput');
+            return false;
+        }
+        return ok;
+    }
+
     function validateSendForm(myNameNode, hisNameNode, mailNode) {
         myNameNode.removeClass('wrongInput');
         hisNameNode.removeClass('wrongInput');
         mailNode.removeClass('wrongInput');
         let ok = true;
+        ok = doValidate(formValidationRx.myName, myNameNode, ok);
+        ok = doValidate(formValidationRx.mailTo, mailNode, ok);
         if (!formValidationRx.myName.test(myNameNode.value)) {
             myNameNode.addClass('wrongInput');
-            ok = false;
-        }
-        if (!formValidationRx.hisName.test(hisNameNode.value)) {
-            hisNameNode.addClass('wrongInput');
-            ok = false;
-        }
-        if (!formValidationRx.mailTo.test(mailNode.value)) {
-            mailNode.addClass('wrongInput');
             ok = false;
         }
         return ok;
@@ -168,10 +170,10 @@ window.$disc = window.$disc || {};
             showNodes.forEach(n => {
                 const node = document.getElementById(n);
                 if (node.hasClass('transitionable')) {
-                    node.style.display = 'block';
                     setTimeout(() => {
                         node.style.opacity = '1';
-                    }, 12)
+                    }, 0); // must be async
+                    node.style.display = 'block';
                 } else {
                     node.style.display = 'block';
                 }
@@ -185,18 +187,20 @@ window.$disc = window.$disc || {};
             hideNodes.forEach(n => {
                 const node = document.getElementById(n);
                 if (node.hasClass('transitionable') && node.style.display === 'block') {
-                    node.style.opacity = '0';
-                    const listener = node.addEventListener('transitionend', () => {
+                    node.addEventListener('transitionend', function() {
                         node.style.display = 'none';
                         if (++counter === hideNodes.length) {
                             showAllNodes();
                         }
-                        node.removeEventListener('transitionend', listener, true);
                     }, {
                         capture: false,
                         once: true,
                         passive: false
                     });
+                    setTimeout(function() { // Firefox verschluckt sonst manchmal das Event "transitionend"
+                        node.style.opacity = '0';
+                    }, 10);
+
                 } else {
                     node.style.display = 'none';
                     showAllNodes();
@@ -285,19 +289,13 @@ window.$disc = window.$disc || {};
         passNode.removeClass('wrongInput');
         if ((() => {
             let ok = true;
-            if (!formValidationRx.nickName.test(nicknameNode.value)) {
-                nicknameNode.addClass('wrongInput');
-                ok = false;
-            }
+            ok = doValidate(formValidationRx.nickName, nicknameNode, ok);
             if (passNode.value.length < 8) {
                 passNode.addClass('wrongInput');
                 passNode.value = '';
                 ok = false;
             }
-            if (!formValidationRx.mailTo.test(emailNode.value)) {
-                emailNode.addClass('wrongInput');
-                ok = false;
-            }
+            ok = doValidate(formValidationRx.mailTo, emailNode, ok);
             return ok;
         })()) {
             $disc.settingsHandler.getSoftSettings().then(settings => {
