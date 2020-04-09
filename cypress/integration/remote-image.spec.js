@@ -81,7 +81,7 @@ describe('A remote image', () => {
     }
 
     function loadExampleImage(assertFn) {
-        cy.get('#alertOk').click();
+        cy.noOverlays('#alertOk').click();
         cy.noOverlays('.body-header > .nav-icon').click();
         cy.get('#exampleImageSelect').click();
         cy.server();
@@ -114,10 +114,9 @@ describe('A remote image', () => {
         });
 
         cy.wait('@task').then(xhr => {
-            console.log(xhr);
             cy.wrap(xhr).its('status').should('eq', 200);
         });
-        cy.get('#alertOk').click();
+        cy.noOverlays('#alertOk').click();
         assertFn();
     }
 

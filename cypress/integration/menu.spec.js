@@ -1,3 +1,6 @@
+import {storageKeys} from '../support/bridge';
+import {checkLocalStorage,CheckOperations} from "../support/utils";
+
 describe('Menu', () => {
 
     const startPage = '/index.devel.html?lang=de';
@@ -6,17 +9,17 @@ describe('Menu', () => {
         cy.visit(startPage);
         cy.noOverlays('.body-header > .nav-icon').click();
         cy.get('#puzzleButton').click();
-        // cy.menuVisible('#modalLayer').should('contain', 'Mein Puzzle');
-        cy.menuVisible('#puzzleModal').should('contain', 'Mein Puzzle');
-        //cy.get('#puzzleModal').should('be.visible');
-        // cy.get('#puzzleModal > .header > div > .close > div').should('be.visible').click();
+        cy.menuVisible('#puzzleModal')
+            .should('contain', 'Mein Puzzle')
+            .then(_ => checkLocalStorage([[storageKeys.KEY_LANG, 'de', CheckOperations.equals]]));
         cy.closeMenuView('#puzzleModal');
-        // cy.wait(299);
         cy.menuClickWhenVisible('#switchLangButton');
         cy.menuClickWhenVisible('#langEn');
         cy.get('.body-header > .nav-icon').should('be.visible').click();
         cy.menuClickWhenVisible('#puzzleButton');
-        cy.get('#modalLayer').should('have.css', 'opacity', '1').should('contain', 'My puzzle');
+        cy.get('#modalLayer').should('have.css', 'opacity', '1')
+            .should('contain', 'My puzzle')
+            .then(_ => checkLocalStorage([[storageKeys.KEY_LANG, 'en', CheckOperations.equals]]));
     });
 
 });

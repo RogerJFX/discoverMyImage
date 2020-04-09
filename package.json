@@ -12,7 +12,8 @@
     "nyc": "^15.0.1"
   },
   "scripts": {
-    "test": "npx cypress open"
+    "test": "npx cypress open",
+    "test-headless": "npx cypress run --browser chrome --headless"
   },
   "repository": {
     "type": "git",

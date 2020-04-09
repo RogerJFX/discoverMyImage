@@ -1,5 +1,5 @@
-import {parseJWT, UserCredentials} from "../support/utils";
-
+import {parseJWT, UserCredentials, checkSessionStorage, CheckOperations} from "../support/utils";
+import {storageKeys} from "../support/bridge"
 describe('User should', () => {
 
     it('unsuccessfully login', () => {
@@ -13,6 +13,8 @@ describe('User should', () => {
     });
 
     it('successfully login', () => {
+        cy.get('body')
+            .then(_ => checkSessionStorage([[storageKeys.KEY_NICK, null, CheckOperations.beNull]]));
         cy.server();
         cy.route('POST', '**/login.php**').as('login');
         cy.login();
@@ -22,7 +24,8 @@ describe('User should', () => {
                 const jwtProps = parseJWT(jwt);
                 expect(jwtProps['identity']).to.equal(UserCredentials.email);
             });
-            cy.get('#commonAlertModal').should('be.visible').should('contain', UserCredentials.nickname);
+            cy.get('#commonAlertModal').should('be.visible').should('contain', UserCredentials.nickname)
+                .then(_ => checkSessionStorage([[storageKeys.KEY_NICK, UserCredentials.nickname, CheckOperations.equals]]));
         });
     });
 
