@@ -33,8 +33,9 @@ declare namespace Cypress {
         /**
          * Login.
          *
-         * @param wrong Set to true, if the password should be wrong
+         * @param email Email
+         * @param pass Pass
          */
-        login(wrong?: boolean): Chainable<Subject>;
+        login(email: string, pass: string): Chainable<Subject>;
     }
 }

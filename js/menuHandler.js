@@ -62,12 +62,9 @@ window.$disc = window.$disc || {};
         hisNameNode.removeClass('wrongInput');
         mailNode.removeClass('wrongInput');
         let ok = true;
+        ok = doValidate(formValidationRx.hisName, hisNameNode, ok);
         ok = doValidate(formValidationRx.myName, myNameNode, ok);
         ok = doValidate(formValidationRx.mailTo, mailNode, ok);
-        if (!formValidationRx.myName.test(myNameNode.value)) {
-            myNameNode.addClass('wrongInput');
-            ok = false;
-        }
         return ok;
     }
 

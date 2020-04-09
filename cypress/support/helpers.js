@@ -1,9 +1,7 @@
-import {UserCredentials} from "./utils";
+import {startPage} from "./bridge";
 
-Cypress.Commands.add('login', (wrong) => {
-    const startPage = '/index.devel.html';
-    const email = UserCredentials.email;
-    const pass = wrong ? 'Hund123' : UserCredentials.pass;
+Cypress.Commands.add('login', (email, pass) => {
+    // const startPage = '/index.devel.html';
     window.sessionStorage.clear();
     window.localStorage.clear();
     cy.visit(startPage);

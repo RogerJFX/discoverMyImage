@@ -13,3 +13,5 @@ export const storageKeys = {
     KEY_TOKEN_EXP: keys['KEY_TOKEN_EXP'],
     KEY_REMOTE_UUID_LOADED: keys['KEY_REMOTE_UUID_LOADED']
 };
+
+export const startPage = Cypress.env('startPage') || '/index.devel.html?lang=de';

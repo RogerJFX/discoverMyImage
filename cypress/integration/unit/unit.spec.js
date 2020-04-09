@@ -1,9 +1,11 @@
-import '../../../js/empty.js';
+import '../../../js/constants';
 
-describe('Unit', () => {
+// Hm, unit tests using Cypress... Should work.
+
+describe('Unit-Tests', () => {
 
     it('should simply work', () => {
-        cy.log($disc.empty.foo());
+        expect($disc.constants.DEVICE_LIST_URL, 'simple assertion').to.equal('./data/devices.json');
     });
 
 });

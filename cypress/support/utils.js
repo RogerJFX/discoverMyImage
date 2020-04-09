@@ -12,6 +12,7 @@ export function parseJWT(jwt) {
 }
 
 export function checkStorage(keyValuePairArray, storage) {
+    console.log(keyValuePairArray);
     keyValuePairArray.forEach(kV => {
         switch(kV[2]) {
             case CheckOperations.equals:
@@ -34,11 +35,28 @@ export function checkStorage(keyValuePairArray, storage) {
 }
 
 export function checkLocalStorage(keyValuePairArray) {
+    console.log('check local storage');
     checkStorage(keyValuePairArray, window.localStorage);
 }
 
 export function checkSessionStorage(keyValuePairArray) {
     checkStorage(keyValuePairArray, window.sessionStorage);
+}
+
+export function checkForm(data, checkNr, formSelector, submitButtonSelector) {
+    cy.get(formSelector).find('input').then(inputs => {
+        for (let i = 0; i < data.length; i++) {
+            cy.wrap(inputs[i]).clear().type(data[i]);
+        }
+        cy.get(submitButtonSelector).click();
+        for (let i = 0; i < data.length; i++) {
+            if((checkNr & (1 << i)) !== 0) {
+                cy.wrap(inputs[i]).should('have.class', 'wrongInput');
+            } else {
+                cy.wrap(inputs[i]).should('not.have.class', 'wrongInput');
+            }
+        }
+    })
 }
 
 export const CheckOperations = {

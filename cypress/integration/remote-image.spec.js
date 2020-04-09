@@ -1,6 +1,7 @@
-describe('A remote image', () => {
+import {checkLocalStorage, CheckOperations, checkSessionStorage, parseJWT} from '../support/utils';
+import {storageKeys, startPage} from "../support/bridge";
 
-    const startPage = '/index.devel.html';
+describe('A remote image', () => {
 
     const taskRequestUrl = '**/task.php**';
     const imageRequestUrl = '**/get.php**';
@@ -17,8 +18,8 @@ describe('A remote image', () => {
     it('should not be loaded from server by incorrect uuid', () => {
         cy.server();
         cy.route('GET', imageRequestUrl).as('image');
-
-        cy.visit(`${startPage}?uuid=definitely_wrong_uuid`);
+        const appendix = startPage.includes('?') ? '&uuid=definitely_wrong_uuid' : '?uuid=definitely_wrong_uuid';
+        cy.visit(`${startPage}${appendix}`);
         cy.wait('@image').then((xhr) => {
             cy.wrap(xhr).its('status').should('eq', 404);
         });
@@ -92,6 +93,9 @@ describe('A remote image', () => {
         cy.wait('@task').then((xhr) => {
             cy.wrap(xhr).its('status').should('eq', 200);
             cy.get('#stage').find('.tile').should('have.length', 9);
+        }).then(_ => {
+            checkLocalStorage([[storageKeys.KEY_LAST_LOADED, null, CheckOperations.beNull]]);
+            checkLocalStorage([[storageKeys.KEY_REMOTE_UUID_LOADED, 'false', CheckOperations.equals]]);
         });
         assertFn();
     }
@@ -101,8 +105,8 @@ describe('A remote image', () => {
         cy.server();
         cy.route('GET', imageRequestUrl).as('image');
         cy.route('GET', taskRequestUrl).as('task');
-
-        cy.visit(`${startPage}?uuid=${correctUUID}`);
+        const appendix = startPage.includes('?') ? `&uuid=${correctUUID}` : `?uuid=${correctUUID}`;
+        cy.visit(`${startPage}${appendix}`);
 
         cy.wait('@image').then(xhr => {
 
@@ -111,6 +115,9 @@ describe('A remote image', () => {
                 expect(response['lvl']).to.equal(4); // hard level
             });
 
+        }).then(_ => {
+            checkLocalStorage([[storageKeys.KEY_LAST_LOADED, null, CheckOperations.exist]]);
+            checkLocalStorage([[storageKeys.KEY_REMOTE_UUID_LOADED, 'true', CheckOperations.equals]]);
         });
 
         cy.wait('@task').then(xhr => {
