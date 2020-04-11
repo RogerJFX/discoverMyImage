@@ -1,11 +1,7 @@
-import {checkLocalStorage, CheckOperations, checkSessionStorage, parseJWT} from '../support/utils';
-import {storageKeys, startPage} from "../support/bridge";
+import {checkLocalStorage, CheckOperations, checkSessionStorage, parseJWT} from '../support/common/utils';
+import {storageKeys, startPage, routes} from "../support/common/bridge";
 
 describe('A remote image', () => {
-
-    const taskRequestUrl = '**/task.php**';
-    const imageRequestUrl = '**/get.php**';
-    const resolveRequestUrl = '**/resolve.php**';
 
     const correctUUID = '50194e6c-4dc7-4209-80af-b15488b5500c';
 
@@ -17,7 +13,7 @@ describe('A remote image', () => {
 
     it('should not be loaded from server by incorrect uuid', () => {
         cy.server();
-        cy.route('GET', imageRequestUrl).as('image');
+        cy.route(routes.image.method, routes.image.url).as('image');
         const appendix = startPage.includes('?') ? '&uuid=definitely_wrong_uuid' : '?uuid=definitely_wrong_uuid';
         cy.visit(`${startPage}${appendix}`);
         cy.wait('@image').then((xhr) => {
@@ -28,7 +24,7 @@ describe('A remote image', () => {
     it('should be loaded from server with bound level', () => {
         loadImageAndExamineTaskLevel(() => {
             cy.server();
-            cy.route('GET', resolveRequestUrl).as('resolve');
+            cy.route(routes.resolve.method, routes.resolve.url).as('resolve');
             checkSettingsRestrictions(2);
             requestSolve();
             cy.wait('@resolve').then(xhr => {
@@ -47,7 +43,7 @@ describe('A remote image', () => {
     it('should afterwards unbind level after loading example image', () => {
         loadExampleImage(() => {
             cy.server();
-            cy.route('GET', resolveRequestUrl).as('resolve');
+            cy.route(routes.resolve.method, routes.resolve.url).as('resolve');
             checkSettingsRestrictions(5);
             requestSolve();
             cy.wait('@resolve').then(xhr => {
@@ -86,7 +82,7 @@ describe('A remote image', () => {
         cy.noOverlays('.body-header > .nav-icon').click();
         cy.get('#exampleImageSelect').click();
         cy.server();
-        cy.route('GET', taskRequestUrl).as('task');
+        cy.route(routes.task.method, routes.task.url).as('task');
 
         cy.menuClickWhenVisible('#exampleImageButton1');
 
@@ -103,8 +99,8 @@ describe('A remote image', () => {
     function loadImageAndExamineTaskLevel(assertFn) {
 
         cy.server();
-        cy.route('GET', imageRequestUrl).as('image');
-        cy.route('GET', taskRequestUrl).as('task');
+        cy.route(routes.image.method, routes.image.url).as('image');
+        cy.route(routes.task.method, routes.task.url).as('task');
         const appendix = startPage.includes('?') ? `&uuid=${correctUUID}` : `?uuid=${correctUUID}`;
         cy.visit(`${startPage}${appendix}`);
 

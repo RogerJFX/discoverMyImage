@@ -67,8 +67,3 @@ export const CheckOperations = {
     beNull: 'nu'
 };
 
-export const UserCredentials = {
-    email: 'roger.hoesl@gmail.com',
-    pass: 'Katze123',
-    nickname: 'Sugar Ray Shumway'
-};

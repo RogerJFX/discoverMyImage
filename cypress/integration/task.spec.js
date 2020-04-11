@@ -1,10 +1,7 @@
-import {checkLocalStorage, CheckOperations, checkSessionStorage, parseJWT, checkForm} from '../support/utils';
-import {storageKeys, startPage} from "../support/bridge";
+import {checkLocalStorage, CheckOperations, checkSessionStorage, parseJWT, checkForm} from '../support/common/utils';
+import {storageKeys, startPage, routes} from "../support/common/bridge";
 
 describe('Example image', () => {
-
-    const taskRequestUrl = '**/task.php**';
-    const resolveRequestUrl = '**/resolve.php**';
 
     const someTimeInThePast = 1580000000000; // 26.1.2020
 
@@ -19,7 +16,7 @@ describe('Example image', () => {
         cy.noOverlays('.body-header > .nav-icon').click();
         cy.get('#exampleImageSelect').click();
         cy.server();
-        cy.route('GET', taskRequestUrl).as('task');
+        cy.route(routes.task.method, routes.task.url).as('task');
 
         cy.menuClickWhenVisible('#exampleImageButton1');
 
@@ -75,8 +72,8 @@ describe('Example image', () => {
 
         cy.server();
         cy.route({
-            method: 'PUT',
-            url: '**/store.php**',
+            method: routes.store.method,
+            url: routes.store.url,
             response: []
         }).as('storeStub');
 
@@ -115,7 +112,7 @@ describe('Example image', () => {
 
     function checkResolveTask() {
         cy.server();
-        cy.route('GET', resolveRequestUrl).as('resolve');
+        cy.route(routes.resolve.method, routes.resolve.url).as('resolve');
         cy.noOverlays('.body-header > .nav-icon').click();
         cy.get('#solveButton').click();
         cy.menuClickWhenVisible('#promptOk');

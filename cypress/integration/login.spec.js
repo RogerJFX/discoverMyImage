@@ -1,11 +1,11 @@
-import {parseJWT, UserCredentials, checkSessionStorage, CheckOperations, checkForm} from "../support/utils";
-import {storageKeys, startPage} from "../support/bridge"
+import {parseJWT, checkSessionStorage, CheckOperations, checkForm} from "../support/common/utils";
+import {storageKeys, startPage, routes, UserCredentials} from "../support/common/bridge"
 
 describe('Login', () => {
 
     it('should fail', () => {
         cy.server();
-        cy.route('POST', '**/login.php**').as('login');
+        cy.route(routes.login.method, routes.login.url).as('login');
         cy.login(UserCredentials.email, 'Hund123');
         cy.wait('@login').then(xhr => {
             cy.wrap(xhr).its('status').should('eq', 401);
@@ -17,7 +17,7 @@ describe('Login', () => {
         cy.get('body')
             .then(_ => checkSessionStorage([[storageKeys.KEY_NICK, null, CheckOperations.beNull]]));
         cy.server();
-        cy.route('POST', '**/login.php**').as('login');
+        cy.route(routes.login.method, routes.login.url).as('login');
         cy.login(UserCredentials.email, UserCredentials.pass);
         cy.wait('@login').then(xhr => {
             cy.wrap(xhr).its('status').should('eq', 200);
@@ -68,8 +68,8 @@ describe('Registration', () => {
     it('should work with correct input data', () => {
         cy.server();
         cy.route({
-            method: 'PUT',
-            url: '**/register.php**',
+            method: routes.register.method,
+            url: routes.register.url,
             response: []
         }).as('registerStub');
 

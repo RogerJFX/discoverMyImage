@@ -25,7 +25,6 @@ Cypress.Commands.add('closeMenuView', (selector) => {
     cy.noOverlays(`${selector} div.close > div`).click();
     return cy.get(selector)
         .should('have.class', 'transitionable')
-        // .should('not.be.visible')
         .should('have.css', 'opacity', '0')
         .should('not.be.visible');
 });

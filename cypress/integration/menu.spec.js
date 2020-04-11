@@ -1,5 +1,5 @@
-import {storageKeys, startPage} from '../support/bridge';
-import {checkLocalStorage,CheckOperations} from "../support/utils";
+import {storageKeys, startPage} from '../support/common/bridge';
+import {checkLocalStorage,CheckOperations} from "../support/common/utils";
 
 describe('Menu', () => {
 
