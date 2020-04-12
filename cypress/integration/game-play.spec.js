@@ -7,12 +7,16 @@ describe('Game play', () => {
         window.localStorage.clear();
     });
 
+    beforeEach(() => {
+        cy.visit(startPage);
+    });
+
     it('should drag tiles', () => {
-        setupAndTest(drag);
+        cy.loadSquareExampleImage('001110012220021221', drag);
     });
 
     it('should be done to the end by clicking tiles(0 rewardPoints, 2 freeSteps)', () => {
-        setupAndTest(_ => play({
+        cy.loadSquareExampleImage('001110012220021221', _ => play({
             rewardPoints: 0,
             freeSteps: 2,
             rewardPointMsg: '0 Punkte',
@@ -21,7 +25,7 @@ describe('Game play', () => {
     });
 
     it('should be done to the end by clicking tiles(2 rewardPoints, 0 freeSteps)', () => {
-        setupAndTest(_ => play({
+        cy.loadSquareExampleImage('001110012220021221', _ => play({
             rewardPoints: 2,
             freeSteps: 0,
             rewardPointMsg: '2 Punkte',
@@ -30,34 +34,13 @@ describe('Game play', () => {
     });
 
     it('should be done to the end by clicking tiles(1 rewardPoints, 1 freeSteps)', () => {
-        setupAndTest(_ => play({
+        cy.loadSquareExampleImage('001110012220021221', _ => play({
             rewardPoints: 1,
             freeSteps: 1,
             rewardPointMsg: '1 Punkt',
             freeStepsMsg: '1 freier Lösungsschritt'
         }));
     });
-
-    function setupAndTest(testFn) {
-        cy.visit(startPage);
-        cy.noOverlays('.body-header > .nav-icon').click();
-        cy.get('#exampleImageSelect').click();
-        cy.server();
-        cy.route({
-            method: routes.task.method,
-            url: routes.task.url,
-            response: {response: "001110012220021221"}
-        }).as('taskStub');
-
-        cy.menuClickWhenVisible('#exampleImageButton1');
-
-        cy.wait('@taskStub').then((xhr) => {
-            cy.get('#stage').find('.tile').should('have.length', 9)
-                .then(_ => {
-                    testFn();
-                });
-        });
-    }
 
     function drag() {
         cy.get('#stage').find('.tile').then(tiles => {

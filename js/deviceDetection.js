@@ -63,15 +63,18 @@ window.$disc = window.$disc || {};
         return !!foundDevice;
     };
 
-    self.estimate = (onFinished) => {
-        if((estimationQuality & Q_SEALED) === Q_SEALED) {
-            // console.log('SEALED, nothing to do');
+    self.getScreenDimensions = () => {
+        return [screen.availWidth, screen.availHeight];
+    };
+
+    self.estimate = (onFinished, force) => {
+        if((estimationQuality & Q_SEALED) === Q_SEALED && !force) {
             return;
         }
-        const w = screen.availWidth;
-        const h = screen.availHeight;
+        const dims = self.getScreenDimensions();
+        const w = dims[0];
+        const h = dims[1];
         return new Promise(resolve => {
-            // loadDevices().then(() => {
             loadDevicesObservable(() => {
                 const found = fixedScreenDevices.find(device => {
                     const dW = device.dimensions[0];

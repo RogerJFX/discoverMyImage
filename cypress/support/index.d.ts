@@ -37,5 +37,13 @@ declare namespace Cypress {
          * @param pass Pass
          */
         login(email: string, pass: string): Chainable<Subject>;
+
+        /**
+         * Loads an example image with given task and calls a function afterwards.
+         *
+         * @param taskResponse Response, the stub service should deliver
+         * @param innerFn Function to be called, when image and task are loaded.
+         */
+        loadSquareExampleImage(taskResponse: string, innerFn: Function): void;
     }
 }

@@ -12,7 +12,6 @@ export function parseJWT(jwt) {
 }
 
 export function checkStorage(keyValuePairArray, storage) {
-    console.log(keyValuePairArray);
     keyValuePairArray.forEach(kV => {
         switch(kV[2]) {
             case CheckOperations.equals:
@@ -35,7 +34,6 @@ export function checkStorage(keyValuePairArray, storage) {
 }
 
 export function checkLocalStorage(keyValuePairArray) {
-    console.log('check local storage');
     checkStorage(keyValuePairArray, window.localStorage);
 }
 
