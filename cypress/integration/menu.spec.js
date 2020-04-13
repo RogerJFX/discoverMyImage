@@ -20,4 +20,19 @@ describe('Menu', () => {
             .then(_ => checkLocalStorage([[storageKeys.KEY_LANG, 'en', CheckOperations.equals]]));
     });
 
+    it('should show high score table according to points', () => {
+        cy.visit(startPage);
+        cy.noOverlays('.body-header > .nav-icon').click();
+        cy.menuClickWhenVisible('#highscoresButton');
+        cy.menuClickWhenVisible('#solvedButton');
+        cy.get('#solvedModal').should('contain', 'Nach Punkten');
+    });
+
+    it('should show high score table according to uploads', () => {
+        cy.visit(startPage);
+        cy.noOverlays('.body-header > .nav-icon').click();
+        cy.menuClickWhenVisible('#highscoresButton');
+        cy.menuClickWhenVisible('#uploadedButton');
+        cy.get('#uploadedModal').should('contain', 'Nach Uploads');
+    });
 });
