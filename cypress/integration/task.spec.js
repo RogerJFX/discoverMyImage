@@ -9,8 +9,29 @@ describe('Example image', () => {
         window.sessionStorage.clear();
         window.localStorage.clear();
     });
+    it('should be loaded with square dims and client side random task', () => {
 
-    it('should be loaded with square dims', () => {
+        cy.visit(startPage);
+        cy.noOverlays('.body-header > .nav-icon').click();
+        cy.get('#exampleImageSelect').click();
+        cy.server();
+        cy.route({
+            method: routes.task.method,
+            url: routes.task.url,
+            response: [],
+            status: 500
+
+        }).as('randomTask');
+
+        cy.menuClickWhenVisible('#exampleImageButton1');
+
+        cy.wait('@randomTask').then((xhr) => {
+            cy.wrap(xhr).its('status').should('eq', 500);
+            cy.get('#stage').find('.tile').should('have.length', 9);
+        });
+    });
+
+    it('should be loaded with square dims and correct remote task', () => {
 
         cy.visit(startPage);
         cy.noOverlays('.body-header > .nav-icon').click();
@@ -37,7 +58,7 @@ describe('Example image', () => {
         checkSaveTask();
         checkResolveTask();
         checkLoadTask();
-    })
+    });
 
     it('should be sent to friend only if validation ok', () => {
         const wrongSendToFriendData = [
