@@ -1,15 +1,20 @@
 .idea
+
+# Own test images
 /img/test/*
 
-# Just for my convenience, sorry.
+# Not needed
+index.local.html
 empty.js
-
 game.min.js
-
 node_modules
 
+# Cypress stuff
 cypress.json
-
 cypress/videos/
 
+# Coverage files will be created automatically
+index.test.html
+/instrumented
+/coverage
 .nyc_output

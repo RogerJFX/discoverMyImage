@@ -6,6 +6,7 @@
   "dependencies": {},
   "devDependencies": {
     "@cypress/code-coverage": "^2.0.1",
+    "babel-plugin-istanbul": "^6.0.0",
     "cypress": "^4.3.0",
     "cypress-intellij-reporter": "0.0.4",
     "istanbul-lib-coverage": "^3.0.0",
@@ -15,6 +16,7 @@
     "test": "npx cypress open",
     "test-headless": "npx cypress run --browser chrome --headless",
     "test-uglified": "npx cypress open --env startPage=/index.html?lang=de",
+    "test-coverage": "./bin/test-cov.sh",
     "test-prod": "CYPRESS_BASE_URL=https://discover-my-image.com npx cypress open --env startPage=/index.html?lang=de"
   },
   "repository": {
