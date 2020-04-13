@@ -42,11 +42,11 @@ describe('Registration', () => {
             check: 7
         },
         {
-            data: ['roger@crazything.de', 'Roger', '-'],
+            data: ['robert@crazything.de', 'Roger', '-'],
             check: 4
         },
         {
-            data: ['roger@crazything.de', '-', 'Katze123'],
+            data: ['robert@crazything.de', '-', 'Katze123'],
             check: 2
         },
         {
@@ -75,7 +75,7 @@ describe('Registration', () => {
 
         navigateToRegistration();
 
-        cy.get('#registerEmail').clear().type('roger@crazything.de');
+        cy.get('#registerEmail').clear().type('robert@crazything.de');
         cy.get('#registerNickname').clear().type('Roger');
         cy.get('#registerPassword').clear().type('Hustensaft123');
         cy.get('#registerSubmit').click();

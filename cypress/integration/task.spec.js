@@ -9,8 +9,8 @@ describe('Example image', () => {
         window.sessionStorage.clear();
         window.localStorage.clear();
     });
-    it('should be loaded with square dims and client side random task', () => {
 
+    it('should be loaded with square dims and client side random task', () => {
         cy.visit(startPage);
         cy.noOverlays('.body-header > .nav-icon').click();
         cy.get('#exampleImageSelect').click();
@@ -20,7 +20,6 @@ describe('Example image', () => {
             url: routes.task.url,
             response: [],
             status: 500
-
         }).as('randomTask');
 
         cy.menuClickWhenVisible('#exampleImageButton1');
@@ -32,7 +31,6 @@ describe('Example image', () => {
     });
 
     it('should be loaded with square dims and correct remote task', () => {
-
         cy.visit(startPage);
         cy.noOverlays('.body-header > .nav-icon').click();
         cy.get('#exampleImageSelect').click();
@@ -67,11 +65,11 @@ describe('Example image', () => {
                 check: 7
             },
             {
-                data: ['Roger', '-', 'roger@crazything.de'],
+                data: ['Roger', '-', 'robert@crazything.de'],
                 check: 2
             },
             {
-                data: ['-', 'Roger', 'roger@crazything.de'],
+                data: ['-', 'Roger', 'robert@crazything.de'],
                 check: 1
             },
             {
@@ -100,7 +98,7 @@ describe('Example image', () => {
 
         cy.get('#sendMyName').clear().type('Karl');
         cy.get('#sendHisName').clear().type('Heinz');
-        cy.get('#sendToEmail').clear().type('roger@crazything.de');
+        cy.get('#sendToEmail').clear().type('robert@crazything.de');
         cy.get('#uploadButton').click();
         cy.wait('@storeStub').then(xhr => {
             cy.wrap(xhr).its('status').should('eq', 200);
