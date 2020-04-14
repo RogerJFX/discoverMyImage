@@ -24,3 +24,9 @@ make sure you have host 'crazything' registered in /etc/hosts. Otherwise, some b
 any request due to Cors.
 
 Of course You then need to put that code to a web server like nginx. Just put it to dir \[webserverRoot\]/discoverMyImage.
+
+Got all that? Ok then, lets type:
+
+     npm run test-coverage
+     
+to have the coverage done. If you have a unix box, ok, should work. Otherwise, simply make up your mind and get done with Mr. Gates and his incredible bullshit.
