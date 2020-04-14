@@ -3,7 +3,7 @@ import {storageKeys, startPage, routes, UserCredentials} from "../support/common
 
 describe('Login', () => {
 
-    it('should fail', () => {
+    it('should fail due to wrong password', () => {
         cy.server();
         cy.route(routes.login.method, routes.login.url).as('login');
         cy.login(UserCredentials.email, 'Hund123');
@@ -11,6 +11,23 @@ describe('Login', () => {
             cy.wrap(xhr).its('status').should('eq', 401);
             cy.get('#commonAlertModal').should('be.visible').should('contain', 'Keine Übereinstimmung');
        });
+    });
+
+    it('should refresh guest token', () => {
+        let tokenExpStub, tokenGuardSpy, loginSpy;
+
+        cy.visit(startPage, {
+            onLoad(win) {
+                tokenExpStub = cy.stub(win.$disc.storage, 'getTokenExp').returns(new Date().getTime() - 10000000);
+                tokenGuardSpy = cy.spy(win.$disc.settingsHandler, 'guardToken');
+                loginSpy = cy.spy(win.$disc.xhrHandler, 'login');
+            }
+        });
+        cy.loadSquareExampleImageReal(_ => { // and get the token
+            tokenGuardSpy.call();
+            expect(tokenExpStub).to.be.called
+            expect(loginSpy).to.be.calledWith({email: 'John', pass: 'Doe'});
+        });
     });
 
     it('should succeed', () => {
@@ -29,6 +46,80 @@ describe('Login', () => {
                 .then(_ => checkSessionStorage([[storageKeys.KEY_NICK, UserCredentials.nickname, CheckOperations.equals]]));
         });
     });
+
+    it('should request user to login again after session expired', () => {
+        let tokenExpStub, tokenGuardSpy;
+
+        cy.visit(startPage, {
+            onLoad(win) {
+                tokenExpStub = cy.stub(win.$disc.storage, 'getTokenExp').returns(new Date().getTime() - 1000000);
+                tokenGuardSpy = cy.spy(win.$disc.settingsHandler, 'guardToken');
+            }
+        });
+        cy.loadSquareExampleImageReal(_ => { // not really needed
+            tokenGuardSpy.call();
+            expect(tokenExpStub).to.be.called
+            cy.get('#commonAlertModal')
+                .should('have.css', 'opacity', '1')
+                .should('be.visible')
+                .should('contain', 'Deine Sitzung ist abgelaufen');
+            cy.get('#alertOk').click();
+            cy.get('#loginModal')
+                .should('have.css', 'opacity', '1')
+                .should('be.visible');
+        });
+    });
+
+});
+
+describe('Forgot password', () => {
+    const wrongMail = 'this is not an mail address';
+    const notKnownMail = 'frankenstein@crazything.de';
+    const okMail = 'superman@crazything.de';
+
+    it('form should validate wrong mail address away', () => {
+        navigateToResetPassword();
+        cy.menuVisible('#resetPassModal').should('contain', 'Passwort vergessen');
+        cy.get('#resetPassModal').find('input').should('have.length', 1);
+        cy.get('#resetEmail').clear().type(`${wrongMail}{Enter}`);
+        cy.get('#resetEmail').should('have.class', 'wrongInput');
+    });
+
+    it('Email not found on real server', () => {
+        cy.server();
+        cy.route(routes.resetPassword.method, routes.resetPassword.url).as('resetPass');
+        navigateToResetPassword();
+        cy.get('#resetEmail').clear().type(`${notKnownMail}{Enter}`);
+        cy.wait('@resetPass').then(xhr => {
+            cy.wrap(xhr).its('status').should('eq', 400); // Why not 404?
+        })
+    });
+
+    it('Email correct, passes (stubbed)', () => {
+        cy.server();
+        cy.route({
+            method: routes.resetPassword.method,
+            url:  routes.resetPassword.url,
+            response: [],
+            status: 200
+        }).as('resetPassStub');
+        navigateToResetPassword();
+        cy.get('#resetEmail').clear().type(`${okMail}{Enter}`);
+        cy.wait('@resetPassStub').then(xhr => {
+            cy.wrap(xhr).its('status').should('eq', 200);
+            cy.get('#commonAlertModal').should('contain', 'Eine Email ist unterwegs');
+        })
+    });
+
+    function navigateToResetPassword() {
+        window.sessionStorage.clear();
+        window.localStorage.clear();
+        cy.visit(startPage);
+        cy.noOverlays('.body-header > .nav-icon').click();
+        cy.get('#loginButton').click();
+        cy.menuVisible('#loginModal').should('contain', 'Login');
+        cy.menuClickWhenVisible('#resetPassButton');
+    }
 
 });
 
@@ -92,7 +183,7 @@ describe('Registration', () => {
         cy.noOverlays('.body-header > .nav-icon').click();
         cy.get('#loginButton').click();
         cy.menuVisible('#loginModal').should('contain', 'Login');
-        cy.menuClickWhenVisible('#registerButton').click();
+        cy.menuClickWhenVisible('#registerButton');
     }
 
 

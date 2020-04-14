@@ -54,6 +54,26 @@ describe('A remote image', () => {
                     expect(steps).to.below(25); // see intelligence.TaskHandler12.scala. First for level 4 is 26
                 });
             });
+            cy.noOverlays('#alertOk').click();
+        });
+    });
+
+    it('should load task at level "kidding"', () => {
+        cy.server();
+        cy.route(routes.resolve.method, routes.resolve.url).as('resolve');
+        cy.get('#commonAlertModal').should('not.be.visible');
+        cy.noOverlays('.body-header > .nav-icon').click();
+        cy.menuClickWhenVisible('#changeSettingsButton');
+        cy.menuVisible('#settingsModal')
+            .children('button')
+            .eq(0)
+            .click();
+        requestSolve();
+        cy.wait('@resolve').then(xhr => {
+            cy.wrap(xhr).its('response.body').then(body => {
+                const steps = body['toWin'];
+                expect(steps).to.below(5); // see intelligence.TaskHandler12.scala. Max steps for kidding is 4
+            });
         });
     });
 
@@ -67,7 +87,6 @@ describe('A remote image', () => {
     function checkSettingsRestrictions(levels) {
         cy.get('#commonAlertModal').should('not.be.visible');
         cy.noOverlays('.body-header > .nav-icon').click();
-        //cy.get('#changeSettingsButton').click();
         cy.menuClickWhenVisible('#changeSettingsButton');
         cy.menuVisible('#settingsModal')
             .children('button')

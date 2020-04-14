@@ -44,6 +44,12 @@ declare namespace Cypress {
          * @param taskResponse Response, the stub service should deliver
          * @param innerFn Function to be called, when image and task are loaded.
          */
-        loadSquareExampleImage(taskResponse: string, innerFn: Function): void;
+        loadSquareExampleImageStub(taskResponse: string, innerFn: Function): void;
+        /**
+         * Loads an example image with task created by server (plus JWT) and calls a function afterwards.
+         *
+         * @param innerFn Function to be called, when image and task are loaded.
+         */
+        loadSquareExampleImageReal(innerFn: Function): void;
     }
 }

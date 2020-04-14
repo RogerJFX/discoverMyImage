@@ -12,7 +12,7 @@ Cypress.Commands.add('login', (email, pass) => {
     return cy.get('#loginSubmit').click();
 });
 
-Cypress.Commands.add('loadSquareExampleImage', (taskResponse, innerFn) => {
+Cypress.Commands.add('loadSquareExampleImageStub', (taskResponse, innerFn) => {
     cy.noOverlays('.body-header > .nav-icon').click();
     cy.get('#exampleImageSelect').click();
     cy.server();
@@ -25,6 +25,22 @@ Cypress.Commands.add('loadSquareExampleImage', (taskResponse, innerFn) => {
     cy.menuClickWhenVisible('#exampleImageButton1');
 
     cy.wait('@taskStub').then((xhr) => {
+        cy.get('#stage').find('.tile').should('have.length', 9)
+            .then(_ => {
+                innerFn();
+            });
+    });
+});
+
+Cypress.Commands.add('loadSquareExampleImageReal', innerFn => {
+    cy.noOverlays('.body-header > .nav-icon').click();
+    cy.get('#exampleImageSelect').click();
+    cy.server();
+    cy.route(routes.task.method, routes.task.url).as('task');
+
+    cy.menuClickWhenVisible('#exampleImageButton1');
+
+    cy.wait('@task').then((xhr) => {
         cy.get('#stage').find('.tile').should('have.length', 9)
             .then(_ => {
                 innerFn();

@@ -89,22 +89,40 @@ describe('Example image', () => {
             checkForm(dataset.data, dataset.check, '#uploadModal', '#uploadButton');
         })
 
+        stubbingUpload(200, 'Das hat funktioniert');
+    });
+
+    it('Upload should fail due to servers HD to small', () => {
+        stubbingUpload(507, 'nicht genug Speicher');
+    });
+
+    it('Upload should fail due to bad request', () => {
+        stubbingUpload(400, 'wollte der Server die Daten nicht');
+    });
+
+    it('Upload should fail due to authentication problems', () => {
+        stubbingUpload(403, 'Bitte versuche es später');
+    });
+
+    function stubbingUpload(status, expectedMsg) {
         cy.server();
         cy.route({
             method: routes.store.method,
             url: routes.store.url,
-            response: []
+            response: [],
+            status: status
         }).as('storeStub');
 
         cy.get('#sendMyName').clear().type('Karl');
         cy.get('#sendHisName').clear().type('Heinz');
-        cy.get('#sendToEmail').clear().type('robert@crazything.de');
-        cy.get('#uploadButton').click();
+        cy.get('#sendToEmail').clear().type('karl@heinz.de{Enter}');
+        //cy.get('#uploadButton').click(); // Done by {Enter}
         cy.wait('@storeStub').then(xhr => {
-            cy.wrap(xhr).its('status').should('eq', 200);
-            cy.get('#commonAlertModal').should('be.visible').should('contain', 'Das hat funktioniert');
+            cy.wrap(xhr).its('status').should('eq', status);
+            cy.get('#commonAlertModal').should('be.visible').should('contain', expectedMsg);
+            cy.get('#alertOk').click();
         })
-    });
+    }
 
     function checkSaveTask() {
         cy.noOverlays('.body-header > .nav-icon').click()

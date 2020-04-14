@@ -12,11 +12,11 @@ describe('Game play', () => {
     });
 
     it('should drag tiles', () => {
-        cy.loadSquareExampleImage('001110012220021221', drag);
+        cy.loadSquareExampleImageStub('001110012220021221', drag);
     });
 
     it('should be done to the end by clicking tiles(0 rewardPoints, 2 freeSteps)', () => {
-        cy.loadSquareExampleImage('001110012220021221', _ => play({
+        cy.loadSquareExampleImageStub('001110012220021221', _ => play({
             rewardPoints: 0,
             freeSteps: 2,
             rewardPointMsg: '0 Punkte',
@@ -25,7 +25,7 @@ describe('Game play', () => {
     });
 
     it('should be done to the end by clicking tiles(2 rewardPoints, 0 freeSteps)', () => {
-        cy.loadSquareExampleImage('001110012220021221', _ => play({
+        cy.loadSquareExampleImageStub('001110012220021221', _ => play({
             rewardPoints: 2,
             freeSteps: 0,
             rewardPointMsg: '2 Punkte',
@@ -34,7 +34,7 @@ describe('Game play', () => {
     });
 
     it('should be done to the end by clicking tiles(1 rewardPoints, 1 freeSteps)', () => {
-        cy.loadSquareExampleImage('001110012220021221', _ => play({
+        cy.loadSquareExampleImageStub('001110012220021221', _ => play({
             rewardPoints: 1,
             freeSteps: 1,
             rewardPointMsg: '1 Punkt',

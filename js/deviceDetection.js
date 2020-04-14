@@ -79,7 +79,6 @@ window.$disc = window.$disc || {};
                 const found = fixedScreenDevices.find(device => {
                     const dW = device.dimensions[0];
                     const dH = device.dimensions[1];
-                    // console.log(w, h, dW, dH);
                     return (dW === w && dH === h) || (dH === w && dW === h);
                 });
                 if(found) {

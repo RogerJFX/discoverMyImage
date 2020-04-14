@@ -211,14 +211,4 @@ window.$disc = window.$disc || {};
 
     };
 
-    // self.checkTask = (task) => {
-    //     return new Promise((resolve, reject) => {
-    //         fetchDataAndDo((settings) => {
-    //             $disc.xhrHandler.loadJsonProperties(`${settings['aiServer']}${settings['checkURL'].replace('__TASK__', task)}`, false).then(data => {
-    //                 resolve(data);
-    //             }).catch(err => reject(err));
-    //         })
-    //     });
-    // };
-
 })(window.$disc.ai = window.$disc.ai || {});

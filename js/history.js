@@ -3,8 +3,6 @@ window.$disc = window.$disc || {};
 
     const history = [];
 
-    let task;
-
     self.clear = () => {
         history.length = 0;
     };
@@ -17,11 +15,4 @@ window.$disc = window.$disc || {};
         return history;
     };
 
-    self.setTask = (_task) => {
-        task = _task;
-    };
-
-    self.getTask = () => {
-        return task;
-    };
 })(window.$disc.history = window.$disc.history || {});

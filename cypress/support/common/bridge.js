@@ -1,4 +1,6 @@
 import '../../../js/storage';
+// Don't import other files here for e.g. stubbing.
+// Instead use ca.visit(page, onLoad(window)) and get it from the window object
 
 const keys = $disc.storage.getKeys();
 
@@ -42,6 +44,10 @@ export const routes = {
     resolve: {
         method: 'GET',
         url: '**/resolve.php**'
+    },
+    resetPassword: {
+        method: 'PUT',
+        url: '**/resetpass.php**'
     }
 }
 
